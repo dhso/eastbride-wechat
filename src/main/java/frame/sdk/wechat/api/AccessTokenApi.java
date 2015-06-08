@@ -1,0 +1,53 @@
+package frame.sdk.wechat.api;
+
+import java.io.IOException;
+import java.util.Map;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
+import frame.sdk.wechat.kit.HttpKit;
+import frame.sdk.wechat.kit.ParaMap;
+
+/**
+ * 认证并获取 access_token API
+ * http://mp.weixin.qq.com/wiki/index.php?title=%E8%8E%B7%E5%8F%96access_token
+ */
+public class AccessTokenApi {
+	
+	// "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
+	private static String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential";
+	
+	private static AccessToken accessToken;
+	
+	public static AccessToken getAccessToken() {
+		if (accessToken != null && accessToken.isAvailable())
+			return accessToken;
+		
+		for (int i=0; i<3; i++) {
+			accessToken = requestAccesToken();
+			if (accessToken.isAvailable())
+				break;
+		}
+		return accessToken;
+	}
+	
+	private static AccessToken requestAccesToken() {
+		final String appId = ApiConfig.getAppId();
+		final String appSecret = ApiConfig.getAppSecret();
+		Map<String, String> queryParas = ParaMap.create("appid", appId).put("secret", appSecret).getData();
+		String json = HttpKit.get(url, queryParas);
+		return new AccessToken(json);
+	}
+	
+	public static void main(String[] args) throws JsonParseException, JsonMappingException, IOException {
+		ApiConfig.setAppId("wx396714621dc72788");
+		ApiConfig.setAppSecret("e5adb6d4b8326ead8bfe27dfe92a2738");
+		
+		AccessToken at = getAccessToken();
+		if (at.isAvailable())
+			System.out.println("access_token : " + at.getAccessToken());
+		else
+			System.out.println(at.getErrorCode() + " : " + at.getErrorMsg());
+	}
+}
