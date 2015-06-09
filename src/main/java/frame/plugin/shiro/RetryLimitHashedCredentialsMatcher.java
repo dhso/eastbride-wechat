@@ -12,8 +12,7 @@ import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 
 /**
- * 如在 1 个小时内密码最多重试 5 次，如果尝试次数超过 5 次就锁定 1 小时，1 小时后可再 次重试，如果还是重试失败，可以锁定如 1
- * 天，以此类推，防止密码被暴力破解。
+ * 如在 1 个小时内密码最多重试 5 次，如果尝试次数超过 5 次就锁定 1 小时，1 小时后可再 次重试，如果还是重试失败，可以锁定如 1 天，以此类推，防止密码被暴力破解。
  * 
  * @author hadong
  * 
@@ -22,16 +21,15 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
 	private Ehcache passwordRetryCache;
 
 	public RetryLimitHashedCredentialsMatcher() {
-		CacheManager cacheManager = CacheManager.getInstance();
-		passwordRetryCache = cacheManager.getCache("passwordRetryCache");
 	}
 
 	@Override
 	public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) {
 		String username = (String) token.getPrincipal();
-		// retry count + 1
+		passwordRetryCache = CacheManager.getCacheManager("ehcache-shiro").getCache("passwordRetryCache");
 		Element element = passwordRetryCache.get(username);
 		if (element == null) {
+			// retry count + 1
 			element = new Element(username, new AtomicInteger(0));
 			passwordRetryCache.put(element);
 		}

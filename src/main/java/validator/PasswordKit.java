@@ -7,8 +7,8 @@ public class PasswordKit {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String newPassword = new SimpleHash("md5", "user", ByteSource.Util.bytes("tps"), 2).toHex();
-		ByteSource salt = ByteSource.Util.bytes("tps");
+		String newPassword = new SimpleHash("md5", "admin", ByteSource.Util.bytes("shiro"), 2).toHex();
+		ByteSource salt = ByteSource.Util.bytes("shiro");
 		System.out.println(newPassword);
 		System.out.println(salt);
 	}

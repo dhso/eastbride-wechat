@@ -30,6 +30,7 @@ import com.jfinal.render.Render;
 
 import controller.SecurityController;
 import controller.WechatController;
+import frame.interceptor.ReqResInViewInterceptor;
 import frame.sdk.wechat.api.ApiConfig;
 
 public class BaseConfig extends JFinalConfig {
@@ -47,7 +48,6 @@ public class BaseConfig extends JFinalConfig {
 		cs.setErrorRenderFactory(new IErrorRenderFactory() {
 			@Override
 			public Render getRender(int errorCode, String view) {
-				
 				return new RedirectRender(view);
 			}
 		});
@@ -97,6 +97,8 @@ public class BaseConfig extends JFinalConfig {
 		// me.add(new ShiroFreemarkerTemplateInterceptor());
 		// 让 模版 可以使用session
 		me.add(new SessionInViewInterceptor());
+		// 让 模版 可以使用request/response
+		me.add(new ReqResInViewInterceptor());
 	}
 
 	@Override
