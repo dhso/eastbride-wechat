@@ -49,4 +49,12 @@ public class IdentityKit {
 		random.nextBytes(randomBytes);
 		return EncodeKit.encodeBase62(randomBytes);
 	}
+
+	/**
+	 * 获取随机数验证码
+	 */
+	public static String randomCaptcha(int length) {
+		double code = (Math.random() * 9 + 1) * Math.pow(10, length - 1);
+		return String.valueOf((int) Math.floor(code));
+	}
 }

@@ -26,13 +26,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class StringKit extends org.apache.commons.lang3.StringUtils {
 
 	/**
-	 * "yyyy-MM-dd"
+	 * DateType "yyyy-MM-dd"
 	 */
-	public final static String DateType1 = "yyyy-MM-dd";
+	public final static String DateType = "yyyy-MM-dd";
 	/**
-	 * "yyyy-MM-dd HH:mm:ss"
+	 * DateTimeType "yyyy-MM-dd HH:mm:ss"
 	 */
-	public final static String DateType2 = "yyyy-MM-dd HH:mm:ss";
+	public final static String DateTimeType = "yyyy-MM-dd HH:mm:ss";
 	/**
 	 * 邮箱地址正则
 	 */
