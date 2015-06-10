@@ -19,7 +19,7 @@ public class CustomerWifi extends Model<CustomerWifi> {
 	 * @param openid
 	 * @return
 	 */
-	protected CustomerWifi getCustomerWifi(String openid) {
+	public CustomerWifi getCustomerWifi(String openid) {
 		return CustomerWifi.dao.findById(openid);
 	}
 
@@ -37,6 +37,7 @@ public class CustomerWifi extends Model<CustomerWifi> {
 		if (null == customerWifi) {
 			// 没有申请过
 			new CustomerWifi().set("open_id", openid).set("captcha", captcha).set("expired_dt", DateKit.changeDate(now, 12, 30)).save();
+			customerWifi = getCustomerWifi(openid);
 		} else {
 			// 申请过
 			customerWifi.set("captcha", captcha).set("expired_dt", DateKit.changeDate(now, 12, 30)).update();

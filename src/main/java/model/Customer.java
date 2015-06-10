@@ -16,20 +16,8 @@ public class Customer extends Model<Customer> {
 	 * @param openid
 	 * @return
 	 */
-	protected Customer getCustomer(String openid) {
+	public Customer getCustomer(String openid) {
 		return Customer.dao.findById(openid);
-	}
-
-	/**
-	 * 添加客户
-	 * 
-	 * @param openid
-	 * @param subscribe_flag
-	 * @param create_id
-	 * @return
-	 */
-	protected Boolean addCustomer(String openid, String subscribe_flag, String create_id) {
-		return new Customer().set("open_id", openid).set("subscribe_flag", subscribe_flag).set("create_id", create_id).set("create_dt", new Date()).save();
 	}
 
 	/**
@@ -43,7 +31,8 @@ public class Customer extends Model<Customer> {
 		Customer customer = getCustomer(openid);
 		if (null == customer) {
 			// 没有关注过
-			addCustomer(openid, "1", create_id);
+			new Customer().set("open_id", openid).set("subscribe_flag", "1").set("create_id", create_id).set("create_dt", new Date()).save();
+			customer = getCustomer(openid);
 		} else {
 			// 关注过
 			customer.set("subscribe_flag", "1").set("create_id", create_id).update();
