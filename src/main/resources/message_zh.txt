@@ -1,2 +1,1 @@
-msg.zh.helpStr = 输入关键词：\n1.music
-msg.zh.welcomeStr = 欢迎订阅
+msg.zh.wifiCaptcha = 您本次申请WIFI的验证码为【{0}】，密码过期时间为 {1} ！

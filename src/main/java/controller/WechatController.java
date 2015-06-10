@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.text.MessageFormat;
 
 import model.Config;
 import model.Customer;
@@ -195,7 +196,7 @@ public class WechatController extends WeixinController {
 			} else if ("c_access_wifi".equalsIgnoreCase(msgEventKey)) {
 				CustomerWifi customerWifi = CustomerWifi.dao.applyForWifiCaptcha(customerOpenid);
 				OutTextMsg outMsg = new OutTextMsg(inMenuEvent);
-				outMsg.setContent("您本次申请WIFI的验证码为【" + customerWifi.getStr("captcha") + "】，密码过期时间为 " + DateKit.formatDateTime(customerWifi.getDate("expired_dt")) + " ！");
+				outMsg.setContent(MessageFormat.format(ConfigKit.getStr("msg.zh.wifiCaptcha"), customerWifi.getStr("captcha"), DateKit.formatDateTime(customerWifi.getDate("expired_dt"))));
 				render(outMsg);
 			}
 		}
