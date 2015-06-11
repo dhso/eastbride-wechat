@@ -15,7 +15,6 @@ import com.jfinal.ext.plugin.config.ConfigKit;
 import frame.kit.DateKit;
 import frame.kit.HttpKit;
 import frame.kit.StringKit;
-import frame.sdk.fetion.FetionException;
 import frame.sdk.fetion.Result;
 import frame.sdk.fetion.kit.FetionKit;
 import frame.sdk.simsimi.SimsimiSdk;
