@@ -15,6 +15,8 @@ import com.jfinal.ext.plugin.config.ConfigKit;
 import frame.kit.DateKit;
 import frame.kit.HttpKit;
 import frame.kit.StringKit;
+import frame.sdk.fetion.FetionException;
+import frame.sdk.fetion.kit.FetionKit;
 import frame.sdk.simsimi.SimsimiSdk;
 import frame.sdk.wechat.msg.in.InImageMsg;
 import frame.sdk.wechat.msg.in.InLinkMsg;
@@ -198,6 +200,13 @@ public class WechatController extends WeixinController {
 				OutTextMsg outMsg = new OutTextMsg(inMenuEvent);
 				outMsg.setContent(MessageFormat.format(ConfigKit.getStr("msg.zh.wifiCaptcha"), customerWifi.getStr("captcha"), DateKit.formatDateTime(customerWifi.getDate("expired_dt"))));
 				render(outMsg);
+			} else if ("c_send_sms".equalsIgnoreCase(msgEventKey)) {
+				CustomerWifi customerWifi = CustomerWifi.dao.applyForWifiCaptcha(customerOpenid);
+				try {
+					FetionKit.sendSMS(15262731827L, MessageFormat.format(ConfigKit.getStr("msg.zh.wifiCaptcha"), customerWifi.getStr("captcha"), DateKit.formatDateTime(customerWifi.getDate("expired_dt"))));
+				} catch (FetionException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

@@ -23,3 +23,7 @@ wx.qiniu.ak = s4qqqDqXBOcvFKUDsAIDPk1X7p1df1XKAv-2rhU6
 wx.qiniu.sk = PKnBKg_fcc3otG0C_0WPPvW3COLTxW6FaWrJ1bUw
 wx.qiniu.bucket = apphui
 wx.qiniu.url = http://apphui.qiniudn.com/
+
+#飞信配置
+wx.fetion.mobile = 15262731827
+wx.fetion.password = dhso923389

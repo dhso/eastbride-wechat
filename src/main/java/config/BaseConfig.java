@@ -68,6 +68,8 @@ public class BaseConfig extends JFinalConfig {
 
 	@Override
 	public void configPlugin(Plugins ps) {
+		// 添加fetion支持
+		// ps.add(new FetionPlugin(getPropertyToLong("wx.fetion.mobile"), getProperty("wx.fetion.password")));
 		// 添加shiro支持
 		ps.add(new ShiroPlugin(routes));
 		// 添加缓存支持
