@@ -31,6 +31,7 @@ import com.jfinal.render.Render;
 import controller.SecurityController;
 import controller.WechatController;
 import frame.interceptor.ReqResInViewInterceptor;
+import frame.sdk.fetion.kit.FetionPlugin;
 import frame.sdk.wechat.api.ApiConfig;
 
 public class BaseConfig extends JFinalConfig {
@@ -69,7 +70,7 @@ public class BaseConfig extends JFinalConfig {
 	@Override
 	public void configPlugin(Plugins ps) {
 		// 添加fetion支持
-		// ps.add(new FetionPlugin(getPropertyToLong("wx.fetion.mobile"), getProperty("wx.fetion.password")));
+		ps.add(new FetionPlugin(getPropertyToLong("wx.fetion.mobile"), getProperty("wx.fetion.password")));
 		// 添加shiro支持
 		ps.add(new ShiroPlugin(routes));
 		// 添加缓存支持

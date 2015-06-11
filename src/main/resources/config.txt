@@ -25,5 +25,5 @@ wx.qiniu.bucket = apphui
 wx.qiniu.url = http://apphui.qiniudn.com/
 
 #飞信配置
-wx.fetion.mobile = 15262731827
-wx.fetion.password = dhso923389
+wx.fetion.mobile = 15996586864
+wx.fetion.password = wj19881130

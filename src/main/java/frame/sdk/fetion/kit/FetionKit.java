@@ -12,18 +12,33 @@ public class FetionKit {
 	public static Long fromMobile;
 	public static String password;
 
-	public static void init(Long fromMobile, String password) throws FetionException {
+	public static void init(Long fromMobile, String password) {
 		FetionKit.fromMobile = fromMobile;
 		FetionKit.password = password;
-		exec();
 	}
 
-	public static void exec() throws FetionException {
+	// 登录
+	public static void login() {
 		FetionKit.fetion = new Fetion(fromMobile);
-		FetionKit.fetionConsole = fetion.login(password);
+		try {
+			FetionKit.fetionConsole = fetion.login(password);
+		} catch (FetionException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public static Fetion Console() {
+	// 关闭
+	public static void close() {
+		if (fetionConsole != null) {
+			try {
+				fetionConsole.close();
+			} catch (FetionException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public static Fetion getFetion() {
 		return fetion;
 	}
 
@@ -31,10 +46,20 @@ public class FetionKit {
 		return fetionConsole;
 	}
 
-	public static Result sendSMS(Long toMobile, String message) throws FetionException {
+	// 发送手机短信
+	public static Result sendSMS(Long toMobile, String message) {
 		Result result = null;
-		Buddy buddy = fetionConsole.getUserInfo().getContact().findBuddy(toMobile);// 根据飞信号码查询好友
-		result = fetionConsole.sendSMSMessage(buddy, message);// 发送手机短信
+		try {
+			login();
+			Buddy buddy = fetionConsole.getUserInfo().getContact().findBuddy(toMobile);// 根据飞信号码查询好友
+			if (null != buddy) {
+				result = fetionConsole.sendSMSMessage(buddy, message);
+			}
+		} catch (FetionException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
 		return result;
 	}
 }

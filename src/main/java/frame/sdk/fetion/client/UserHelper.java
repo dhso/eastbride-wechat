@@ -20,7 +20,7 @@ public final class UserHelper {
     
     public static Object toUser(XmlElement xml) {
         String className = StringHelper.firstToUpperCase(xml.getName());
-        className = "net.apexes.fetion4j.core.user." + className;
+        className = "frame.sdk.fetion.user." + className;
         try {
             Class clazz = Class.forName(className);
             Object user = clazz.newInstance();

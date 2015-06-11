@@ -2,8 +2,6 @@ package frame.sdk.fetion.kit;
 
 import com.jfinal.plugin.IPlugin;
 
-import frame.sdk.fetion.FetionException;
-
 public class FetionPlugin implements IPlugin {
 
 	private Long fromMobile;
@@ -20,23 +18,12 @@ public class FetionPlugin implements IPlugin {
 
 	@Override
 	public boolean start() {
-		try {
-			FetionKit.init(fromMobile, password);
-		} catch (FetionException e) {
-			e.printStackTrace();
-		}
+		FetionKit.init(fromMobile, password);
 		return true;
 	}
 
 	@Override
 	public boolean stop() {
-		if (FetionKit.getFetionConsole() != null) {
-			try {
-				FetionKit.getFetionConsole().close();
-			} catch (FetionException e) {
-				e.printStackTrace();
-			}
-		}
 		return true;
 	}
 
