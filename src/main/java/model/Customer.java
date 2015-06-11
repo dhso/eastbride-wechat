@@ -2,6 +2,8 @@ package model;
 
 import java.util.Date;
 
+import model.shop.ShopHistory;
+
 import com.jfinal.ext.plugin.tablebind.TableBind;
 import com.jfinal.plugin.activerecord.Model;
 
@@ -9,6 +11,17 @@ import com.jfinal.plugin.activerecord.Model;
 @TableBind(tableName = "customer", pkName = "open_id")
 public class Customer extends Model<Customer> {
 	public static final Customer dao = new Customer();
+
+	/**
+	 * 分页获取所有客户
+	 * 
+	 * @param pageNumber
+	 * @param pageSize
+	 * @return
+	 */
+	public Object getAllCustomer(int pageNumber, int pageSize) {
+		return Customer.dao.paginate(pageNumber, pageSize, "select *", "from customer");
+	}
 
 	/**
 	 * 获取客户
@@ -48,4 +61,17 @@ public class Customer extends Model<Customer> {
 	public void unsubscribe(String openid) {
 		Customer.dao.findById(openid).set("subscribe_flag", "0").update();
 	}
+
+	/**
+	 * 充值/扣费
+	 * 
+	 * @param targetOpenId
+	 * @param money
+	 * @param aId
+	 */
+	public void addMoney(String targetOpenId, String money, String aId) {
+		ShopHistory.dao.addHistory(targetOpenId, money, "充值/扣费");
+
+	}
+
 }

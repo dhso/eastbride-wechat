@@ -154,7 +154,7 @@ public class WechatController extends WeixinController {
 			// 关注事件
 			Customer.dao.subscribe(customerOpenid, "直接关注");
 			OutTextMsg outMsg = new OutTextMsg(inFollowEvent);
-			outMsg.setContent(Config.dao.getCfgKey("wx.welcome"));
+			outMsg.setContent(Config.dao.getCfgValue("wx.welcome"));
 			render(outMsg);
 		} else if ("unsubscribe".equalsIgnoreCase(msgEvent)) {
 			// 取消关注事件，将无法接收到传回的信息

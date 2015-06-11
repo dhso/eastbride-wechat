@@ -42,7 +42,7 @@ public class Config extends Model<Config> {
 	 * @param cfg_key
 	 * @return
 	 */
-	public String getCfgKey(String cfg_key) {
+	public String getCfgValue(String cfg_key) {
 		return getConfig(cfg_key).getStr("cfg_value");
 	}
 }
