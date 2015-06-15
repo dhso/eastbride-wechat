@@ -26,11 +26,11 @@ public class ShopController extends Controller {
 		if (StringKit.isNotBlank(openid) && StringKit.isNotBlank(channel)) {
 			setSessionAttr("openid", openid);
 			setSessionAttr("channel", channel);
-			setAttr("shop_menu", ShopMenu.dao.getAllMenu());
-			setAttr("shop_name", Config.dao.getCfgValue("wx.shop.name"));
-			setAttr("shop_notification", Config.dao.getCfgValue("wx.shop.notification"));
-			setAttr("shop_goods", ShopGoods.dao.getAllGoods());
-			setAttr("shop_user", Customer.dao.findById(openid));
+			//setAttr("shop_menu", ShopMenu.dao.getAllMenu());
+			//setAttr("shop_name", Config.dao.getCfgValue("wx.shop.name"));
+			//setAttr("shop_notification", Config.dao.getCfgValue("wx.shop.notification"));
+			//setAttr("shop_goods", ShopGoods.dao.getAllGoods());
+			//setAttr("shop_user", Customer.dao.findById(openid));
 			render("front/index.htm");
 		} else {
 			renderText("打开方式错误，链接来源不正确！");

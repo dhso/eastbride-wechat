@@ -29,6 +29,7 @@ import com.jfinal.render.RedirectRender;
 import com.jfinal.render.Render;
 
 import controller.SecurityController;
+import controller.ShopController;
 import controller.WechatController;
 import frame.interceptor.ReqResInViewInterceptor;
 import frame.sdk.fetion.kit.FetionPlugin;
@@ -65,6 +66,7 @@ public class BaseConfig extends JFinalConfig {
 		this.routes = rs;
 		rs.add("/security", SecurityController.class, "/security");// 安全
 		rs.add("/wechat", WechatController.class);// 微信
+		rs.add("/shop", ShopController.class, "/shop");// 商城
 	}
 
 	@Override
