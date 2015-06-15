@@ -2,8 +2,6 @@ package model;
 
 import java.util.Date;
 
-import model.shop.ShopHistory;
-
 import com.jfinal.ext.plugin.tablebind.TableBind;
 import com.jfinal.plugin.activerecord.Model;
 
@@ -62,16 +60,5 @@ public class Customer extends Model<Customer> {
 		Customer.dao.findById(openid).set("subscribe_flag", "0").update();
 	}
 
-	/**
-	 * 充值/扣费
-	 * 
-	 * @param targetOpenId
-	 * @param money
-	 * @param aId
-	 */
-	public void addMoney(String targetOpenId, String money, String aId) {
-		ShopHistory.dao.addHistory(targetOpenId, money, "充值/扣费");
-
-	}
 
 }

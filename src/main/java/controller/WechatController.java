@@ -6,7 +6,7 @@ import java.text.MessageFormat;
 
 import model.Config;
 import model.Customer;
-import model.CustomerWifi;
+import model.ShopWifi;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -196,13 +196,13 @@ public class WechatController extends WeixinController {
 				outMsg.addNews("标题", "描述", "http://wcdn.u.qiniudn.com/pic/shopping.jpg", "http://url.com?openid=" + inMenuEvent.getFromUserName());
 				render(outMsg);
 			} else if ("c_access_wifi".equalsIgnoreCase(msgEventKey)) {
-				CustomerWifi customerWifi = CustomerWifi.dao.applyForWifiCaptcha(customerOpenid);
+				ShopWifi customerWifi = ShopWifi.dao.applyForWifiCaptcha(customerOpenid);
 				OutTextMsg outMsg = new OutTextMsg(inMenuEvent);
 				outMsg.setContent(MessageFormat.format(ConfigKit.getStr("msg.zh.wifiCaptcha"), customerWifi.getStr("captcha"), DateKit.formatDateTime(customerWifi.getDate("expired_dt"))));
 				render(outMsg);
 			} else if ("c_send_sms".equalsIgnoreCase(msgEventKey)) {
 				Result result = null;
-				CustomerWifi customerWifi = CustomerWifi.dao.applyForWifiCaptcha(customerOpenid);
+				ShopWifi customerWifi = ShopWifi.dao.applyForWifiCaptcha(customerOpenid);
 				result = FetionKit.sendSMS(15262731827L, MessageFormat.format(ConfigKit.getStr("msg.zh.wifiCaptcha"), customerWifi.getStr("captcha"), DateKit.formatDateTime(customerWifi.getDate("expired_dt"))));
 				renderJson(result);
 			}

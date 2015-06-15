@@ -148,17 +148,4 @@ public class ShopController extends Controller {
 		render("front/userMoney.htm");
 	}
 
-	@ActionKey("/shop/user/addMoney")
-	@Before(ShopAdminCheck.class)
-	public void changeMoney() {
-		String aId = getPara("aid");
-		String targetOpenId = getPara("targetOpenId");
-		String money = getPara("addMoney");
-		Customer.dao.addMoney(targetOpenId, money, aId);
-		if (StringKit.toFloat(money) >= 0) {
-			renderJson(new Message("200", "success", "充值成功！"));
-		} else {
-			renderJson(new Message("200", "success", "扣钱成功！"));
-		}
-	}
 }
