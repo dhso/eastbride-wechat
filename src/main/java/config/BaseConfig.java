@@ -1,5 +1,9 @@
 package config;
 
+import modules.system.controller.SecurityController;
+import modules.wechat.controller.WechatController;
+import modules.weshop.controller.ShopController;
+
 import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.util.JdbcConstants;
 import com.alibaba.druid.wall.WallFilter;
@@ -28,9 +32,6 @@ import com.jfinal.render.IErrorRenderFactory;
 import com.jfinal.render.RedirectRender;
 import com.jfinal.render.Render;
 
-import controller.SecurityController;
-import controller.ShopController;
-import controller.WechatController;
 import frame.interceptor.ReqResInViewInterceptor;
 import frame.sdk.fetion.kit.FetionPlugin;
 import frame.sdk.wechat.api.ApiConfig;

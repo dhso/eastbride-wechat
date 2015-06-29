@@ -1,10 +1,6 @@
 package frame.plugin.shiro.freemarker;
 
-import java.beans.BeanInfo;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -12,10 +8,11 @@ import org.apache.shiro.subject.Subject;
 import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModelException;
 
+@SuppressWarnings("deprecation")
 public class ShiroFreemarkerKit implements TemplateMethodModel {
 
 	@Override
-	public Object exec(List list) throws TemplateModelException {
+	public Object exec(@SuppressWarnings("rawtypes") List list) throws TemplateModelException {
 		if (null == list || 1 != list.size()) {
 			throw new TemplateModelException("Arguments wrong:one argument is allowed");
 		}

@@ -22,12 +22,12 @@ public final class UserHelper {
         String className = StringHelper.firstToUpperCase(xml.getName());
         className = "frame.sdk.fetion.user." + className;
         try {
-            Class clazz = Class.forName(className);
+            Class<?> clazz = Class.forName(className);
             Object user = clazz.newInstance();
             for (String name : xml.getAttributeNames()) {
                 String methodName = StringHelper.firstToUpperCase(name);
                 Method get = clazz.getMethod("get" + methodName);
-                Class c = get.getReturnType();
+                Class<?> c = get.getReturnType();
                 Method set = clazz.getMethod("set" + methodName, c);
                 Object value;
                 if (c == int.class) {
@@ -51,7 +51,7 @@ public final class UserHelper {
     
     public static XmlElement toXml(User user) {
         XmlElement el = new XmlElement();
-        Class clazz = user.getClass();
+        Class<? extends User> clazz = user.getClass();
         el.setName(StringHelper.firstToLowerCase(clazz.getSimpleName()));
         Method[] methods = clazz.getMethods();
         for (Method method : methods) {
@@ -60,7 +60,7 @@ public final class UserHelper {
                 String name = methodName.substring(3, methodName.length());
                 try {
                     Method get = clazz.getMethod("get" + name);
-                    Class c = get.getReturnType();
+                    Class<?> c = get.getReturnType();
                     Object value = get.invoke(user);
                     if (c.isEnum()) {
                         Method m = c.getMethod("getValue");

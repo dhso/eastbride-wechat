@@ -27,7 +27,8 @@ public class SipcMessageReader {
         in.close();
     }
 
-    public SipcMessage read() throws IOException, ParseException {
+    @SuppressWarnings("deprecation")
+	public SipcMessage read() throws IOException, ParseException {
         SipcMessage message = null;
         String headline = in.readLine();
         if (headline != null) {
@@ -66,7 +67,8 @@ public class SipcMessageReader {
         return message;
     }
     
-    private void complete(SipcMessage message) throws IOException, ParseException {
+    @SuppressWarnings("deprecation")
+	private void complete(SipcMessage message) throws IOException, ParseException {
         int bodyLen = 0;
         String lineStr;
         while (true) {

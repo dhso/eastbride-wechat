@@ -55,6 +55,7 @@ public class ShiroKit {
 	 * @param map
 	 * @return
 	 */
+	@SuppressWarnings("rawtypes")
 	public static String principal(Map map) {
 		String strValue = null;
 		if (getSubject() != null) {
@@ -156,12 +157,11 @@ public class ShiroKit {
 		return !hasPermission(p);
 	}
 
-	@SuppressWarnings({ "unchecked" })
 	private static Object getPrincipalFromClassName(String type) {
 		Object principal = null;
 
 		try {
-			Class cls = Class.forName(type);
+			Class<?> cls = Class.forName(type);
 			principal = getSubject().getPrincipals().oneByType(cls);
 		} catch (ClassNotFoundException e) {
 

@@ -11,6 +11,7 @@ package frame.sdk.fetion.user;
  * 
  * @author HeDYn<hedyn@foxmail.com>
  */
+@SuppressWarnings("serial")
 public class BuddyGroup implements java.io.Serializable {
     
     private int id;

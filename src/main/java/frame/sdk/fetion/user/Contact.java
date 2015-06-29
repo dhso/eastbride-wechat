@@ -16,6 +16,7 @@ import java.util.List;
  * 
  * @author HeDYn <hedyn@foxmail.com>
  */
+@SuppressWarnings("serial")
 public final class Contact implements java.io.Serializable {
 
 	private String version;

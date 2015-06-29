@@ -11,6 +11,7 @@ package frame.sdk.fetion.user;
  *
  * @author HeDYn <hedyn@foxmail.com>
  */
+@SuppressWarnings("serial")
 public class Personal extends User {
     
     private String version;

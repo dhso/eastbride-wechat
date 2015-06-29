@@ -84,7 +84,8 @@ public class AddBuddyActivity extends Activity {
      * @return
      * @throws FetionException 
      */
-    private Result addBuddy(String uri, String localName, 
+    @SuppressWarnings("null")
+	private Result addBuddy(String uri, String localName, 
             BuddyGroup buddyGroup, String desc, int phraseId) throws FetionException {
         if (desc == null && desc.isEmpty()) {
             desc = getContext().getUserInfo().getPersonal().getName();

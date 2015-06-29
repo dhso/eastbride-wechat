@@ -10,6 +10,7 @@ package frame.sdk.fetion.client.transfer;
  *
  * @author HeDYn <hedyn@foxmail.com>
  */
+@SuppressWarnings("serial")
 public class TransferException extends Exception {
 
     public TransferException(Throwable cause) {
