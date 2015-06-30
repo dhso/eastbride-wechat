@@ -1,10 +1,8 @@
 package modules.system.entity;
 
-import com.jfinal.ext.plugin.tablebind.TableBind;
 import com.jfinal.plugin.activerecord.Model;
 
 @SuppressWarnings("serial")
-@TableBind(tableName = "config", pkName = "cfg_key")
 public class Config extends Model<Config> {
 	public static final Config dao = new Config();
 

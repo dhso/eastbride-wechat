@@ -2,14 +2,12 @@ package modules.wechat.model;
 
 import java.util.Date;
 
-import com.jfinal.ext.plugin.tablebind.TableBind;
 import com.jfinal.plugin.activerecord.Model;
 
 import frame.kit.DateKit;
 import frame.kit.IdentityKit;
 
 @SuppressWarnings("serial")
-@TableBind(tableName = "shop_wifi", pkName = "open_id")
 public class ShopWifi extends Model<ShopWifi> {
 	public static final ShopWifi dao = new ShopWifi();
 

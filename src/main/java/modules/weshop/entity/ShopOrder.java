@@ -5,7 +5,6 @@ import java.util.List;
 
 import modules.wechat.entity.Customer;
 
-import com.jfinal.ext.plugin.tablebind.TableBind;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
@@ -15,7 +14,6 @@ import frame.kit.IdentityKit;
 import frame.kit.StringKit;
 
 @SuppressWarnings("serial")
-@TableBind(tableName = "shop_order", pkName = "order_id")
 public class ShopOrder extends Model<ShopOrder> {
 	public static final ShopOrder dao = new ShopOrder();
 

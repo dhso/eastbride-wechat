@@ -13,17 +13,17 @@ import modules.system.entity.Config;
 import modules.system.entity.Message;
 
 import com.jfinal.aop.Interceptor;
-import com.jfinal.core.ActionInvocation;
+import com.jfinal.aop.Invocation;
 
 public class ShopAdminCheck implements Interceptor {
 
-	public void intercept(ActionInvocation ai) {
-		String uid = ai.getController().getPara("aid");
+	public void intercept(Invocation inv) {
+		String uid = inv.getController().getPara("aid");
 		String shopAdminOpenId = Config.dao.getCfgValue("shop_admin_openid");
 		if (Arrays.asList(shopAdminOpenId.split(",")).contains(uid)) {
-			ai.invoke();
+			inv.invoke();
 		} else {
-			ai.getController().renderJson(new Message("600", "error", "没有管理权限！"));
+			inv.getController().renderJson(new Message("600", "error", "没有管理权限！"));
 			return;
 		}
 	}

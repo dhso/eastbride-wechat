@@ -2,11 +2,9 @@ package modules.weshop.entity;
 
 import java.util.List;
 
-import com.jfinal.ext.plugin.tablebind.TableBind;
 import com.jfinal.plugin.activerecord.Model;
 
 @SuppressWarnings("serial")
-@TableBind(tableName = "shop_menu", pkName = "menu_id")
 public class ShopMenu extends Model<ShopMenu> {
 	public static final ShopMenu dao = new ShopMenu();
 

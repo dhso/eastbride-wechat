@@ -2,11 +2,9 @@ package modules.wechat.entity;
 
 import java.util.Date;
 
-import com.jfinal.ext.plugin.tablebind.TableBind;
 import com.jfinal.plugin.activerecord.Model;
 
 @SuppressWarnings("serial")
-@TableBind(tableName = "customer", pkName = "open_id")
 public class Customer extends Model<Customer> {
 	public static final Customer dao = new Customer();
 

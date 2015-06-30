@@ -14,6 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -23,7 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * 字符串工具类, 继承org.apache.commons.lang3.StringUtils类
  * 
  */
-public class StringKit extends org.apache.commons.lang3.StringUtils {
+public class StringKit extends StringUtils {
 
 	/**
 	 * DateType "yyyy-MM-dd"
