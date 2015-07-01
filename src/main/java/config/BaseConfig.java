@@ -88,16 +88,20 @@ public class BaseConfig extends JFinalConfig {
 		druidPlugin.addFilter(new StatFilter());
 		me.add(druidPlugin);
 		// 添加自动绑定model与表插件
-		//AutoTableBindPlugin autoTableBindPlugin = new AutoTableBindPlugin(druidPlugin, SimpleNameStyles.LOWER_UNDERLINE);
-		//autoTableBindPlugin.setShowSql(true);
-		//autoTableBindPlugin.setContainerFactory(new CaseInsensitiveContainerFactory());
-		//autoTableBindPlugin.setDevMode(PropKit.getBoolean("wx.devMode", false));
-		//me.add(autoTableBindPlugin);
+		AutoTableBindPlugin autoTableBindPlugin = new AutoTableBindPlugin(druidPlugin, SimpleNameStyles.LOWER_UNDERLINE);
+		autoTableBindPlugin.setShowSql(true);
+		autoTableBindPlugin.setContainerFactory(new CaseInsensitiveContainerFactory());
+		autoTableBindPlugin.setDevMode(PropKit.getBoolean("wx.devMode", false));
+		me.add(autoTableBindPlugin);
 		// 添加消息驱动插件
-		//EventPlugin evevtPlugin = new EventPlugin();
+		EventPlugin evevtPlugin = new EventPlugin();
 		// 设置为异步，默认同步
-		//evevtPlugin.async();
-		//me.add(evevtPlugin);
+		evevtPlugin.async();
+		// 设置扫描jar包，默认不扫描
+		evevtPlugin.scanJar();
+		// 设置监听器默认包，默认全扫描
+		evevtPlugin.scanPackage("modules");
+		me.add(evevtPlugin);
 	}
 
 	public void configInterceptor(Interceptors me) {

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.text.MessageFormat;
 
-import modules.system.model.Config;
+import modules.system.model.SysConfigModel;
 import modules.wechat.entity.Customer;
 import modules.wechat.model.ShopWifi;
 import modules.wechat.model.WxPropsModel;
@@ -66,7 +66,7 @@ public class WechatMsgController extends MsgController {
 		String msgContent = inTextMsg.getContent().trim();
 		if (StringKit.hasObject(msgContent, "help", "HELP", "帮助")) {
 			OutTextMsg outMsg = new OutTextMsg(inTextMsg);
-			outMsg.setContent(Config.dao.getCfgValue("wx.help"));
+			outMsg.setContent(SysConfigModel.dao.getCfgValue("wx.help"));
 			render(outMsg);
 		} else if (StringKit.containStr(msgContent, "包子", "早点", "早饭")) {
 			OutNewsMsg outMsg = new OutNewsMsg(inTextMsg);
@@ -171,7 +171,7 @@ public class WechatMsgController extends MsgController {
 			// 关注事件
 			Customer.dao.subscribe(customerOpenid, "直接关注");
 			OutTextMsg outMsg = new OutTextMsg(inFollowEvent);
-			outMsg.setContent(Config.dao.getCfgValue("wx.welcome"));
+			outMsg.setContent(SysConfigModel.dao.getCfgValue("wx.welcome"));
 			render(outMsg);
 		} else if ("unsubscribe".equalsIgnoreCase(msgEvent)) {
 			// 取消关注事件，将无法接收到传回的信息

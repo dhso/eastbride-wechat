@@ -5,9 +5,9 @@ import com.jfinal.plugin.activerecord.Model;
 import frame.plugin.tablebind.TableBind;
 
 @SuppressWarnings("serial")
-@TableBind(tableName = "sys_config", pkName = "id")
-public class Config extends Model<Config> {
-	public static final Config dao = new Config();
+@TableBind(tableName = "sys_config", pkName = "cfg_key")
+public class SysConfigModel extends Model<SysConfigModel> {
+	public static final SysConfigModel dao = new SysConfigModel();
 
 	/**
 	 * 获取配置
@@ -15,8 +15,8 @@ public class Config extends Model<Config> {
 	 * @param cfg_key
 	 * @return
 	 */
-	public Config getConfig(String cfg_key) {
-		return Config.dao.findById(cfg_key);
+	public SysConfigModel getConfig(String cfg_key) {
+		return SysConfigModel.dao.findById(cfg_key);
 	}
 
 	/**
@@ -26,10 +26,10 @@ public class Config extends Model<Config> {
 	 * @param cfg_value
 	 * @return
 	 */
-	public Config setConfig(String cfg_key, String cfg_value) {
-		Config config = getConfig(cfg_key);
+	public SysConfigModel setConfig(String cfg_key, String cfg_value) {
+		SysConfigModel config = getConfig(cfg_key);
 		if (null == config) {
-			new Config().set("cfg_key", cfg_key).set("cfg_value", cfg_value).save();
+			new SysConfigModel().set("cfg_key", cfg_key).set("cfg_value", cfg_value).save();
 			config = getConfig(cfg_key);
 		} else {
 			config.set("cfg_value", cfg_value).update();
