@@ -9,8 +9,8 @@ package modules.weshop.validator;
 
 import java.util.Arrays;
 
-import modules.system.entity.Config;
 import modules.system.entity.Message;
+import modules.system.model.Config;
 
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;

@@ -1,5 +1,6 @@
 package config;
 
+import modules.crm.controller.CrmController;
 import modules.system.controller.SecurityController;
 import modules.wechat.controller.WechatApiController;
 import modules.wechat.controller.WechatMsgController;
@@ -31,6 +32,7 @@ import com.jfinal.render.RedirectRender;
 import com.jfinal.render.Render;
 
 import frame.interceptor.ReqResInViewInterceptor;
+import frame.plugin.event.EventPlugin;
 import frame.plugin.shiro.core.ShiroInterceptor;
 import frame.plugin.shiro.core.ShiroPlugin;
 import frame.plugin.tablebind.AutoTableBindPlugin;
@@ -68,7 +70,7 @@ public class BaseConfig extends JFinalConfig {
 		me.add("/shop", ShopController.class, "/shop");// 商城
 		me.add("/wechat", WechatMsgController.class);// 微信
 		me.add("/wechatApi", WechatApiController.class, "/wechatApi");// 微信API
-		me.add("/crm", WechatApiController.class, "/crm");// CRM
+		me.add("/crm", CrmController.class, "/crm");// CRM
 	}
 
 	public void configPlugin(Plugins me) {
@@ -86,11 +88,16 @@ public class BaseConfig extends JFinalConfig {
 		druidPlugin.addFilter(new StatFilter());
 		me.add(druidPlugin);
 		// 添加自动绑定model与表插件
-		AutoTableBindPlugin autoTableBindPlugin = new AutoTableBindPlugin(druidPlugin, SimpleNameStyles.LOWER_UNDERLINE);
-		autoTableBindPlugin.setShowSql(true);
-		autoTableBindPlugin.setContainerFactory(new CaseInsensitiveContainerFactory());
-		autoTableBindPlugin.setDevMode(PropKit.getBoolean("wx.devMode", false));
-		me.add(autoTableBindPlugin);
+		//AutoTableBindPlugin autoTableBindPlugin = new AutoTableBindPlugin(druidPlugin, SimpleNameStyles.LOWER_UNDERLINE);
+		//autoTableBindPlugin.setShowSql(true);
+		//autoTableBindPlugin.setContainerFactory(new CaseInsensitiveContainerFactory());
+		//autoTableBindPlugin.setDevMode(PropKit.getBoolean("wx.devMode", false));
+		//me.add(autoTableBindPlugin);
+		// 添加消息驱动插件
+		//EventPlugin evevtPlugin = new EventPlugin();
+		// 设置为异步，默认同步
+		//evevtPlugin.async();
+		//me.add(evevtPlugin);
 	}
 
 	public void configInterceptor(Interceptors me) {

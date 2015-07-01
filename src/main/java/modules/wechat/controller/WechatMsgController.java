@@ -4,15 +4,15 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.text.MessageFormat;
 
-import modules.system.entity.Config;
+import modules.system.model.Config;
 import modules.wechat.entity.Customer;
 import modules.wechat.model.ShopWifi;
+import modules.wechat.model.WxPropsModel;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.jfinal.i18n.I18n;
 import com.jfinal.kit.HttpKit;
-import com.jfinal.kit.PropKit;
 
 import frame.kit.DateKit;
 import frame.kit.StringKit;
@@ -48,16 +48,15 @@ public class WechatMsgController extends MsgController {
 	// 如果要支持多公众账号，只需要在此返回各个公众号对应的 ApiConfig 对象即可
 	// 可以通过在请求 url 中挂参数来动态从数据库中获取 ApiConfig 属性值
 	public ApiConfig getApiConfig() {
-		ApiConfig ac = new ApiConfig();
-		// 配置微信 API 相关常量
-		ac.setToken(PropKit.get("wx.token"));
-		ac.setAppId(PropKit.get("wx.appId"));
-		ac.setAppSecret(PropKit.get("wx.appSecret"));
-		// 是否对消息进行加密，对应于微信平台的消息加解密方式:
-		// 1：true进行加密且必须配置 encodingAesKey
-		// 2：false采用明文模式，同时也支持混合模式
-		ac.setEncryptMessage(PropKit.getBoolean("wx.encryptMessage", false));
-		ac.setEncodingAesKey(PropKit.get("wx.encodingAesKey", "ASDFGHJKL"));
+		String appId = getPara();
+		WxPropsModel wxProp = WxPropsModel.dao.getProp(appId);
+		ApiConfig ac = null;
+		if (null != wxProp) {
+			// 配置微信 API 相关常量
+			// 1：true进行加密且必须配置 encodingAesKey
+			// 2：false采用明文模式，同时也支持混合模式
+			ac = new ApiConfig(wxProp.getStr("token"), wxProp.getStr("appId"), wxProp.getStr("appSecret"), wxProp.getBoolean("messageEncrypt"), wxProp.getStr("encodingAesKey"));
+		}
 		return ac;
 	}
 

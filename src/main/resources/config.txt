@@ -14,17 +14,17 @@ wx.encryptMessage = false
 wx.encodingAesKey = ASDFGHJKL
 
 #支付宝配置
-wx.alipay.user = dhso@163.com
-wx.alipay.partner = 2088102221655815
-wx.alipay.key = fd48ig23w67gyjoc08c82sji3eabe8ie
-wx.alipay.private_key = fd48ig23w67gyjoc08c82sji3eabe8ie
-wx.alipay.ali_public_key = fd48ig23w67gyjoc08c82sji3eabe8ie
+alipay.user = dhso@163.com
+alipay.partner = 2088102221655815
+alipay.key = fd48ig23w67gyjoc08c82sji3eabe8ie
+alipay.private_key = fd48ig23w67gyjoc08c82sji3eabe8ie
+alipay.ali_public_key = fd48ig23w67gyjoc08c82sji3eabe8ie
 
 #七牛云配置
-wx.qiniu.ak = s4qqqDqXBOcvFKUDsAIDPk1X7p1df1XKAv-2rhU6
-wx.qiniu.sk = PKnBKg_fcc3otG0C_0WPPvW3COLTxW6FaWrJ1bUw
-wx.qiniu.bucket = apphui
-wx.qiniu.url = http://apphui.qiniudn.com/
+qiniu.ak = s4qqqDqXBOcvFKUDsAIDPk1X7p1df1XKAv-2rhU6
+qiniu.sk = PKnBKg_fcc3otG0C_0WPPvW3COLTxW6FaWrJ1bUw
+qiniu.bucket = apphui
+qiniu.url = http://apphui.qiniudn.com/
 
 #飞信配置
 fetion.mobile = 15996586864
