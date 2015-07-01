@@ -10,10 +10,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 /*import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;*/
+ import org.junit.AfterClass;
+ import org.junit.Before;
+ import org.junit.BeforeClass;
+ import org.junit.Test;*/
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -34,6 +34,7 @@ public class WXBizMsgCryptTest {
 	String replyMsg2 = "<xml><ToUserName><![CDATA[oia2Tj我是中文jewbmiOUlr6X-1crbLOvLw]]></ToUserName><FromUserName><![CDATA[gh_7f083739789a]]></FromUserName><CreateTime>1407743423</CreateTime><MsgType><![CDATA[video]]></MsgType><Video><MediaId><![CDATA[eYJ1MbwPRJtOvIEabaxHs7TX2D-HV71s79GUxqdUkjm6Gs2Ed1KF3ulAOA9H1xG0]]></MediaId><Title><![CDATA[testCallBackReplyVideo]]></Title><Description><![CDATA[testCallBackReplyVideo]]></Description></Video></xml>";
 	String afterAesEncrypt2 = "jn1L23DB+6ELqJ+6bruv23M2GmYfkv0xBh2h+XTBOKVKcgDFHle6gqcZ1cZrk3e1qjPQ1F4RsLWzQRG9udbKWesxlkupqcEcW7ZQweImX9+wLMa0GaUzpkycA8+IamDBxn5loLgZpnS7fVAbExOkK5DYHBmv5tptA9tklE/fTIILHR8HLXa5nQvFb3tYPKAlHF3rtTeayNf0QuM+UW/wM9enGIDIJHF7CLHiDNAYxr+r+OrJCmPQyTy8cVWlu9iSvOHPT/77bZqJucQHQ04sq7KZI27OcqpQNSto2OdHCoTccjggX5Z9Mma0nMJBU+jLKJ38YB1fBIz+vBzsYjrTmFQ44YfeEuZ+xRTQwr92vhA9OxchWVINGC50qE/6lmkwWTwGX9wtQpsJKhP+oS7rvTY8+VdzETdfakjkwQ5/Xka042OlUb1/slTwo4RscuQ+RdxSGvDahxAJ6+EAjLt9d8igHngxIbf6YyqqROxuxqIeIch3CssH/LqRs+iAcILvApYZckqmA7FNERspKA5f8GoJ9sv8xmGvZ9Yrf57cExWtnX8aCMMaBropU/1k+hKP5LVdzbWCG0hGwx/dQudYR/eXp3P0XxjlFiy+9DMlaFExWUZQDajPkdPrEeOwofJb";
 
+	@SuppressWarnings("unused")
 	public void testNormal() throws ParserConfigurationException, SAXException, IOException {
 		try {
 			WXBizMsgCrypt pc = new WXBizMsgCrypt(token, encodingAesKey, appId);
@@ -61,6 +62,7 @@ public class WXBizMsgCryptTest {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	public void testAesEncrypt() {
 		try {
 			WXBizMsgCrypt pc = new WXBizMsgCrypt(token, encodingAesKey, appId);
@@ -71,6 +73,7 @@ public class WXBizMsgCryptTest {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	public void testAesEncrypt2() {
 		try {
 			WXBizMsgCrypt pc = new WXBizMsgCrypt(token, encodingAesKey, appId);
@@ -92,8 +95,7 @@ public class WXBizMsgCryptTest {
 		// fail("错误流程不抛出异常？？？");
 	}
 
-	public void testValidateSignatureError() throws ParserConfigurationException, SAXException,
-			IOException {
+	public void testValidateSignatureError() throws ParserConfigurationException, SAXException, IOException {
 		try {
 			WXBizMsgCrypt pc = new WXBizMsgCrypt(token, encodingAesKey, appId);
 			String afterEncrpt = pc.encryptMsg(replyMsg, timestamp, nonce);
@@ -117,8 +119,7 @@ public class WXBizMsgCryptTest {
 	}
 
 	public void testVerifyUrl() throws AesException {
-		WXBizMsgCrypt wxcpt = new WXBizMsgCrypt("QDG6eK",
-				"jWmYm7qr5nMoAUwZRjGtBxmz3KA1tkAj3ykkR6q2B2C", "wx5823bf96d3bd56c7");
+		WXBizMsgCrypt wxcpt = new WXBizMsgCrypt("QDG6eK", "jWmYm7qr5nMoAUwZRjGtBxmz3KA1tkAj3ykkR6q2B2C", "wx5823bf96d3bd56c7");
 		String verifyMsgSig = "5c45ff5e21c57e6ad56bac8758b79b1d9ac89fd3";
 		String timeStamp = "1409659589";
 		String nonce = "263014780";

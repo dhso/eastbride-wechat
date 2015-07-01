@@ -50,14 +50,14 @@ public class WechatMsgController extends MsgController {
 	public ApiConfig getApiConfig() {
 		ApiConfig ac = new ApiConfig();
 		// 配置微信 API 相关常量
-		ac.setToken(PropKit.get("token"));
-		ac.setAppId(PropKit.get("appId"));
-		ac.setAppSecret(PropKit.get("appSecret"));
+		ac.setToken(PropKit.get("wx.token"));
+		ac.setAppId(PropKit.get("wx.appId"));
+		ac.setAppSecret(PropKit.get("wx.appSecret"));
 		// 是否对消息进行加密，对应于微信平台的消息加解密方式:
 		// 1：true进行加密且必须配置 encodingAesKey
 		// 2：false采用明文模式，同时也支持混合模式
-		ac.setEncryptMessage(PropKit.getBoolean("encryptMessage", false));
-		ac.setEncodingAesKey(PropKit.get("encodingAesKey", "setting it in config file"));
+		ac.setEncryptMessage(PropKit.getBoolean("wx.encryptMessage", false));
+		ac.setEncodingAesKey(PropKit.get("wx.encodingAesKey", "ASDFGHJKL"));
 		return ac;
 	}
 
@@ -67,7 +67,7 @@ public class WechatMsgController extends MsgController {
 		String msgContent = inTextMsg.getContent().trim();
 		if (StringKit.hasObject(msgContent, "help", "HELP", "帮助")) {
 			OutTextMsg outMsg = new OutTextMsg(inTextMsg);
-			outMsg.setContent(I18n.use().get("msg.helpStr"));
+			outMsg.setContent(Config.dao.getCfgValue("wx.help"));
 			render(outMsg);
 		} else if (StringKit.containStr(msgContent, "包子", "早点", "早饭")) {
 			OutNewsMsg outMsg = new OutNewsMsg(inTextMsg);

@@ -42,13 +42,11 @@ public class BaseConfig extends JFinalConfig {
 
 	private Routes routes;
 
-	@Override
 	public void configConstant(Constants me) {
 		// 加载配置/国际化
-		PropKit.use("config");
+		PropKit.use("config.txt");
 		me.setI18nDefaultBaseName("i18n");
 		me.setI18nDefaultLocale("zh_CN");
-
 		me.setDevMode(PropKit.getBoolean("wx.devMode", false));
 		me.setError401View("/security/signin");
 		me.setError403View("/security/signin");
@@ -64,7 +62,6 @@ public class BaseConfig extends JFinalConfig {
 		ApiConfigKit.setDevMode(me.getDevMode());
 	}
 
-	@Override
 	public void configRoute(Routes me) {
 		this.routes = me;
 		me.add("/security", SecurityController.class, "/security");// 安全
@@ -74,10 +71,9 @@ public class BaseConfig extends JFinalConfig {
 		me.add("/crm", WechatApiController.class, "/crm");// CRM
 	}
 
-	@Override
 	public void configPlugin(Plugins me) {
 		// 添加fetion支持
-		me.add(new FetionPlugin(PropKit.getLong("wx.fetion.mobile"), PropKit.get("wx.fetion.password")));
+		me.add(new FetionPlugin(PropKit.getLong("fetion.mobile"), PropKit.get("fetion.password")));
 		// 添加shiro支持
 		me.add(new ShiroPlugin(routes));
 		// 添加缓存支持
@@ -97,7 +93,6 @@ public class BaseConfig extends JFinalConfig {
 		me.add(autoTableBindPlugin);
 	}
 
-	@Override
 	public void configInterceptor(Interceptors me) {
 		// shiro拦截器
 		me.add(new ShiroInterceptor());
@@ -111,7 +106,6 @@ public class BaseConfig extends JFinalConfig {
 		me.add(new I18nInterceptor());
 	}
 
-	@Override
 	public void configHandler(Handlers me) {
 		me.add(new UrlSkipHandler(".*/static/.*", false));
 		me.add(new ContextPathHandler("baseUrl"));
@@ -122,7 +116,6 @@ public class BaseConfig extends JFinalConfig {
 		JFinal.start("src/main/webapp", 80, "/", 5);
 	}
 
-	@Override
 	public void afterJFinalStart() {
 		super.afterJFinalStart();
 		FreeMarkerRender.getConfiguration().setSharedVariable("shiro", new ShiroTags());

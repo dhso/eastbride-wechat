@@ -10,6 +10,8 @@ wx.url=http://oraybang.wicp.net/jfsys/wechat
 wx.token=apphui
 wx.appId = wx396714621dc72788
 wx.appSecret = e5adb6d4b8326ead8bfe27dfe92a2738
+wx.encryptMessage = false
+wx.encodingAesKey = ASDFGHJKL
 
 #支付宝配置
 wx.alipay.user = dhso@163.com
@@ -25,5 +27,5 @@ wx.qiniu.bucket = apphui
 wx.qiniu.url = http://apphui.qiniudn.com/
 
 #飞信配置
-wx.fetion.mobile = 15996586864
-wx.fetion.password = wj19881130
+fetion.mobile = 15996586864
+fetion.password = wj19881130
