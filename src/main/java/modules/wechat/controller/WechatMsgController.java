@@ -12,31 +12,56 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.jfinal.i18n.I18n;
 import com.jfinal.kit.HttpKit;
-import com.jfinal.weixin.sdk.api.ApiConfig;
-import com.jfinal.weixin.sdk.jfinal.MsgController;
-import com.jfinal.weixin.sdk.msg.in.InTextMsg;
-import com.jfinal.weixin.sdk.msg.in.event.InTemplateMsgEvent;
-import com.jfinal.weixin.sdk.msg.out.OutMusicMsg;
-import com.jfinal.weixin.sdk.msg.out.OutNewsMsg;
-import com.jfinal.weixin.sdk.msg.out.OutTextMsg;
+import com.jfinal.kit.PropKit;
 
 import frame.kit.DateKit;
 import frame.kit.StringKit;
 import frame.sdk.fetion.Result;
 import frame.sdk.fetion.kit.FetionKit;
 import frame.sdk.simsimi.SimsimiSdk;
+import frame.sdk.wechat.api.ApiConfig;
+import frame.sdk.wechat.jfinal.MsgController;
+import frame.sdk.wechat.msg.in.InImageMsg;
+import frame.sdk.wechat.msg.in.InLinkMsg;
+import frame.sdk.wechat.msg.in.InLocationMsg;
+import frame.sdk.wechat.msg.in.InShortVideoMsg;
+import frame.sdk.wechat.msg.in.InTextMsg;
+import frame.sdk.wechat.msg.in.InVideoMsg;
+import frame.sdk.wechat.msg.in.InVoiceMsg;
+import frame.sdk.wechat.msg.in.event.InCustomEvent;
+import frame.sdk.wechat.msg.in.event.InFollowEvent;
+import frame.sdk.wechat.msg.in.event.InLocationEvent;
+import frame.sdk.wechat.msg.in.event.InMassEvent;
+import frame.sdk.wechat.msg.in.event.InMenuEvent;
+import frame.sdk.wechat.msg.in.event.InQrCodeEvent;
+import frame.sdk.wechat.msg.in.event.InTemplateMsgEvent;
+import frame.sdk.wechat.msg.in.speech_recognition.InSpeechRecognitionResults;
+import frame.sdk.wechat.msg.out.OutMusicMsg;
+import frame.sdk.wechat.msg.out.OutNewsMsg;
+import frame.sdk.wechat.msg.out.OutTextMsg;
 
-/**
- * 将此 UiController 在YourJFinalConfig 中注册路由， 并设置好weixin开发者中心的 URL 与 token ，使 URL 指向该 DemoController 继承自父类 WeixinController 的 index 方法即可直接运行看效果，在此基础之上修改相关的方法即可进行实际项目开发
- */
+//将此 Controller 在YourJFinalConfig 中注册路由，
+//并设置好weixin开发者中心的 URL 与 token ，使 URL 指向该
+//DemoController 继承自父类 WeixinController 的 index
+//方法即可直接运行看效果，在此基础之上修改相关的方法即可进行实际项目开发
 public class WechatMsgController extends MsgController {
-
-	@Override
+	// 如果要支持多公众账号，只需要在此返回各个公众号对应的 ApiConfig 对象即可
+	// 可以通过在请求 url 中挂参数来动态从数据库中获取 ApiConfig 属性值
 	public ApiConfig getApiConfig() {
-		// TODO Auto-generated method stub
-		return null;
+		ApiConfig ac = new ApiConfig();
+		// 配置微信 API 相关常量
+		ac.setToken(PropKit.get("token"));
+		ac.setAppId(PropKit.get("appId"));
+		ac.setAppSecret(PropKit.get("appSecret"));
+		// 是否对消息进行加密，对应于微信平台的消息加解密方式:
+		// 1：true进行加密且必须配置 encodingAesKey
+		// 2：false采用明文模式，同时也支持混合模式
+		ac.setEncryptMessage(PropKit.getBoolean("encryptMessage", false));
+		ac.setEncodingAesKey(PropKit.get("encodingAesKey", "setting it in config file"));
+		return ac;
 	}
 
+	// 处理文本消息
 	@Override
 	protected void processInTextMsg(InTextMsg inTextMsg) {
 		String msgContent = inTextMsg.getContent().trim();
@@ -90,38 +115,57 @@ public class WechatMsgController extends MsgController {
 
 	}
 
+	// 处理图片消息
 	@Override
-	protected void processInImageMsg(com.jfinal.weixin.sdk.msg.in.InImageMsg inImageMsg) {
+	protected void processInImageMsg(InImageMsg inImageMsg) {
+		// TODO Auto-generated method stub
+
+	}
+
+	// 处理语音消息
+	@Override
+	protected void processInVoiceMsg(InVoiceMsg inVoiceMsg) {
+		// TODO Auto-generated method stub
+
+	}
+
+	// 处理视频消息
+	@Override
+	protected void processInVideoMsg(InVideoMsg inVideoMsg) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	protected void processInVoiceMsg(com.jfinal.weixin.sdk.msg.in.InVoiceMsg inVoiceMsg) {
+	protected void processInShortVideoMsg(InShortVideoMsg inShortVideoMsg) {
+		OutTextMsg outMsg = new OutTextMsg(inShortVideoMsg);
+		outMsg.setContent("\t视频消息已成功接收，该视频的 mediaId 为: " + inShortVideoMsg.getMediaId());
+		render(outMsg);
+	}
+
+	// 处理地址位置消息
+	@Override
+	protected void processInLocationMsg(InLocationMsg inLocationMsg) {
+		// TODO Auto-generated method stub
+
+	}
+
+	// 处理链接消息
+	// 特别注意：测试时需要发送我的收藏中的曾经收藏过的图文消息，直接发送链接地址会当做文本消息来发送
+	@Override
+	protected void processInLinkMsg(InLinkMsg inLinkMsg) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	protected void processInVideoMsg(com.jfinal.weixin.sdk.msg.in.InVideoMsg inVideoMsg) {
-		// TODO Auto-generated method stub
-
+	protected void processInCustomEvent(InCustomEvent inCustomEvent) {
+		System.out.println("processInCustomEvent() 方法测试成功");
 	}
 
+	// 处理关注/取消关注消息
 	@Override
-	protected void processInLocationMsg(com.jfinal.weixin.sdk.msg.in.InLocationMsg inLocationMsg) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void processInLinkMsg(com.jfinal.weixin.sdk.msg.in.InLinkMsg inLinkMsg) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void processInFollowEvent(com.jfinal.weixin.sdk.msg.in.event.InFollowEvent inFollowEvent) {
+	protected void processInFollowEvent(InFollowEvent inFollowEvent) {
 		String customerOpenid = inFollowEvent.getFromUserName();
 		String msgEvent = inFollowEvent.getEvent();
 		if ("subscribe".equalsIgnoreCase(msgEvent)) {
@@ -138,20 +182,28 @@ public class WechatMsgController extends MsgController {
 
 	}
 
+	// 处理扫描带参数二维码事件
 	@Override
-	protected void processInQrCodeEvent(com.jfinal.weixin.sdk.msg.in.event.InQrCodeEvent inQrCodeEvent) {
+	protected void processInQrCodeEvent(InQrCodeEvent inQrCodeEvent) {
+		// TODO Auto-generated method stub
+
+	}
+
+	// 处理上报地理位置事件
+	@Override
+	protected void processInLocationEvent(InLocationEvent inLocationEvent) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	protected void processInLocationEvent(com.jfinal.weixin.sdk.msg.in.event.InLocationEvent inLocationEvent) {
-		// TODO Auto-generated method stub
-
+	protected void processInMassEvent(InMassEvent inMassEvent) {
+		System.out.println("processInMassEvent() 方法测试成功");
 	}
 
+	// 处理自定义菜单事件
 	@Override
-	protected void processInMenuEvent(com.jfinal.weixin.sdk.msg.in.event.InMenuEvent inMenuEvent) {
+	protected void processInMenuEvent(InMenuEvent inMenuEvent) {
 		String customerOpenid = inMenuEvent.getFromUserName();
 		String msgEvent = inMenuEvent.getEvent().trim();
 		String msgEventKey = inMenuEvent.getEventKey().trim();
@@ -176,12 +228,14 @@ public class WechatMsgController extends MsgController {
 
 	}
 
+	// 处理接收语音识别结果
 	@Override
-	protected void processInSpeechRecognitionResults(com.jfinal.weixin.sdk.msg.in.speech_recognition.InSpeechRecognitionResults inSpeechRecognitionResults) {
+	protected void processInSpeechRecognitionResults(InSpeechRecognitionResults inSpeechRecognitionResults) {
 		// TODO Auto-generated method stub
 
 	}
 
+	// 处理接收到的模板消息是否送达成功通知事件
 	@Override
 	protected void processInTemplateMsgEvent(InTemplateMsgEvent inTemplateMsgEvent) {
 		// TODO Auto-generated method stub

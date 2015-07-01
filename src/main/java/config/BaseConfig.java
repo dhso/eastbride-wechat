@@ -29,7 +29,6 @@ import com.jfinal.render.FreeMarkerRender;
 import com.jfinal.render.IErrorRenderFactory;
 import com.jfinal.render.RedirectRender;
 import com.jfinal.render.Render;
-import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
 import frame.interceptor.ReqResInViewInterceptor;
 import frame.plugin.shiro.core.ShiroInterceptor;
@@ -37,6 +36,7 @@ import frame.plugin.shiro.core.ShiroPlugin;
 import frame.plugin.tablebind.AutoTableBindPlugin;
 import frame.plugin.tablebind.SimpleNameStyles;
 import frame.sdk.fetion.kit.FetionPlugin;
+import frame.sdk.wechat.api.ApiConfigKit;
 
 public class BaseConfig extends JFinalConfig {
 
@@ -45,7 +45,7 @@ public class BaseConfig extends JFinalConfig {
 	@Override
 	public void configConstant(Constants me) {
 		// 加载配置/国际化
-		PropKit.use("config.txt");
+		PropKit.use("config");
 		me.setI18nDefaultBaseName("i18n");
 		me.setI18nDefaultLocale("zh_CN");
 

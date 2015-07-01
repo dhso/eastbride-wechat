@@ -1,0 +1,30 @@
+/**
+ * Copyright (c) 2011-2015, Unas Сǿ�� (unas@qq.com).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ */
+
+package frame.sdk.wechat.msg.in.event;
+
+import frame.sdk.wechat.msg.in.InMsg;
+
+public abstract class EventInMsg extends InMsg
+{
+    protected String event;
+
+    public EventInMsg(String toUserName, String fromUserName, Integer createTime, String msgType, String event)
+    {
+        super(toUserName, fromUserName, createTime, msgType);
+        this.event = event;
+    }
+
+    public String getEvent()
+    {
+        return event;
+    }
+
+    public void setEvent(String event)
+    {
+        this.event = event;
+    }
+}
