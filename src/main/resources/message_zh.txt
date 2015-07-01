@@ -1,1 +1,0 @@
-msg.zh.wifiCaptcha = 您本次申请WIFI的验证码为【{0}】，密码过期时间为 {1} ！

@@ -1,12 +1,11 @@
 package modules.wechat.controller;
 
+import com.jfinal.kit.PropKit;
 import com.jfinal.weixin.sdk.api.ApiConfig;
 import com.jfinal.weixin.sdk.api.ApiResult;
 import com.jfinal.weixin.sdk.api.MenuApi;
 import com.jfinal.weixin.sdk.api.UserApi;
 import com.jfinal.weixin.sdk.jfinal.ApiController;
-
-import config.Global;
 
 public class WechatApiController extends ApiController {
 	public void index() {
@@ -39,15 +38,15 @@ public class WechatApiController extends ApiController {
 		ApiConfig ac = new ApiConfig();
 
 		// 配置微信 API 相关常量
-		ac.setToken(Global.cfgPro.get("token"));
-		ac.setAppId(Global.cfgPro.get("appId"));
-		ac.setAppSecret(Global.cfgPro.get("appSecret"));
+		ac.setToken(PropKit.get("token"));
+		ac.setAppId(PropKit.get("appId"));
+		ac.setAppSecret(PropKit.get("appSecret"));
 
 		/**
 		 * 是否对消息进行加密，对应于微信平台的消息加解密方式： 1：true进行加密且必须配置 encodingAesKey 2：false采用明文模式，同时也支持混合模式
 		 */
-		ac.setEncryptMessage(Global.cfgPro.getBoolean("encryptMessage", false));
-		ac.setEncodingAesKey(Global.cfgPro.get("encodingAesKey", "setting it in config file"));
+		ac.setEncryptMessage(PropKit.getBoolean("encryptMessage", false));
+		ac.setEncodingAesKey(PropKit.get("encodingAesKey", "setting it in config file"));
 		return ac;
 	}
 }

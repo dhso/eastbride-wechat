@@ -10,6 +10,7 @@ import modules.wechat.model.ShopWifi;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.jfinal.i18n.I18n;
 import com.jfinal.kit.HttpKit;
 import com.jfinal.weixin.sdk.api.ApiConfig;
 import com.jfinal.weixin.sdk.jfinal.MsgController;
@@ -19,7 +20,6 @@ import com.jfinal.weixin.sdk.msg.out.OutMusicMsg;
 import com.jfinal.weixin.sdk.msg.out.OutNewsMsg;
 import com.jfinal.weixin.sdk.msg.out.OutTextMsg;
 
-import config.Global;
 import frame.kit.DateKit;
 import frame.kit.StringKit;
 import frame.sdk.fetion.Result;
@@ -42,7 +42,7 @@ public class WechatMsgController extends MsgController {
 		String msgContent = inTextMsg.getContent().trim();
 		if (StringKit.hasObject(msgContent, "help", "HELP", "帮助")) {
 			OutTextMsg outMsg = new OutTextMsg(inTextMsg);
-			outMsg.setContent(Global.msgPro.get("msg.helpStr"));
+			outMsg.setContent(I18n.use().get("msg.helpStr"));
 			render(outMsg);
 		} else if (StringKit.containStr(msgContent, "包子", "早点", "早饭")) {
 			OutNewsMsg outMsg = new OutNewsMsg(inTextMsg);
@@ -164,12 +164,12 @@ public class WechatMsgController extends MsgController {
 			} else if ("c_access_wifi".equalsIgnoreCase(msgEventKey)) {
 				ShopWifi customerWifi = ShopWifi.dao.applyForWifiCaptcha(customerOpenid);
 				OutTextMsg outMsg = new OutTextMsg(inMenuEvent);
-				outMsg.setContent(MessageFormat.format(Global.msgPro.get("msg.zh.wifiCaptcha"), customerWifi.getStr("captcha"), DateKit.formatDateTime(customerWifi.getDate("expired_dt"))));
+				outMsg.setContent(MessageFormat.format(I18n.use().get("msg.zh.wifiCaptcha"), customerWifi.getStr("captcha"), DateKit.formatDateTime(customerWifi.getDate("expired_dt"))));
 				render(outMsg);
 			} else if ("c_send_sms".equalsIgnoreCase(msgEventKey)) {
 				Result result = null;
 				ShopWifi customerWifi = ShopWifi.dao.applyForWifiCaptcha(customerOpenid);
-				result = FetionKit.sendSMS(15262731827L, MessageFormat.format(Global.msgPro.get("msg.zh.wifiCaptcha"), customerWifi.getStr("captcha"), DateKit.formatDateTime(customerWifi.getDate("expired_dt"))));
+				result = FetionKit.sendSMS(15262731827L, I18n.use().format("wifiCaptcha", customerWifi.getStr("captcha"), DateKit.formatDateTime(customerWifi.getDate("expired_dt"))));
 				renderJson(result);
 			}
 		}
