@@ -30,7 +30,7 @@ public class WxPropsModel extends Model<WxPropsModel> {
 	 * @return
 	 */
 
-	public WxPropsModel setProp(String appId, String appSecret, String token, Boolean messageEncrypt, String encodingAesKey) {
+	public WxPropsModel setProp(String appId, String appSecret, String token, String messageEncrypt, String encodingAesKey) {
 		WxPropsModel prop = getProp(appId);
 		if (null == prop) {
 			new WxPropsModel().set("appId", appId).set("appSecret", appSecret).save();

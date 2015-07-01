@@ -13,6 +13,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.jfinal.i18n.I18n;
 import com.jfinal.kit.HttpKit;
+import com.jfinal.render.RenderException;
 
 import frame.kit.DateKit;
 import frame.kit.StringKit;
@@ -50,13 +51,13 @@ public class WechatMsgController extends MsgController {
 	public ApiConfig getApiConfig() {
 		String appId = getPara();
 		WxPropsModel wxProp = WxPropsModel.dao.getProp(appId);
-		ApiConfig ac = null;
-		if (null != wxProp) {
-			// 配置微信 API 相关常量
-			// 1：true进行加密且必须配置 encodingAesKey
-			// 2：false采用明文模式，同时也支持混合模式
-			ac = new ApiConfig(wxProp.getStr("token"), wxProp.getStr("appId"), wxProp.getStr("appSecret"), wxProp.getBoolean("messageEncrypt"), wxProp.getStr("encodingAesKey"));
+		if (null == wxProp) {
+			throw new RenderException("appId不正确或者配置出现异常！");
 		}
+		// 配置微信 API 相关常量
+		// 1：true进行加密且必须配置 encodingAesKey
+		// 2：false采用明文模式，同时也支持混合模式
+		ApiConfig ac = new ApiConfig(wxProp.getStr("token"), wxProp.getStr("appId"), wxProp.getStr("appSecret"), wxProp.getBoolean("messageEncrypt"), wxProp.getStr("encodingAesKey"));
 		return ac;
 	}
 
