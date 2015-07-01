@@ -70,7 +70,8 @@ public class BaseConfig extends JFinalConfig {
 		me.add("/security", SecurityController.class, "/security");// 安全
 		me.add("/shop", ShopController.class, "/shop");// 商城
 		me.add("/wechat", WechatMsgController.class);// 微信
-		me.add("/wechatApi", WechatApiController.class, "/wechatApi");
+		me.add("/wechatApi", WechatApiController.class, "/wechatApi");// 微信API
+		me.add("/crm", WechatApiController.class, "/crm");// CRM
 	}
 
 	@Override
