@@ -17,7 +17,7 @@ package frame.render.exception;
 
 import com.jfinal.render.Render;
 
-public abstract class ExceptionRender extends Render {
+public class ExceptionRender extends Render {
 	private Exception exception;
 
 	public Exception getException() {
@@ -27,6 +27,12 @@ public abstract class ExceptionRender extends Render {
 	public ExceptionRender setException(Exception exception) {
 		this.exception = exception;
 		return this;
+	}
+
+	@Override
+	public void render() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

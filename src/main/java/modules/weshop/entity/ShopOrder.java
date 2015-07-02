@@ -3,7 +3,7 @@ package modules.weshop.entity;
 import java.util.Date;
 import java.util.List;
 
-import modules.wechat.entity.Customer;
+import modules.wechat.model.WxCustomer;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
@@ -43,7 +43,7 @@ public class ShopOrder extends Model<ShopOrder> {
 	 * @param address
 	 */
 	public void addOrder(String openid, String total_price, String pay_style, String order_note, String cartdata, String create_id, String true_name, String mobile, String address) {
-		Customer customer = Customer.dao.findById(openid);
+		WxCustomer customer = WxCustomer.dao.findById(openid);
 		if (StringKit.toFloat(customer.getStr("money")) >= StringKit.toFloat(total_price)) {
 			new ShopOrder().set("order_id", IdentityKit.uuid4()).set("open_id", openid).set("total_price", total_price).set("pay_style", pay_style).set("pay_status", "1").set("order_status", "0").set("order_note", order_note).set("cartdata", cartdata).set("create_id", create_id)
 					.set("create_dt", new Date()).save();
@@ -61,7 +61,7 @@ public class ShopOrder extends Model<ShopOrder> {
 	 * @param orderid
 	 */
 	public void delOrder(String openid, String orderid) {
-		Customer customer = Customer.dao.findById(openid);
+		WxCustomer customer = WxCustomer.dao.findById(openid);
 		ShopOrder shopOrder = ShopOrder.dao.findById(orderid);
 		customer.set("money", String.valueOf(StringKit.toFloat(customer.getStr("money")) + StringKit.toFloat(shopOrder.getStr("total_price")))).save();
 		shopOrder.delete();

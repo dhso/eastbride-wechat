@@ -5,15 +5,14 @@ import java.net.URLEncoder;
 import java.text.MessageFormat;
 
 import modules.system.model.SysConfigModel;
-import modules.wechat.entity.Customer;
 import modules.wechat.model.ShopWifi;
+import modules.wechat.model.WxCustomer;
 import modules.wechat.model.WxPropsModel;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.jfinal.i18n.I18n;
 import com.jfinal.kit.HttpKit;
-import com.jfinal.render.RenderException;
 
 import frame.kit.DateKit;
 import frame.kit.StringKit;
@@ -52,7 +51,7 @@ public class WechatMsgController extends MsgController {
 		String appId = getPara();
 		WxPropsModel wxProp = WxPropsModel.dao.getProp(appId);
 		if (null == wxProp) {
-			throw new RenderException("appId不正确或者配置出现异常！");
+			throw new RuntimeException("appId不正确或者配置出现异常！");
 		}
 		// 配置微信 API 相关常量
 		// 1：true进行加密且必须配置 encodingAesKey
@@ -170,13 +169,13 @@ public class WechatMsgController extends MsgController {
 		String msgEvent = inFollowEvent.getEvent();
 		if ("subscribe".equalsIgnoreCase(msgEvent)) {
 			// 关注事件
-			Customer.dao.subscribe(customerOpenid, "直接关注");
+			WxCustomer.dao.subscribe(customerOpenid, "直接关注");
 			OutTextMsg outMsg = new OutTextMsg(inFollowEvent);
 			outMsg.setContent(SysConfigModel.dao.getCfgValue("wx.welcome"));
 			render(outMsg);
 		} else if ("unsubscribe".equalsIgnoreCase(msgEvent)) {
 			// 取消关注事件，将无法接收到传回的信息
-			Customer.dao.unsubscribe(customerOpenid);
+			WxCustomer.dao.unsubscribe(customerOpenid);
 			renderNull();
 		}
 

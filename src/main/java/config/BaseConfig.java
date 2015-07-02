@@ -31,14 +31,12 @@ import com.jfinal.render.IErrorRenderFactory;
 import com.jfinal.render.RedirectRender;
 import com.jfinal.render.Render;
 
-import frame.interceptor.ExceptionInterceptor;
 import frame.interceptor.ReqResInViewInterceptor;
 import frame.plugin.event.EventPlugin;
 import frame.plugin.shiro.core.ShiroInterceptor;
 import frame.plugin.shiro.core.ShiroPlugin;
 import frame.plugin.tablebind.AutoTableBindPlugin;
 import frame.plugin.tablebind.SimpleNameStyles;
-import frame.render.exception.ExceptionRender;
 import frame.sdk.fetion.kit.FetionPlugin;
 import frame.sdk.wechat.api.ApiConfigKit;
 
@@ -52,9 +50,10 @@ public class BaseConfig extends JFinalConfig {
 		me.setI18nDefaultBaseName("i18n");
 		me.setI18nDefaultLocale("zh_CN");
 		me.setDevMode(PropKit.getBoolean("wx.devMode", false));
-		me.setError401View("/security/signin");
-		me.setError403View("/security/signin");
-		me.setError404View("/security/err404");
+		// 设置错误模板
+		me.setErrorView(403, "/security/signin");
+		me.setErrorView(404, "/security/err404");
+		me.setErrorView(500, "/security/err500");
 		me.setErrorRenderFactory(new IErrorRenderFactory() {
 			@Override
 			public Render getRender(int errorCode, String view) {
@@ -116,15 +115,6 @@ public class BaseConfig extends JFinalConfig {
 		me.add(new ReqResInViewInterceptor());
 		// 让 模版 可以使用I18n
 		me.add(new I18nInterceptor());
-		// 统一异常拦截
-		ExceptionInterceptor exceptionInterceptor = new ExceptionInterceptor();
-		exceptionInterceptor.setDefault(new ExceptionRender() {
-			@Override
-			public void render() {
-				setView("/security/err500");
-			}
-		});
-		me.add(exceptionInterceptor);
 	}
 
 	public void configHandler(Handlers me) {
