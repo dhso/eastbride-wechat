@@ -2,6 +2,7 @@ package modules.wechat.controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.nio.channels.AcceptPendingException;
 import java.text.MessageFormat;
 
 import modules.system.model.SysConfigModel;
@@ -20,6 +21,7 @@ import frame.sdk.fetion.Result;
 import frame.sdk.fetion.kit.FetionKit;
 import frame.sdk.simsimi.SimsimiSdk;
 import frame.sdk.wechat.api.ApiConfig;
+import frame.sdk.wechat.api.ApiConfigKit;
 import frame.sdk.wechat.jfinal.MsgController;
 import frame.sdk.wechat.msg.in.InImageMsg;
 import frame.sdk.wechat.msg.in.InLinkMsg;

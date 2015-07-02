@@ -50,6 +50,8 @@ public class BaseConfig extends JFinalConfig {
 		me.setI18nDefaultBaseName("i18n");
 		me.setI18nDefaultLocale("zh_CN");
 		me.setDevMode(PropKit.getBoolean("wx.devMode", false));
+		// 微信设置
+		ApiConfigKit.setDevMode(me.getDevMode());
 		// 设置错误模板
 		me.setErrorView(403, "/security/signin");
 		me.setErrorView(404, "/security/err404");
@@ -60,8 +62,6 @@ public class BaseConfig extends JFinalConfig {
 				return new RedirectRender(view);
 			}
 		});
-		// 微信设置
-		ApiConfigKit.setDevMode(me.getDevMode());
 	}
 
 	public void configRoute(Routes me) {

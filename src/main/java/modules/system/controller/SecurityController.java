@@ -1,7 +1,5 @@
 package modules.system.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import modules.system.validator.SigninValidator;
 
 import org.apache.shiro.SecurityUtils;
