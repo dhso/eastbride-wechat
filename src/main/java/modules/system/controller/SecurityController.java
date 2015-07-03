@@ -33,7 +33,7 @@ public class SecurityController extends Controller {
 			UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
 			try {
 				currentUser.login(token);
-				redirect("/");
+				redirect(getCookie("_redrictUrl", "/"));
 			} catch (Exception e) {
 				// 登录失败
 				String esn = e.getClass().getSimpleName();
@@ -66,7 +66,7 @@ public class SecurityController extends Controller {
 	public void signout() {
 		Subject currentUser = SecurityUtils.getSubject();
 		currentUser.logout();
-		redirect(getPara("redirectUrl", "/"));
+		redirect(getCookie("_redrictUrl", "/"));
 	}
 
 	public void err401() {

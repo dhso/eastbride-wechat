@@ -24,7 +24,7 @@ import com.jfinal.aop.Invocation;
 public class ShiroInterceptor implements Interceptor {
 
 	@Override
-    public void intercept(Invocation ai) {
+	public void intercept(Invocation ai) {
 		AuthzHandler ah = ShiroKit.getAuthzHandler(ai.getActionKey());
 		// 存在访问控制处理器。
 		if (ah != null) {
@@ -34,15 +34,18 @@ public class ShiroInterceptor implements Interceptor {
 			} catch (UnauthenticatedException lae) {
 				// RequiresGuest，RequiresAuthentication，RequiresUser，未满足时，抛出未经授权的异常。
 				// 如果没有进行身份验证，返回HTTP401状态码
+				ai.getController().setCookie("_redrictUrl", ai.getController().getRequest().getRequestURL().toString(),-1);
 				ai.getController().renderError(401);
 				return;
 			} catch (AuthorizationException ae) {
 				// RequiresRoles，RequiresPermissions授权异常
 				// 如果没有权限访问对应的资源，返回HTTP状态码403。
+				ai.getController().setCookie("_redrictUrl", ai.getController().getRequest().getRequestURL().toString(), -1);
 				ai.getController().renderError(403);
 				return;
 			} catch (Exception e) {
 				// 出现了异常，应该是没有登录。
+				ai.getController().setCookie("_redrictUrl", ai.getController().getRequest().getRequestURL().toString(), -1);
 				ai.getController().renderError(401);
 				return;
 			}

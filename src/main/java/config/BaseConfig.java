@@ -53,13 +53,14 @@ public class BaseConfig extends JFinalConfig {
 		// 微信设置
 		ApiConfigKit.setDevMode(me.getDevMode());
 		// 设置错误模板
+		me.setErrorView(401, "/security/signin");
 		me.setErrorView(403, "/security/signin");
 		me.setErrorView(404, "/security/err404");
 		me.setErrorView(500, "/security/err500");
 		me.setErrorRenderFactory(new IErrorRenderFactory() {
 			@Override
 			public Render getRender(int errorCode, String view) {
-				return new RedirectRender(view);
+				return new RedirectRender(view, true);
 			}
 		});
 	}
