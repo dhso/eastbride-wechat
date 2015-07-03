@@ -22,5 +22,11 @@ public class CrmController extends Controller {
 	public void wxCustomer() {
 		render("wx-customer.htm");
 	}
+	
+	@RequiresAuthentication
+	@ActionKey("crm/wx/menus")
+	public void wxMenus() {
+		render("wx-menus.htm");
+	}
 
 }

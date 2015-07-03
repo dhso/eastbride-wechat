@@ -82,12 +82,12 @@
 							<i class="am-icon-lock"></i>
 							<input type="text" class="am-form-field" name="password" id="password" placeholder="密码">
 						</div>
-						<div class="am-form-group am-checkbox">
-							<label for="rememberMe">
+						<div class="am-form-group">
+							<label class="am-checkbox" for="rememberMe">
 							<#if rememberMe??&&rememberMe>
-							<input type="checkbox" name="rememberMe" id="rememberMe" checked />
+							<input type="checkbox" name="rememberMe" id="rememberMe" data-am-ucheck checked />
 							<#else>
-							<input type="checkbox" name="rememberMe" id="rememberMe" />
+							<input type="checkbox" name="rememberMe" id="rememberMe" data-am-ucheck/>
 							</#if>
 							记住我
 							</label>
