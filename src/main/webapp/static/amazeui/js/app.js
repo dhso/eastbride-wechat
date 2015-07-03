@@ -48,8 +48,7 @@ function addTab(tabName, tabContent) {
 			noexist = false;
 	});
 	if (!noexist)
-		var index = $('#main_tab_nav').find('tabName').index();
-		$('#main_tab').tabs('open', index);
+		$('#main_tab').tabs('open', $('#main_tab_nav').find("a:contains("+tabName+")").index());
 		return;
 	var nav = '<li><span class="am-icon-close"></span>'
 			+ '<a href="javascript: void(0)">' + tabName + '</a></li>';
