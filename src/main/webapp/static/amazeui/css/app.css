@@ -1,4 +1,40 @@
 /* Write your styles */
+.admin-main {
+	background: #fff;
+}
+
+.admin-content .am-tab-panel {
+	min-height: 600px;
+}
+
+.am-offcanvas-bar {
+	overflow-y: visible;
+}
+
+.am-list>li {
+	border: 0;
+}
+
+.admin-sidebar {
+	width: 220px;
+	border-right: none;
+}
+
+.admin-sidebar-sub {
+	padding-left: 15px;
+	background: #fff;
+	box-shadow: none;
+}
+
+.admin-sidebar-sub li:first-child {
+	border-top: 0;
+}
+
+.admin-sidebar-list li a {
+	font-size: 15px;
+	padding: 5px 0 5px 15px;
+}
+
 .admin-sidebar-list li a:hover {
 	background-color: #ddf0ed;
 }
