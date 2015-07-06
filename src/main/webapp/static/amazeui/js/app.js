@@ -69,10 +69,6 @@ function loadTab(title, url) {
 	});
 }
 
-function sideBarNavOn() {
-
-}
-
 var tabCounter = 0;
 
 function addTab(tabName, tabContent, tab, tab_nav, tab_bd) {
