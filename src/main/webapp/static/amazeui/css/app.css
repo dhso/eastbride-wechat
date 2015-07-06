@@ -1,4 +1,8 @@
 /* Write your styles */
+.admin-sidebar-list li a:hover {
+	background-color: #ddf0ed;
+}
+
 .am-tabs-nav li {
 	position: relative;
 	z-index: 1;
