@@ -29,3 +29,8 @@ qiniu.url = http://apphui.qiniudn.com/
 #飞信配置
 fetion.mobile = 15996586864
 fetion.password = wj19881130
+#fetion.mobile = 15262731827
+#fetion.password = dhso923389
+
+#WIFI验证码有效期（分钟）
+wifi.captcha = 30
