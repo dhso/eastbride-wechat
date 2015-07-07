@@ -64,17 +64,17 @@ DELETE FROM `shop_order`;
 
 -- 导出  表 wechat.shop_wifi 结构
 CREATE TABLE IF NOT EXISTS `shop_wifi` (
-  `open_id` varchar(100) NOT NULL,
+  `openId` varchar(100) NOT NULL,
   `captcha` varchar(10) NOT NULL,
   `expired_dt` datetime NOT NULL,
-  PRIMARY KEY (`open_id`)
+  PRIMARY KEY (`openId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 正在导出表  wechat.shop_wifi 的数据：~0 rows (大约)
 DELETE FROM `shop_wifi`;
 /*!40000 ALTER TABLE `shop_wifi` DISABLE KEYS */;
-INSERT INTO `shop_wifi` (`open_id`, `captcha`, `expired_dt`) VALUES
-	('410000100', '367367', '2015-06-15 14:10:01');
+INSERT INTO `shop_wifi` (`openId`, `captcha`, `expired_dt`) VALUES
+	('410000100', '109591', '2015-07-07 13:15:18');
 /*!40000 ALTER TABLE `shop_wifi` ENABLE KEYS */;
 
 
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `wx_customer` (
 DELETE FROM `wx_customer`;
 /*!40000 ALTER TABLE `wx_customer` DISABLE KEYS */;
 INSERT INTO `wx_customer` (`openId`, `subscribe_flag`, `true_name`, `mobile`, `address`, `money`, `create_id`, `create_dt`, `update_id`, `update_dt`) VALUES
-	('410000100', '0', '', '', '', '', '直接关注', '2015-06-10 14:50:30', '', '0000-00-00 00:00:00');
+	('410000100', '1', '', '', '', '', '直接关注', '2015-06-10 14:50:30', '直接关注', '2015-07-07 11:06:13');
 /*!40000 ALTER TABLE `wx_customer` ENABLE KEYS */;
 
 
