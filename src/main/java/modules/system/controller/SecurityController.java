@@ -1,5 +1,6 @@
 package modules.system.controller;
 
+import modules.system.entity.Message;
 import modules.system.validator.SigninValidator;
 
 import org.apache.shiro.SecurityUtils;
@@ -67,6 +68,13 @@ public class SecurityController extends Controller {
 		Subject currentUser = SecurityUtils.getSubject();
 		currentUser.logout();
 		redirect(getCookie("_redrictUrl", "/"));
+	}
+
+	// 登出Action
+	public void appSignout() {
+		Subject currentUser = SecurityUtils.getSubject();
+		currentUser.logout();
+		renderJson(new Message("200", "success", "logout success"));
 	}
 
 	public void err401() {

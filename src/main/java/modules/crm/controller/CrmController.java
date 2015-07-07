@@ -9,7 +9,7 @@ public class CrmController extends Controller {
 	// 默认登录页面
 	@RequiresAuthentication
 	public void index() {
-		render("main.htm");
+		render("index.htm");
 	}
 	
 	@RequiresAuthentication
