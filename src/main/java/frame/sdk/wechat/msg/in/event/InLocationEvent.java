@@ -6,7 +6,6 @@
 
 package frame.sdk.wechat.msg.in.event;
 
-
 /**
 	上报地理位置事件
 	<xml>

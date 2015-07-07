@@ -34,7 +34,7 @@
 		<profile>
 			<id>pro</id>
 			<properties>
-				<log4j.rootLogger>INFO, stdout</log4j.rootLogger>
+				<log4j.rootLogger>WARN, stdout, file</log4j.rootLogger>
 				<wx.jdbcDriver>com.mysql.jdbc.Driver</wx.jdbcDriver>
 				<wx.jdbcUrl></wx.jdbcUrl>
 				<wx.jdbcUser></wx.jdbcUser>

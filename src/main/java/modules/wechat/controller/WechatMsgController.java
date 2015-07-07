@@ -2,7 +2,6 @@ package modules.wechat.controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.nio.channels.AcceptPendingException;
 import java.text.MessageFormat;
 
 import modules.system.model.SysConfigModel;
@@ -21,7 +20,6 @@ import frame.sdk.fetion.Result;
 import frame.sdk.fetion.kit.FetionKit;
 import frame.sdk.simsimi.SimsimiSdk;
 import frame.sdk.wechat.api.ApiConfig;
-import frame.sdk.wechat.api.ApiConfigKit;
 import frame.sdk.wechat.jfinal.MsgController;
 import frame.sdk.wechat.msg.in.InImageMsg;
 import frame.sdk.wechat.msg.in.InLinkMsg;
@@ -38,6 +36,7 @@ import frame.sdk.wechat.msg.in.event.InMenuEvent;
 import frame.sdk.wechat.msg.in.event.InQrCodeEvent;
 import frame.sdk.wechat.msg.in.event.InTemplateMsgEvent;
 import frame.sdk.wechat.msg.in.speech_recognition.InSpeechRecognitionResults;
+import frame.sdk.wechat.msg.out.OutCustomMsg;
 import frame.sdk.wechat.msg.out.OutMusicMsg;
 import frame.sdk.wechat.msg.out.OutNewsMsg;
 import frame.sdk.wechat.msg.out.OutTextMsg;
@@ -119,7 +118,9 @@ public class WechatMsgController extends MsgController {
 	// 处理图片消息
 	@Override
 	protected void processInImageMsg(InImageMsg inImageMsg) {
-		// TODO Auto-generated method stub
+		// 转发给多客服PC客户端
+		OutCustomMsg outCustomMsg = new OutCustomMsg(inImageMsg);
+		render(outCustomMsg);
 
 	}
 
@@ -167,18 +168,16 @@ public class WechatMsgController extends MsgController {
 	// 处理关注/取消关注消息
 	@Override
 	protected void processInFollowEvent(InFollowEvent inFollowEvent) {
-		String customerOpenid = inFollowEvent.getFromUserName();
-		String msgEvent = inFollowEvent.getEvent();
-		if ("subscribe".equalsIgnoreCase(msgEvent)) {
+		if (InFollowEvent.EVENT_INFOLLOW_SUBSCRIBE.equals(inFollowEvent.getEvent())) {
 			// 关注事件
-			WxCustomer.dao.subscribe(customerOpenid, "直接关注");
+			WxCustomer.dao.subscribe(inFollowEvent.getFromUserName(), "直接关注");
 			OutTextMsg outMsg = new OutTextMsg(inFollowEvent);
 			outMsg.setContent(SysConfigModel.dao.getCfgValue("wx.welcome"));
 			render(outMsg);
-		} else if ("unsubscribe".equalsIgnoreCase(msgEvent)) {
+		}
+		if (InFollowEvent.EVENT_INFOLLOW_UNSUBSCRIBE.equals(inFollowEvent.getEvent())) {
 			// 取消关注事件，将无法接收到传回的信息
-			WxCustomer.dao.unsubscribe(customerOpenid);
-			renderNull();
+			WxCustomer.dao.unsubscribe(inFollowEvent.getFromUserName());
 		}
 
 	}
@@ -186,7 +185,15 @@ public class WechatMsgController extends MsgController {
 	// 处理扫描带参数二维码事件
 	@Override
 	protected void processInQrCodeEvent(InQrCodeEvent inQrCodeEvent) {
-		// TODO Auto-generated method stub
+		if (InQrCodeEvent.EVENT_INQRCODE_SUBSCRIBE.equals(inQrCodeEvent.getEvent())) {
+			WxCustomer.dao.subscribe(inQrCodeEvent.getFromUserName(), "扫码关注");
+			OutTextMsg outMsg = new OutTextMsg(inQrCodeEvent);
+			outMsg.setContent(SysConfigModel.dao.getCfgValue("wx.welcome"));
+			render(outMsg);
+		}
+		if (InQrCodeEvent.EVENT_INQRCODE_SCAN.equals(inQrCodeEvent.getEvent())) {
+			WxCustomer.dao.unsubscribe(inQrCodeEvent.getFromUserName());
+		}
 
 	}
 
