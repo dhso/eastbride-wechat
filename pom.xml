@@ -182,11 +182,6 @@
 			<artifactId>shiro-all</artifactId>
 			<version>1.2.3</version>
 		</dependency>
-		<dependency>
-			<groupId>com.jagregory</groupId>
-			<artifactId>shiro-freemarker-tags</artifactId>
-			<version>0.1</version>
-		</dependency>
 		<!-- ehcache -->
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
