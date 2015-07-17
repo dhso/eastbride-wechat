@@ -1,9 +1,8 @@
 #数据库配置
-wx.jdbcDriver = ${wx.jdbcDriver}
-wx.jdbcUrl = ${wx.jdbcUrl}
-wx.jdbcUser = ${wx.jdbcUser}
-wx.jdbcPassword = ${wx.jdbcPassword}
-wx.devMode = ${wx.devMode}
+jdbcDriver = ${jdbcDriver}
+jdbcUrl = ${jdbcUrl}
+jdbcUser = ${jdbcUser}
+jdbcPassword = ${jdbcPassword}
 
 #微信配置
 wx.url=http://oraybang.wicp.net/jfsys/wechat
@@ -12,6 +11,7 @@ wx.appId = wx396714621dc72788
 wx.appSecret = e5adb6d4b8326ead8bfe27dfe92a2738
 wx.encryptMessage = false
 wx.encodingAesKey = ASDFGHJKL
+wx.devMode = ${wx.devMode}
 
 #支付宝配置
 alipay.user = dhso@163.com

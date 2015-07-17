@@ -20,14 +20,10 @@
 			</activation>
 			<properties>
 				<log4j.rootLogger>DEBUG, stdout</log4j.rootLogger>
-				<wx.jdbcDriver>com.mysql.jdbc.Driver</wx.jdbcDriver>
-				<wx.jdbcUrl>jdbc:mysql://127.0.0.1:3306/wechat</wx.jdbcUrl>
-				<wx.jdbcUser>root</wx.jdbcUser>
-				<wx.jdbcPassword>923389</wx.jdbcPassword>
-				<shiro.driverClassName>com.mysql.jdbc.Driver</shiro.driverClassName>
-				<shiro.url>jdbc:mysql://127.0.0.1:3306/shiro</shiro.url>
-				<shiro.username>root</shiro.username>
-				<shiro.password>923389</shiro.password>
+				<jdbcDriver>com.mysql.jdbc.Driver</jdbcDriver>
+				<jdbcUrl>jdbc:mysql://127.0.0.1:3306/wechat</jdbcUrl>
+				<jdbcUser>root</jdbcUser>
+				<jdbcPassword>923389</jdbcPassword>
 				<wx.devMode>true</wx.devMode>
 			</properties>
 		</profile>
@@ -35,14 +31,10 @@
 			<id>pro</id>
 			<properties>
 				<log4j.rootLogger>WARN, stdout, file</log4j.rootLogger>
-				<wx.jdbcDriver>com.mysql.jdbc.Driver</wx.jdbcDriver>
-				<wx.jdbcUrl></wx.jdbcUrl>
-				<wx.jdbcUser></wx.jdbcUser>
-				<wx.jdbcPassword></wx.jdbcPassword>
-				<shiro.driverClassName>com.mysql.jdbc.Driver</shiro.driverClassName>
-				<shiro.url>jdbc:mysql://127.0.0.1:3306/shiro</shiro.url>
-				<shiro.username>root</shiro.username>
-				<shiro.password>923389</shiro.password>
+				<jdbcDriver>com.mysql.jdbc.Driver</jdbcDriver>
+				<jdbcUrl></jdbcUrl>
+				<jdbcUser></jdbcUser>
+				<jdbcPassword></jdbcPassword>
 				<wx.devMode>false</wx.devMode>
 			</properties>
 		</profile>

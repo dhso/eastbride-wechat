@@ -158,7 +158,7 @@ Ext.onReady(function() {
 				nodeParam : 'cascade_id_',
 				proxy : {
 					type : 'ajax',
-					url : 'getModuleTree.jhtml'
+					url : baseUrl + '/crm/menus'
 				},
 				root : {
 					text : '根节点',
@@ -192,7 +192,7 @@ Ext.onReady(function() {
 				nodeParam : 'cascade_id_',
 				proxy : {
 					type : 'ajax',
-					url : 'getModuleTree.jhtml'
+					url : baseUrl + '/crm/menus'
 				},
 				root : {
 					text : '根节点',
@@ -226,7 +226,7 @@ Ext.onReady(function() {
 				nodeParam : 'cascade_id_',
 				proxy : {
 					type : 'ajax',
-					url : 'getModuleTree.jhtml'
+					url : baseUrl + '/crm/menus'
 				},
 				root : {
 					text : '根节点',

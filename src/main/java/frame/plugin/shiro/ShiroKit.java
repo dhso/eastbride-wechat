@@ -19,11 +19,13 @@ public class ShiroKit {
 	}
 
 	/**
-	 * who am i
+	 * who
 	 * 
 	 * @return
 	 */
-	public static String whoAmI() {
+	public static String who() {
+		if (getSubject() == null || getSubject().getPrincipal() == null)
+			return null;
 		return getSubject().getPrincipal().toString();
 	}
 
