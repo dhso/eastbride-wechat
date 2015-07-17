@@ -24,7 +24,7 @@
 				<jdbcUrl>jdbc:mysql://127.0.0.1:3306/wechat</jdbcUrl>
 				<jdbcUser>root</jdbcUser>
 				<jdbcPassword>923389</jdbcPassword>
-				<wx.devMode>true</wx.devMode>
+				<devMode>true</devMode>
 			</properties>
 		</profile>
 		<profile>
@@ -35,7 +35,7 @@
 				<jdbcUrl></jdbcUrl>
 				<jdbcUser></jdbcUser>
 				<jdbcPassword></jdbcPassword>
-				<wx.devMode>false</wx.devMode>
+				<devMode>false</devMode>
 			</properties>
 		</profile>
 	</profiles>

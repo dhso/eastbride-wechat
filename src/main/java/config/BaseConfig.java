@@ -49,7 +49,7 @@ public class BaseConfig extends JFinalConfig {
 		PropKit.use("config.txt");
 		me.setI18nDefaultBaseName("i18n");
 		me.setI18nDefaultLocale("zh_CN");
-		me.setDevMode(PropKit.getBoolean("wx.devMode", false));
+		me.setDevMode(PropKit.getBoolean("devMode", false));
 		// 微信设置
 		ApiConfigKit.setDevMode(me.getDevMode());
 		// 设置错误模板
@@ -82,7 +82,7 @@ public class BaseConfig extends JFinalConfig {
 		// 添加缓存支持
 		me.add(new EhCachePlugin(BaseConfig.class.getClassLoader().getResource("ehcache-model.xml")));
 		// 配置数据库连接池插件
-		DruidPlugin druidPlugin = new DruidPlugin(PropKit.get("wx.jdbcUrl"), PropKit.get("wx.jdbcUser"), PropKit.get("wx.jdbcPassword"), PropKit.get("wx.jdbcDriver"));
+		DruidPlugin druidPlugin = new DruidPlugin(PropKit.get("jdbcUrl"), PropKit.get("jdbcUser"), PropKit.get("jdbcPassword"), PropKit.get("jdbcDriver"));
 		WallFilter wallFilter = new WallFilter();
 		wallFilter.setDbType(JdbcConstants.MYSQL);
 		druidPlugin.addFilter(wallFilter);
@@ -92,7 +92,7 @@ public class BaseConfig extends JFinalConfig {
 		AutoTableBindPlugin autoTableBindPlugin = new AutoTableBindPlugin(druidPlugin, SimpleNameStyles.LOWER_UNDERLINE);
 		autoTableBindPlugin.setShowSql(true);
 		autoTableBindPlugin.setContainerFactory(new CaseInsensitiveContainerFactory());
-		autoTableBindPlugin.setDevMode(PropKit.getBoolean("wx.devMode", false));
+		autoTableBindPlugin.setDevMode(PropKit.getBoolean("devMode", false));
 		me.add(autoTableBindPlugin);
 		// 添加消息驱动插件
 		EventPlugin evevtPlugin = new EventPlugin();
