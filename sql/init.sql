@@ -69,6 +69,20 @@ INSERT INTO `shiro_roles_permissions` (`role_id`, `permission_id`) VALUES
 /*!40000 ALTER TABLE `shiro_roles_permissions` ENABLE KEYS */;
 
 
+-- 导出  表 wechat.shiro_urls_permissions 结构
+CREATE TABLE IF NOT EXISTS `shiro_urls_permissions` (
+  `id` int(11) NOT NULL,
+  `permission_id` int(11) NOT NULL,
+  `url` varchar(255) NOT NULL,
+  `type` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 正在导出表  wechat.shiro_urls_permissions 的数据：~0 rows (大约)
+DELETE FROM `shiro_urls_permissions`;
+/*!40000 ALTER TABLE `shiro_urls_permissions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `shiro_urls_permissions` ENABLE KEYS */;
+
+
 -- 导出  表 wechat.shiro_users 结构
 CREATE TABLE IF NOT EXISTS `shiro_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
