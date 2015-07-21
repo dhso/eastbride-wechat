@@ -71,15 +71,23 @@ INSERT INTO `shiro_roles_permissions` (`role_id`, `permission_id`) VALUES
 
 -- 导出  表 wechat.shiro_urls_permissions 结构
 CREATE TABLE IF NOT EXISTS `shiro_urls_permissions` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `permission_id` int(11) NOT NULL,
   `url` varchar(255) NOT NULL,
-  `type` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `text` varchar(255) NOT NULL,
+  `icon` varchar(100) NOT NULL,
+  `type_id` varchar(50) NOT NULL,
+  `url_order` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
--- 正在导出表  wechat.shiro_urls_permissions 的数据：~0 rows (大约)
+-- 正在导出表  wechat.shiro_urls_permissions 的数据：~3 rows (大约)
 DELETE FROM `shiro_urls_permissions`;
 /*!40000 ALTER TABLE `shiro_urls_permissions` DISABLE KEYS */;
+INSERT INTO `shiro_urls_permissions` (`id`, `permission_id`, `url`, `text`, `icon`, `type_id`, `url_order`) VALUES
+	(1, 1, '/crm/wechat', '微信管理', 'wx', 'wechat', 1),
+	(2, 2, '/crm/news', '新闻管理', 'news', 'news', 1),
+	(3, 1, '/sys/index', '系统管理', 'sys', 'wechat', 1);
 /*!40000 ALTER TABLE `shiro_urls_permissions` ENABLE KEYS */;
 
 
@@ -103,20 +111,20 @@ INSERT INTO `shiro_users` (`id`, `username`, `password`, `salt`, `locked`) VALUE
 /*!40000 ALTER TABLE `shiro_users` ENABLE KEYS */;
 
 
--- 导出  表 wechat.shiro_user_roles 结构
-CREATE TABLE IF NOT EXISTS `shiro_user_roles` (
+-- 导出  表 wechat.shiro_users_roles 结构
+CREATE TABLE IF NOT EXISTS `shiro_users_roles` (
   `user_id` int(11) NOT NULL,
   `role_id` int(11) NOT NULL,
   PRIMARY KEY (`user_id`,`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 正在导出表  wechat.shiro_user_roles 的数据：~2 rows (大约)
-DELETE FROM `shiro_user_roles`;
-/*!40000 ALTER TABLE `shiro_user_roles` DISABLE KEYS */;
-INSERT INTO `shiro_user_roles` (`user_id`, `role_id`) VALUES
+-- 正在导出表  wechat.shiro_users_roles 的数据：~2 rows (大约)
+DELETE FROM `shiro_users_roles`;
+/*!40000 ALTER TABLE `shiro_users_roles` DISABLE KEYS */;
+INSERT INTO `shiro_users_roles` (`user_id`, `role_id`) VALUES
 	(1, 1),
 	(2, 2);
-/*!40000 ALTER TABLE `shiro_user_roles` ENABLE KEYS */;
+/*!40000 ALTER TABLE `shiro_users_roles` ENABLE KEYS */;
 
 
 -- 导出  表 wechat.shop_goods 结构

@@ -188,74 +188,7 @@ Ext.onReady(function() {
 					});
 			_id_card_183.on('expand', _fn_card_onexpand);
 			_id_card_183.on('itemclick', fn_node_click);
-			var _id_card_184_store = Ext.create('Ext.data.TreeStore', {
-				nodeParam : 'cascade_id_',
-				proxy : {
-					type : 'ajax',
-					url : baseUrl + '/crm/menus'
-				},
-				root : {
-					text : '根节点',
-					id : '0.002',
-					expanded : true
-				}
-			});
-			var _id_card_184 = Ext.create('Ext.tree.Panel', {
-				id : '_id_card_184',
-				xtype : 'treepanel',
-				icon : baseUrl + '/static/img/icon/folder23.png',
-				animate : false,
-				loader : {},
-				title : '<span class="app-container-title-normal">工作台</span>',
-				rootVisible : false,
-				useArrows : true,
-				store : _id_card_184_store,
-				app : 169
-			});
-			_id_card_184.on('itemclick',
-					function(view, record, item, index, e) {
-						if (record.isExpanded()) {
-							record.collapse();
-						} else {
-							record.expand();
-						}
-					});
-			_id_card_184.on('expand', _fn_card_onexpand);
-			_id_card_184.on('itemclick', fn_node_click);
-			var _id_card_236_store = Ext.create('Ext.data.TreeStore', {
-				nodeParam : 'cascade_id_',
-				proxy : {
-					type : 'ajax',
-					url : baseUrl + '/crm/menus'
-				},
-				root : {
-					text : '根节点',
-					id : '0.004',
-					expanded : true
-				}
-			});
-			var _id_card_236 = Ext.create('Ext.tree.Panel', {
-				id : '_id_card_236',
-				xtype : 'treepanel',
-				icon : baseUrl + '/static/img/icon/folder27.png',
-				animate : false,
-				loader : {},
-				title : '<span class="app-container-title-normal">演示</span>',
-				rootVisible : false,
-				useArrows : true,
-				store : _id_card_236_store,
-				app : 169
-			});
-			_id_card_236.on('itemclick',
-					function(view, record, item, index, e) {
-						if (record.isExpanded()) {
-							record.collapse();
-						} else {
-							record.expand();
-						}
-					});
-			_id_card_236.on('expand', _fn_card_onexpand);
-			_id_card_236.on('itemclick', fn_node_click);
+			
 			var _sys_nav_listeners = {
 				afterrender : {
 					fn : function() {
@@ -275,8 +208,6 @@ Ext.onReady(function() {
 			};
 			var _sys_nav = Ext.create('Ext.panel.Panel', _sys_nav_cfg);
 			Ext.getCmp('_sys_nav').add(_id_card_183);
-			Ext.getCmp('_sys_nav').add(_id_card_184);
-			Ext.getCmp('_sys_nav').add(_id_card_236);
 			var _id_4fbda4c9_cfg = {
 				id : '_id_4fbda4c9',
 				xtype : 'triggerfield',
@@ -370,7 +301,8 @@ Ext.onReady(function() {
 			Ext.util.CSS.createStyleSheet(
 					'#_id_d862af25 {border-left-width: 0px !important;}',
 					'_id_1333f0a3');
-			var _id_9f3f2aa6_cfg = {
+			
+			var _id_9f3f2aa6 = Ext.create('Ext.menu.Menu', {
 				id : '_id_9f3f2aa6',
 				xtype : 'menu',
 				border : false,
@@ -378,298 +310,30 @@ Ext.onReady(function() {
 				plain : false,
 				floating : false,
 				app : 169
-			};
-			var _id_9f3f2aa6 = Ext.create('Ext.menu.Menu', _id_9f3f2aa6_cfg);
-			var _id_d8c2e939_cfg = {
-				id : '_id_d8c2e939',
-				xtype : 'menuitem',
-				icon : baseUrl + '/static/img/icon/icon75.png',
-				text : '<span class="app-normal">功能模块</span>',
-				handler : function() {
-					fn_quick_click('197', '功能模块', 'system/module/init.jhtml');
-				},
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_d8c2e939_cfg);
-			var _id_8a366412_cfg = {
-				id : '_id_8a366412',
-				xtype : 'menuseparator',
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_8a366412_cfg);
-			var _id_2bfdb243_cfg = {
-				id : '_id_2bfdb243',
-				xtype : 'menuitem',
-				icon : baseUrl + '/static/img/icon/page_office.png',
-				text : '<span class="app-normal">流文件</span>',
-				handler : function() {
-					fn_quick_click('615', '流文件', 'system/byteObj/init.jhtml');
-				},
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_2bfdb243_cfg);
-			var _id_eb83e6ec_cfg = {
-				id : '_id_eb83e6ec',
-				xtype : 'menuseparator',
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_eb83e6ec_cfg);
-			var _id_b46c0b62_cfg = {
-				id : '_id_b46c0b62',
-				xtype : 'menuitem',
-				icon : baseUrl + '/static/img/icon/icon134.png',
-				text : '<span class="app-normal">角色与授权</span>',
-				handler : function() {
-					fn_quick_click('304', '角色与授权', 'system/role/init.jhtml');
-				},
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_b46c0b62_cfg);
-			var _id_39a731c2_cfg = {
-				id : '_id_39a731c2',
-				xtype : 'menuseparator',
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_39a731c2_cfg);
-			var _id_1df57757_cfg = {
-				id : '_id_1df57757',
-				xtype : 'menuitem',
-				icon : baseUrl + '/static/img/icon/icon137.png',
-				text : '<span class="app-normal">岗位与授权</span>',
-				handler : function() {
-					fn_quick_click('200', '岗位与授权', 'system/post/init.jhtml');
-				},
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_1df57757_cfg);
-			var _id_efbd2fd4_cfg = {
-				id : '_id_efbd2fd4',
-				xtype : 'menuseparator',
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_efbd2fd4_cfg);
-			var _id_66b3df63_cfg = {
-				id : '_id_66b3df63',
-				xtype : 'menuitem',
-				icon : baseUrl + '/static/img/icon/email2.png',
-				text : '<span class="app-normal">我的消息</span>',
-				handler : function() {
-					fn_quick_click('489', '我的消息', '');
-				},
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_66b3df63_cfg);
-			var _id_ee73cf3a_cfg = {
-				id : '_id_ee73cf3a',
-				xtype : 'menuseparator',
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_ee73cf3a_cfg);
-			var _id_1308fb14_cfg = {
-				id : '_id_1308fb14',
-				xtype : 'menuitem',
-				icon : baseUrl + '/static/img/icon/icon154.png',
-				text : '<span class="app-normal">数据字典</span>',
-				handler : function() {
-					fn_quick_click('193', '数据字典',
-							'system/dictionary/init.jhtml');
-				},
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_1308fb14_cfg);
-			var _id_3e256e4a_cfg = {
-				id : '_id_3e256e4a',
-				xtype : 'menuseparator',
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_3e256e4a_cfg);
-			var _id_de2412fc_cfg = {
-				id : '_id_de2412fc',
-				xtype : 'menuitem',
-				icon : baseUrl + '/static/img/icon/id.png',
-				text : '<span class="app-normal">序列号</span>',
-				handler : function() {
-					fn_quick_click('195', '序列号', 'system/idMgr/init.jhtml');
-				},
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_de2412fc_cfg);
-			var _id_c31137b5_cfg = {
-				id : '_id_c31137b5',
-				xtype : 'menuseparator',
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_c31137b5_cfg);
-			var _id_21fcb74b_cfg = {
-				id : '_id_21fcb74b',
-				xtype : 'menuitem',
-				icon : baseUrl + '/static/img/icon/sql.png',
-				text : '<span class="app-normal">WebSQL</span>',
-				handler : function() {
-					fn_quick_click('225', 'WebSQL', 'system/webSql/init.jhtml');
-				},
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_21fcb74b_cfg);
-			var _id_8efff2b7_cfg = {
-				id : '_id_8efff2b7',
-				xtype : 'menuseparator',
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_8efff2b7_cfg);
-			var _id_9af9a937_cfg = {
-				id : '_id_9af9a937',
-				xtype : 'menuitem',
-				icon : baseUrl + '/static/img/icon/icon56.png',
-				text : '<span class="app-normal">组织架构</span>',
-				handler : function() {
-					fn_quick_click('199', '组织架构', 'system/org/init.jhtml');
-				},
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_9af9a937_cfg);
-			var _id_681a2e6d_cfg = {
-				id : '_id_681a2e6d',
-				xtype : 'menuseparator',
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_681a2e6d_cfg);
-			var _id_22446e55_cfg = {
-				id : '_id_22446e55',
-				xtype : 'menuitem',
-				icon : baseUrl + '/static/img/icon/page_picture.png',
-				text : '<span class="app-normal">图标大全</span>',
-				handler : function() {
-					fn_quick_click('393', '图标大全', 'system/icon/init.jhtml');
-				},
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_22446e55_cfg);
-			var _id_7c405575_cfg = {
-				id : '_id_7c405575',
-				xtype : 'menuseparator',
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_7c405575_cfg);
-			var _id_677fa19b_cfg = {
-				id : '_id_677fa19b',
-				xtype : 'menuitem',
-				icon : baseUrl + '/static/img/icon/user6.png',
-				text : '<span class="app-normal">用户与授权</span>',
-				handler : function() {
-					fn_quick_click('201', '用户与授权', 'system/user/init.jhtml');
-				},
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_677fa19b_cfg);
-			var _id_92c58c35_cfg = {
-				id : '_id_92c58c35',
-				xtype : 'menuseparator',
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_92c58c35_cfg);
-			var _id_b59ac003_cfg = {
-				id : '_id_b59ac003',
-				xtype : 'menuitem',
-				icon : baseUrl + '/static/img/icon/icon5.png',
-				text : '<span class="app-normal">流程实例监管</span>',
-				handler : function() {
-					fn_quick_click('486', '流程实例监管', 'bpm/procInst/init.jhtml');
-				},
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_b59ac003_cfg);
-			var _id_6dece08d_cfg = {
-				id : '_id_6dece08d',
-				xtype : 'menuseparator',
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_6dece08d_cfg);
-			var _id_7bca095d_cfg = {
-				id : '_id_7bca095d',
-				xtype : 'menuitem',
-				icon : baseUrl + '/static/img/icon/database_add.png',
-				text : '<span class="app-normal">数据源</span>',
-				handler : function() {
-					fn_quick_click('530', '数据源', '');
-				},
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_7bca095d_cfg);
-			var _id_0dc1fbe6_cfg = {
-				id : '_id_0dc1fbe6',
-				xtype : 'menuseparator',
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_0dc1fbe6_cfg);
-			var _id_76006339_cfg = {
-				id : '_id_76006339',
-				xtype : 'menuitem',
-				icon : baseUrl + '/static/img/icon/icon79.png',
-				text : '<span class="app-normal">参数表</span>',
-				handler : function() {
-					fn_quick_click('192', '参数表', 'system/param/init.jhtml');
-				},
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_76006339_cfg);
-			var _id_96d689f3_cfg = {
-				id : '_id_96d689f3',
-				xtype : 'menuseparator',
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_96d689f3_cfg);
-			var _id_46b13a93_cfg = {
-				id : '_id_46b13a93',
-				xtype : 'menuitem',
-				icon : baseUrl + '/static/img/icon/config1.png',
-				text : '<span class="app-normal">首选项</span>',
-				handler : function() {
-					fn_quick_click('207', '首选项', 'system/preference/init.jhtml');
-				},
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_46b13a93_cfg);
-			var _id_81502291_cfg = {
-				id : '_id_81502291',
-				xtype : 'menuseparator',
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_81502291_cfg);
-			var _id_bc793349_cfg = {
-				id : '_id_bc793349',
-				xtype : 'menuitem',
-				icon : baseUrl + '/static/img/icon/icon146.png',
-				text : '<span class="app-normal">分类科目</span>',
-				handler : function() {
-					fn_quick_click('194', '分类科目', 'system/catalog/init.jhtml');
-				},
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_bc793349_cfg);
-			var _id_1391896d_cfg = {
-				id : '_id_1391896d',
-				xtype : 'menuseparator',
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_1391896d_cfg);
-			var _id_06ce4ebe_cfg = {
-				id : '_id_06ce4ebe',
-				xtype : 'menuitem',
-				icon : baseUrl + '/static/img/icon/icon59.png',
-				text : '<span class="app-normal">页面组件</span>',
-				handler : function() {
-					fn_quick_click('454', '页面组件', 'system/page/init.jhtml');
-				},
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_06ce4ebe_cfg);
-			var _id_25626951_cfg = {
-				id : '_id_25626951',
-				xtype : 'menuseparator',
-				app : 169
-			};
-			_id_9f3f2aa6.add(_id_25626951_cfg);
+			});
+			
+			Ext.Ajax.request({
+			    url: baseUrl + '/crm/menus',
+			    params: {
+			    	type_id: 'wechat'
+			    },
+			    success: function(response){
+			    	var data = Ext.decode(response.responseText);
+			    	Ext.Array.each(data, function(element, index, countriesItSelf) {
+			    		_id_9f3f2aa6.add({
+							xtype : 'menuitem',
+							icon : baseUrl + '/static/img/icon/icon75.png',
+							text : '<span class="app-normal">'+element.TEXT+'</span>',
+							handler : function() {
+								fn_quick_click(element.ID, element.TEXT, element.URL);
+							},
+							app : 169
+			    		});
+		        	});
+			    }
+			});
+			
+			
 			var _id_9fa86b69_listeners = {
 				afterrender : {
 					fn : function() {
