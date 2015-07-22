@@ -59,15 +59,14 @@ public class ShiroModel extends Model<ShiroModel> {
 	 * 获取链接
 	 * 
 	 * @param username
-	 * @param cascade_id
 	 * @return
 	 */
-	public List<Record> getMenus(String username, String type) {
+	public List<Record> getMenus(String username) {
 		Record role = getRole(username);
 		List<Record> menus = null;
 		if (null != role) {
 			Integer id = role.getInt("id");
-			menus = Db.find("select * from shiro_urls_permissions where type_id = ? and permission_id in (select permission_id from shiro_roles_permissions where role_id = ?) order by url_order asc", type, id);
+			menus = Db.find("select * from shiro_urls_permissions where permission_id in (select permission_id from shiro_roles_permissions where role_id = ?) order by url_order asc", id);
 		}
 		return menus;
 	}

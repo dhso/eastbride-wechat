@@ -22,8 +22,7 @@ public class CrmController extends Controller {
 	@RequiresAuthentication
 	@ActionKey("crm/menus")
 	public void crmMenus() {
-		String typeId = getPara("type_id");
-		List<Record> menus = ShiroModel.dao.getMenus(ShiroKit.who(), typeId);
+		List<Record> menus = ShiroModel.dao.getMenus(ShiroKit.who());
 		renderJson(menus);
 	}
 

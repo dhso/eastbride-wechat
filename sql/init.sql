@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `shiro_urls_permissions` (
   `url` varchar(255) NOT NULL,
   `text` varchar(255) NOT NULL,
   `icon` varchar(100) NOT NULL,
-  `type_id` varchar(50) NOT NULL,
+  `url_type` varchar(255) NOT NULL,
   `url_order` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `shiro_urls_permissions` (
 -- 正在导出表  wechat.shiro_urls_permissions 的数据：~3 rows (大约)
 DELETE FROM `shiro_urls_permissions`;
 /*!40000 ALTER TABLE `shiro_urls_permissions` DISABLE KEYS */;
-INSERT INTO `shiro_urls_permissions` (`id`, `permission_id`, `url`, `text`, `icon`, `type_id`, `url_order`) VALUES
+INSERT INTO `shiro_urls_permissions` (`id`, `permission_id`, `url`, `text`, `icon`, `url_type`, `url_order`) VALUES
 	(1, 1, '/crm/wechat', '微信管理', 'wx', 'wechat', 1),
 	(2, 2, '/crm/news', '新闻管理', 'news', 'news', 1),
 	(3, 1, '/sys/index', '系统管理', 'sys', 'wechat', 1);
