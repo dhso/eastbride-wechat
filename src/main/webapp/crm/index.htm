@@ -17,8 +17,8 @@
 </head>
 <body>
 	<div class="easyui-layout" data-options="fit:true">
-        <div data-options="region:'north'" style="height:100px"></div>
-        <div data-options="region:'south'" style="height:20px;">
+        <div data-options="region:'north',height:100"></div>
+        <div data-options="region:'south',height:20" id="_status_bar">
         	<span><i class="fa fa-user"></i>当前用户：<@shiro.principal/></span>
         </div>
         <div class="easyui-tabs" data-options="region:'west',width:230,pill:true">

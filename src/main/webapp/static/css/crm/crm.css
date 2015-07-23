@@ -2,16 +2,20 @@ body {
 	font: 12px/1.5 "Microsoft Yahei", "微软雅黑", verdana;
 }
 
-.easyui-accordion .menu-item {
+.fa {
+	padding: 2px;
+}
+
+#_menu_accordion .menu-item {
 	border-bottom: 1px solid #dedede;
 	border-top: 1px solid #fff;
 }
 
-.easyui-accordion .menu-line {
+#_menu_accordion .menu-line {
 	border-left: 1px solid #dedede;
 	border-right: 1px solid #fff;
 }
 
-.fa {
-	padding: 2px;
+#_status_bar {
+	background-color: #f3f3f3;
 }
