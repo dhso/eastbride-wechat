@@ -73,10 +73,10 @@ INSERT INTO `shiro_roles_permissions` (`role_id`, `permission_id`) VALUES
 CREATE TABLE IF NOT EXISTS `shiro_urls_permissions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `permission_id` int(11) NOT NULL,
+  `url_type_id` int(11) NOT NULL,
   `url` varchar(255) NOT NULL,
-  `text` varchar(255) NOT NULL,
-  `icon` varchar(100) NOT NULL,
-  `url_type` varchar(255) NOT NULL,
+  `text` varchar(50) NOT NULL,
+  `icon` varchar(50) NOT NULL,
   `url_order` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
@@ -84,11 +84,28 @@ CREATE TABLE IF NOT EXISTS `shiro_urls_permissions` (
 -- 正在导出表  wechat.shiro_urls_permissions 的数据：~3 rows (大约)
 DELETE FROM `shiro_urls_permissions`;
 /*!40000 ALTER TABLE `shiro_urls_permissions` DISABLE KEYS */;
-INSERT INTO `shiro_urls_permissions` (`id`, `permission_id`, `url`, `text`, `icon`, `url_type`, `url_order`) VALUES
-	(1, 1, '/crm/wechat', '微信管理', 'wx', 'wechat', 1),
-	(2, 2, '/crm/news', '新闻管理', 'news', 'news', 1),
-	(3, 1, '/sys/index', '系统管理', 'sys', 'wechat', 1);
+INSERT INTO `shiro_urls_permissions` (`id`, `permission_id`, `url_type_id`, `url`, `text`, `icon`, `url_order`) VALUES
+	(1, 1, 1, '/crm/wechat', '微信管理', 'fa fa-weixin', 1),
+	(2, 2, 2, 'http://www.baidu.com', '新闻管理', 'fa fa-bookmark', 2),
+	(3, 1, 1, '/sys/index', '系统管理', 'fa fa-cog', 3);
 /*!40000 ALTER TABLE `shiro_urls_permissions` ENABLE KEYS */;
+
+
+-- 导出  表 wechat.shiro_urls_type 结构
+CREATE TABLE IF NOT EXISTS `shiro_urls_type` (
+  `url_type_id` int(11) NOT NULL AUTO_INCREMENT,
+  `url_type_name` varchar(50) NOT NULL,
+  `url_type_icon` varchar(50) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`url_type_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- 正在导出表  wechat.shiro_urls_type 的数据：~2 rows (大约)
+DELETE FROM `shiro_urls_type`;
+/*!40000 ALTER TABLE `shiro_urls_type` DISABLE KEYS */;
+INSERT INTO `shiro_urls_type` (`url_type_id`, `url_type_name`, `url_type_icon`) VALUES
+	(1, '微信', 'fa fa-weixin'),
+	(2, '系统', 'fa fa-cog');
+/*!40000 ALTER TABLE `shiro_urls_type` ENABLE KEYS */;
 
 
 -- 导出  表 wechat.shiro_users 结构

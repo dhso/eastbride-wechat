@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+<title>CRM</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta http-equiv="keywords" content="CRM">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="renderer" content="webkit">
+<link rel="shortcut icon" href="${baseUrl}/static/img/icon/ico/aos2.ico" />
+<link rel="stylesheet" type="text/css" href="${baseUrl}/static/extjs/resources/css/ext-all.css" />
+<link rel="stylesheet" type="text/css" href="${baseUrl}/static/awesome/css/font-awesome.min.css" />
+<link rel="stylesheet" type="text/css" href="${baseUrl}/static/buttons/css/buttons.css" />
+<link rel="stylesheet" type="text/css" href="${baseUrl}/static/css/crm/crm.css" />
+<link rel="stylesheet" type="text/css" href="${baseUrl}/static/css/crm/index.css" />
+<script type="text/javascript">
+	var baseUrl = '${baseUrl}';
+</script>
+</head>
+<body>
+<div id="loading-mask"></div>
+	<div id="loading">
+		<img width="100" height="100" src="${baseUrl}/static/img/gif/pageload/wheel.gif">
+	</div>
+	
+	<div id="_div_center">
+		<iframe></iframe>
+	</div>
+
+	<div id="_id_north_el" class="x-hidden north_el">
+		<table>
+			<tr>
+				<td width="20%"><img src="${baseUrl}/static/img/logo/left-logo.png"></td>
+				<td align="right" style="padding: 5px">
+					<table style="border-spacing: 3px;">
+						<tr>
+							<td colspan="4" class="main_text"><nobr>
+									<i class="fa fa-rss"></i> 2015-07-07 星期二 <span id="rTime"></span>
+								</nobr></td>
+						<tr>
+						<tr align="right">
+							<td><a class="button-small button-pill button-small-blue"
+								onmouseout="_btn_onmouseout(this)"
+								onmouseover="_btn_onmouseover(this);"><i
+									class="fa fa-bell-o"></i> 消息</a> <a
+								class="button-small button-pill button-small-blue"
+								onclick="_fn_logout()" onmouseout="_btn_onmouseout(this)"
+								onmouseover="_btn_onmouseover(this);"><i
+									class="fa fa-power-off"></i> 退出</a></td>
+						<tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div id="_id_south_el" class="x-hidden">
+		<div class="south_el_left main_text">
+			<i class="fa fa-pagelines"></i> 上午好, <@shiro.principal/>. 所属权限:<@shiro.hasRole name="admin"> 管理员</@shiro.hasRole>.
+		</div>
+		<div class="south_el_right main_text">
+			<i class="fa fa-copyright"></i> 2008-2015 OSWorks
+		</div>
+	</div>
+	<script type="text/javascript" src="${baseUrl}/static/extjs/ext-all.js"></script>
+	<script type="text/javascript" src="${baseUrl}/static/extjs/locale/ext-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="${baseUrl}/static/js/crm/crm.js"></script>
+	<script type="text/javascript" src="${baseUrl}/static/js/crm/index.js"></script>
+</body>
+</html>
