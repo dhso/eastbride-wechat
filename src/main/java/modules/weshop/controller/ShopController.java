@@ -3,7 +3,7 @@ package modules.weshop.controller;
 import java.io.IOException;
 
 import modules.system.entity.Message;
-import modules.wechat.model.WxCustomer;
+import modules.wechat.model.CustomerModel;
 import modules.weshop.entity.ShopGoods;
 import modules.weshop.entity.ShopOrder;
 import modules.weshop.validator.ShopAdminCheck;
@@ -142,7 +142,7 @@ public class ShopController extends Controller {
 		setSessionAttr("aid", uid);
 		int pageNumber = getParaToInt("pageNumber", 1);
 		int pageSize = getParaToInt("pageSize", 20);
-		setAttr("shop_user", WxCustomer.dao.getAllCustomer(pageNumber, pageSize));
+		setAttr("shop_user", CustomerModel.dao.getAllCustomer(pageNumber, pageSize));
 		render("front/userMoney.htm");
 	}
 

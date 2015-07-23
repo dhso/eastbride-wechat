@@ -30,11 +30,11 @@ function init_menus(){
 //添加accordion
 function addAccordion(divId, title,iconCls, content) {
 	//取出重复accordion
-	if($(divId).accordion('getPanel',title)){
+	if($(divId).accordion('getPanel','&nbsp;'+title)){
 		return false;
 	}
 	$(divId).accordion('add', {
-		title : title,
+		title : '&nbsp;'+title,
 		iconCls:iconCls,
 		content : content
 	});
@@ -45,12 +45,12 @@ function addMenu(divId, text,iconCls, url) {
 		text: text,
 		iconCls: iconCls,
 		onclick: function(){
-			addTabPanel('#_main_tab',text,url);
+			addTabPanel('#_main_tab',text,baseUrl+url);
 		}
 	});
 }
 //展示加载/处理提示条
-function showProgress(title, text){
+function showProgress(title, text) {
 	parent.$.messager.progress({
 		title : title,
 		text : text

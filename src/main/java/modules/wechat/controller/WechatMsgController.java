@@ -5,7 +5,7 @@ import java.net.URLEncoder;
 
 import modules.system.model.SysConfigModel;
 import modules.wechat.model.ShopWifi;
-import modules.wechat.model.WxCustomer;
+import modules.wechat.model.CustomerModel;
 import modules.wechat.model.WxPropsModel;
 
 import com.alibaba.fastjson.JSON;
@@ -169,14 +169,14 @@ public class WechatMsgController extends MsgController {
 	protected void processInFollowEvent(InFollowEvent inFollowEvent) {
 		if (InFollowEvent.EVENT_INFOLLOW_SUBSCRIBE.equals(inFollowEvent.getEvent())) {
 			// 关注事件
-			WxCustomer.dao.subscribe(inFollowEvent.getFromUserName(), "直接关注");
+			CustomerModel.dao.subscribe(inFollowEvent.getFromUserName(), "直接关注");
 			OutTextMsg outMsg = new OutTextMsg(inFollowEvent);
 			outMsg.setContent(SysConfigModel.dao.getCfgValue("wx.welcome"));
 			render(outMsg);
 		}
 		if (InFollowEvent.EVENT_INFOLLOW_UNSUBSCRIBE.equals(inFollowEvent.getEvent())) {
 			// 取消关注事件，将无法接收到传回的信息
-			WxCustomer.dao.unsubscribe(inFollowEvent.getFromUserName());
+			CustomerModel.dao.unsubscribe(inFollowEvent.getFromUserName());
 		}
 
 	}
@@ -185,13 +185,13 @@ public class WechatMsgController extends MsgController {
 	@Override
 	protected void processInQrCodeEvent(InQrCodeEvent inQrCodeEvent) {
 		if (InQrCodeEvent.EVENT_INQRCODE_SUBSCRIBE.equals(inQrCodeEvent.getEvent())) {
-			WxCustomer.dao.subscribe(inQrCodeEvent.getFromUserName(), "扫码关注");
+			CustomerModel.dao.subscribe(inQrCodeEvent.getFromUserName(), "扫码关注");
 			OutTextMsg outMsg = new OutTextMsg(inQrCodeEvent);
 			outMsg.setContent(SysConfigModel.dao.getCfgValue("wx.welcome"));
 			render(outMsg);
 		}
 		if (InQrCodeEvent.EVENT_INQRCODE_SCAN.equals(inQrCodeEvent.getEvent())) {
-			WxCustomer.dao.unsubscribe(inQrCodeEvent.getFromUserName());
+			CustomerModel.dao.unsubscribe(inQrCodeEvent.getFromUserName());
 		}
 
 	}

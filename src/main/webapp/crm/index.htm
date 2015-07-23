@@ -17,7 +17,7 @@
 </head>
 <body>
 	<div id="loading">
-	<img src='${baseUrl}/static/img/gif/pageload/wheel.gif'/>
+		<img src='${baseUrl}/static/img/gif/pageload/wheel.gif'/>
 		<h1><font color="#15428B">加载中···</font></h1>
 	</div>
 	<div class="easyui-layout" data-options="fit:true">
@@ -26,7 +26,7 @@
         	<span><i class="fa fa-user"></i>当前用户：<@shiro.principal/></span>
         </div>
         <div class="easyui-tabs" data-options="region:'west',width:230,pill:true">
-	        <div title="菜单" class="easyui-accordion" id="_menu_accordion" data-options="fit:true"></div>
+	        <div title="菜单" class="easyui-accordion" id="_menu_accordion" data-options="fit:true,iconCls:'fa fa-bars'"></div>
         </div>
         <div class="easyui-tabs" data-options="region:'center',pill:true" id="_main_tab">
         	<div title="首页">

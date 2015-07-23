@@ -3,13 +3,14 @@ package modules.wechat.model;
 import java.util.Date;
 
 import com.jfinal.plugin.activerecord.Model;
+import com.jfinal.plugin.activerecord.Page;
 
 import frame.plugin.tablebind.TableBind;
 
 @SuppressWarnings("serial")
 @TableBind(tableName = "wx_customer", pkName = "openId")
-public class WxCustomer extends Model<WxCustomer> {
-	public static final WxCustomer dao = new WxCustomer();
+public class CustomerModel extends Model<CustomerModel> {
+	public static final CustomerModel dao = new CustomerModel();
 
 	/**
 	 * 分页获取所有客户
@@ -18,8 +19,8 @@ public class WxCustomer extends Model<WxCustomer> {
 	 * @param pageSize
 	 * @return
 	 */
-	public Object getAllCustomer(int pageNumber, int pageSize) {
-		return WxCustomer.dao.paginate(pageNumber, pageSize, "select *", "from customer");
+	public Page<CustomerModel> getAllCustomer(int pageNumber, int pageSize) {
+		return CustomerModel.dao.paginate(pageNumber, pageSize, "select *", "from wx_customer");
 	}
 
 	/**
@@ -28,8 +29,8 @@ public class WxCustomer extends Model<WxCustomer> {
 	 * @param openid
 	 * @return
 	 */
-	public WxCustomer getCustomer(String openid) {
-		return WxCustomer.dao.findById(openid);
+	public CustomerModel getCustomer(String openid) {
+		return CustomerModel.dao.findById(openid);
 	}
 
 	/**
@@ -39,11 +40,11 @@ public class WxCustomer extends Model<WxCustomer> {
 	 * @param create_id
 	 * @return
 	 */
-	public WxCustomer subscribe(String openid, String create_id) {
-		WxCustomer customer = getCustomer(openid);
+	public CustomerModel subscribe(String openid, String create_id) {
+		CustomerModel customer = getCustomer(openid);
 		if (null == customer) {
 			// 没有关注过
-			new WxCustomer().set("openId", openid).set("subscribe_flag", "1").set("create_id", create_id).set("create_dt", new Date()).save();
+			new CustomerModel().set("openId", openid).set("subscribe_flag", "1").set("create_id", create_id).set("create_dt", new Date()).save();
 			customer = getCustomer(openid);
 		} else {
 			// 关注过
@@ -58,7 +59,7 @@ public class WxCustomer extends Model<WxCustomer> {
 	 * @param openid
 	 */
 	public void unsubscribe(String openid) {
-		WxCustomer.dao.findById(openid).set("subscribe_flag", "0").update();
+		CustomerModel.dao.findById(openid).set("subscribe_flag", "0").update();
 	}
 
 }
