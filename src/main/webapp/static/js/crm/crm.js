@@ -1,6 +1,5 @@
 $(function(){
 	init_menus();
-	
 });
 //初始化menus
 function init_menus(){
