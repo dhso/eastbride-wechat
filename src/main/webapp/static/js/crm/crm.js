@@ -1,6 +1,19 @@
 $(function(){
+	init_layout();
 	init_menus();
 });
+//初始化布局
+function init_layout(){
+	$.parser.onComplete = function(){
+		close_loading();
+	}
+}
+//关闭初始化遮罩页面
+function close_loading(){
+	$("#loading").fadeOut("slow",function(){
+		$(this).remove();
+	});
+}
 //初始化menus
 function init_menus(){
 	$.post(baseUrl + '/crm/menus',{type_id: 'wechat'},function(arry){
