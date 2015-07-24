@@ -18,8 +18,8 @@ function close_loading(){
 function init_menus(){
 	$.post(baseUrl + '/crm/menus',{type_id: 'wechat'},function(arry){
 		$.each(arry,function(index,element){
-			addAccordion('#_menu_accordion',element.URL_TYPE_NAME,element.URL_TYPE_ICON,'<div id="_menu_accordion_'+element.URL_TYPE_ID+'" class="easyui-menu" data-options="inline:true,fit:true,itemHeight:28" style="width:100%"></div>');
-			addMenu($('#_menu_accordion_'+element.URL_TYPE_ID),element.TEXT,element.ICON,element.URL);
+			addAccordion('#_menu_accordion',element.url_type_name,element.url_type_icon,'<div id="_menu_accordion_'+element.url_type_id+'" class="easyui-menu" data-options="inline:true,fit:true,itemHeight:28" style="width:100%"></div>');
+			addMenu($('#_menu_accordion_'+element.url_type_id),element.text,element.icon,element.url);
 		});
 		$('#_menu_accordion').accordion({
 			selected:0
@@ -45,7 +45,7 @@ function addMenu(divId, text,iconCls, url) {
 		text: text,
 		iconCls: iconCls,
 		onclick: function(){
-			addTabPanel('#_main_tab',text,baseUrl+url);
+			addTabPanel('#_main_tab',text,url);
 		}
 	});
 }
@@ -76,7 +76,7 @@ function addTabPanel(divId,title,href){
 	}else{
 		$(divId).tabs('add',{
 	        title: title,
-	        href: href,
+	        href: baseUrl+href,
 	        closable: true,
 	        onLoad:function(){
 	        	closeProgress();

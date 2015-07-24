@@ -66,7 +66,7 @@ public class ShiroModel extends Model<ShiroModel> {
 		List<Record> menus = null;
 		if (null != role) {
 			Integer id = role.getInt("id");
-			menus = Db.find("select * from shiro_urls_permissions sup left join shiro_urls_type sut on sut.url_type_id = sup.url_type_id where sup.permission_id in (select permission_id from shiro_roles_permissions where role_id = ?) order by sup.url_order desc", id);
+			menus = Db.find("select * from shiro_urls su left join shiro_urls_type sut on sut.url_type_id = su.url_type_id where su.permission_id in (select permission_id from shiro_roles_permissions where role_id = ?) order by su.url_order desc", id);
 		}
 		return menus;
 	}

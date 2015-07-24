@@ -1,18 +1,40 @@
 <div id="_wx_config_tab" class="easyui-tabs" data-options="fit:true,border:false,tabPosition:'left',tabWidth:80,headerWidth:80">
-	<div title="基本配置" style="padding: 10px">
-		<p style="font-size: 14px">jQuery EasyUI framework helps you build your web pages easily.</p>
-		<ul>
-			<li>easyui is a collection of user-interface plugin based on jQuery.</li>
-			<li>easyui provides essential functionality for building modem, interactive, javascript applications.</li>
-			<li>using easyui you don't need to write many javascript code, you usually defines user-interface by writing some HTML markup.</li>
-			<li>complete framework for HTML5 web page.</li>
-			<li>easyui save your time and scales while developing your products.</li>
-			<li>easyui is very easy but powerful.</li>
-		</ul>
+	<div title="基本配置" style="padding:5px;">
+		<table id="_base_config" style="width:100%"></table>
 	</div>
-	<div title="菜单配置" style="padding: 10px">
+	<div title="菜单配置" style="padding:5px">
+		<table id="_menu_config" style="width:100%"></table>
 	</div>
-	<div title="其它配置" data-options="" style="padding: 10px">
-		This is the help content.
+	<div title="其它配置" style="padding:5px">
+		<table id="_other_config" style="width:100%"></table>
 	</div>
 </div>
+<script>
+$('#_base_config').propertygrid({
+    url: baseUrl + '/crm/wx/config/get',
+    queryParams:{
+    	type:'3'
+    },
+    showGroup: true,
+    scrollbarSize: 0,
+    showHeader:false
+});
+$('#_menu_config').propertygrid({
+    url: baseUrl + '/crm/wx/config/get',
+    queryParams:{
+    	type:'2'
+    },
+    showGroup: true,
+    scrollbarSize: 0,
+    showHeader:false
+});
+$('#_other_config').propertygrid({
+    url: baseUrl + '/crm/wx/config/get',
+    queryParams:{
+    	type:'1'
+    },
+    showGroup: true,
+    scrollbarSize: 0,
+    showHeader:false
+});
+</script>

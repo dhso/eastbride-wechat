@@ -1,8 +1,13 @@
 package modules.crm.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import modules.system.model.ShiroModel;
+import modules.system.model.SysConfigModel;
 import modules.wechat.model.CustomerModel;
 
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -49,10 +54,24 @@ public class CrmController extends Controller {
 	public void crmWxConfig() {
 		render("wx-config.htm");
 	}
-	
+
 	@RequiresAuthentication
-	public void home() {
-		render("home.htm");
+	@ActionKey("crm/wx/config/get")
+	public void crmWxConfigGet() {
+		String type = getPara("type");
+		List<SysConfigModel> sysConfigs = SysConfigModel.dao.getConfigByType(type);
+		ArrayList<Map<String, String>> rowList = new ArrayList<Map<String, String>>();
+		Iterator<SysConfigModel> scIt = sysConfigs.iterator();
+		while (scIt.hasNext()) {
+			SysConfigModel sysConfigModel = scIt.next();
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("name", String.valueOf(sysConfigModel.get("cfg_key")));
+			map.put("value", String.valueOf(sysConfigModel.get("cfg_value")));
+			map.put("group", String.valueOf(sysConfigModel.get("cfg_type_name")));
+			map.put("editor", "text");
+			rowList.add(map);
+		}
+		renderJson(new DataGrid(String.valueOf(sysConfigs.size()), rowList));
 	}
 
 }

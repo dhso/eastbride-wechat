@@ -3,12 +3,12 @@
 	$('#_wx_customer_table').datagrid({
 	    url:'${baseUrl}/crm/wx/customer/get',
 	    columns:[[
-	        {field:'OPENID',title:'微信ID',width:100},
-	        {field:'TRUE_NAME',title:'姓名',width:100},
-	        {field:'MOBILE',title:'手机',width:100,align:'center'},
-	        {field:'ADDRESS',title:'地址',width:100},
-	        {field:'SUBSCRIBE_FLAG',title:'是否关注',width:60,align:'center'},
-	        {field:'CREATE_DT',title:'注册时间',width:130,align:'center'}
+	        {field:'openId',title:'微信ID',width:100},
+	        {field:'true_name',title:'姓名',width:100},
+	        {field:'mobile',title:'手机',width:100,align:'center'},
+	        {field:'address',title:'地址',width:100},
+	        {field:'subscribe_flag',title:'是否关注',width:60,align:'center'},
+	        {field:'create_dt',title:'注册时间',width:130,align:'center'}
 	    ]],
 	    pagination:true,
 	    pagePosition:'top'

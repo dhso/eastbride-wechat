@@ -91,7 +91,7 @@ public class BaseConfig extends JFinalConfig {
 		// 添加自动绑定model与表插件
 		AutoTableBindPlugin autoTableBindPlugin = new AutoTableBindPlugin(druidPlugin, SimpleNameStyles.LOWER_UNDERLINE);
 		autoTableBindPlugin.setShowSql(true);
-		autoTableBindPlugin.setContainerFactory(new CaseInsensitiveContainerFactory());
+		//autoTableBindPlugin.setContainerFactory(new CaseInsensitiveContainerFactory());
 		autoTableBindPlugin.setDevMode(PropKit.getBoolean("devMode", false));
 		me.add(autoTableBindPlugin);
 		// 添加消息驱动插件

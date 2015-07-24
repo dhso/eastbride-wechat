@@ -1,5 +1,7 @@
 package modules.system.model;
 
+import java.util.List;
+
 import com.jfinal.plugin.activerecord.Model;
 
 import frame.plugin.tablebind.TableBind;
@@ -45,5 +47,15 @@ public class SysConfigModel extends Model<SysConfigModel> {
 	 */
 	public String getCfgValue(String cfg_key) {
 		return getConfig(cfg_key).getStr("cfg_value");
+	}
+
+	/**
+	 * 通过type获取配置
+	 * 
+	 * @param cfg_type_id
+	 * @return
+	 */
+	public List<SysConfigModel> getConfigByType(String cfg_type_id) {
+		return SysConfigModel.dao.find("select * from sys_config sc left join sys_config_type sct on sct.cfg_type_id = sc.cfg_type_id where sc.cfg_type_id = ?", cfg_type_id);
 	}
 }
