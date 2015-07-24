@@ -30,7 +30,7 @@ public class CrmController extends Controller {
 	@RequiresAuthentication
 	@ActionKey("crm/menus")
 	public void crmMenus() {
-		List<Record> menus = ShiroModel.dao.getMenus(ShiroKit.who());
+		List<Record> menus = ShiroModel.dao.getUrls(ShiroKit.who());
 		renderJson(menus);
 	}
 
@@ -72,6 +72,27 @@ public class CrmController extends Controller {
 			rowList.add(map);
 		}
 		renderJson(new DataGrid(String.valueOf(sysConfigs.size()), rowList));
+	}
+
+	@RequiresAuthentication
+	@ActionKey("crm/sys/permission")
+	public void crmSysPermission() {
+		render("sys-permission.htm");
+	}
+
+	@RequiresAuthentication
+	@ActionKey("crm/sys/url")
+	public void crmSysUrl() {
+		render("sys-url.htm");
+	}
+
+	@RequiresAuthentication
+	@ActionKey("crm/sys/url/get")
+	public void crmSysUrlGet() {
+		Integer pageNumber = getParaToInt("page", 1);
+		Integer pageSize = getParaToInt("rows", 10);
+		Page<Record> urls = ShiroModel.dao.getAllUrls(pageNumber, pageSize);
+		renderJson(new DataGrid(String.valueOf(urls.getTotalRow()), urls.getList()));
 	}
 
 }

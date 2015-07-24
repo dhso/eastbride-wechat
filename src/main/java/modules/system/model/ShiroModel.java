@@ -2,8 +2,11 @@ package modules.system.model;
 
 import java.util.List;
 
+import org.apache.shiro.config.Ini;
+
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
+import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 
 import frame.plugin.tablebind.TableBind;
@@ -61,14 +64,23 @@ public class ShiroModel extends Model<ShiroModel> {
 	 * @param username
 	 * @return
 	 */
-	public List<Record> getMenus(String username) {
+	public List<Record> getUrls(String username) {
 		Record role = getRole(username);
-		List<Record> menus = null;
+		List<Record> urls = null;
 		if (null != role) {
 			Integer id = role.getInt("id");
-			menus = Db.find("select * from shiro_urls su left join shiro_urls_type sut on sut.url_type_id = su.url_type_id where su.permission_id in (select permission_id from shiro_roles_permissions where role_id = ?) order by su.url_order desc", id);
+			urls = Db.find("select * from shiro_urls su left join shiro_urls_type sut on sut.url_type_id = su.url_type_id where su.permission_id in (select permission_id from shiro_roles_permissions where role_id = ?) order by su.url_order desc", id);
 		}
-		return menus;
+		return urls;
+	}
+
+	/**
+	 * 获取所有链接
+	 * 
+	 * @return
+	 */
+	public Page<Record> getAllUrls(Integer pageNumber,Integer pageSize) {
+		return Db.paginate(pageNumber, pageSize, "select *", "from shiro_urls su left join shiro_urls_type sut on sut.url_type_id = su.url_type_id where 1=1 order by su.url_order desc");
 	}
 
 }

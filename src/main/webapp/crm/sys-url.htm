@@ -1,0 +1,22 @@
+<table id="_sys_url_table"></table>
+<script>
+	$('#_sys_url_table').datagrid({
+	    url:'${baseUrl}/crm/sys/url/get',
+	    columns:[[
+	        {field:'id',title:'ID',width:35},
+	        {field:'url',title:'链接',width:250},
+	        {field:'text',title:'链接名称',width:150},
+	        {field:'icon',title:'链接图标',width:150},
+	        {field:'url_type_name',title:'所属分类',width:150},
+	        {field:'icon',title:'所属分类图标',width:150},
+	        {field:'url_order',title:'排序',width:60},
+	        {field:'is_iframe',title:'是否Iframe',width:80,align:'center'}
+	    ]],
+	    pagination:true,
+	    pagePosition:'top'
+	});
+	$('#_sys_url_table').datagrid('getPager').pagination({
+		displayMsg:'位置: {from} 到 {to} 行，共计 {total} 项',
+		layout:['list','sep','first','prev','sep','links','sep','next','last','sep','refresh']
+    });
+</script>
