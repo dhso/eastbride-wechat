@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import modules.system.entity.ShiroUrlType;
 import modules.system.model.ShiroModel;
 import modules.system.model.SysConfigModel;
 import modules.wechat.model.CustomerModel;
@@ -93,6 +94,29 @@ public class CrmController extends Controller {
 		Integer pageSize = getParaToInt("rows", 10);
 		Page<Record> urls = ShiroModel.dao.getAllUrls(pageNumber, pageSize);
 		renderJson(new DataGrid(String.valueOf(urls.getTotalRow()), urls.getList()));
+	}
+
+	@RequiresAuthentication
+	@ActionKey("crm/sys/url_type")
+	public void crmSysUrlType() {
+		render("sys-url-type.htm");
+	}
+
+	@RequiresAuthentication
+	@ActionKey("crm/sys/url_type/get")
+	public void crmSysUrlTypeGet() {
+		Integer pageNumber = getParaToInt("page", 1);
+		Integer pageSize = getParaToInt("rows", 10);
+		Page<Record> urlsType = ShiroModel.dao.getAllUrlsType(pageNumber, pageSize);
+		renderJson(new DataGrid(String.valueOf(urlsType.getTotalRow()), urlsType.getList()));
+	}
+	
+	@RequiresAuthentication
+	@ActionKey("crm/sys/url_type/save")
+	public void crmSysUrlTypeSave() {
+		Map<String, String[]> map= getParaMap();
+		ShiroUrlType m= getModel(ShiroUrlType.class, "rows");
+		renderText("ok");
 	}
 
 }

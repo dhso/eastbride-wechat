@@ -27,7 +27,7 @@ INSERT INTO `shiro_permissions` (`id`, `permission`, `description`, `available`)
 	(1, 'cms:article:edit', NULL, 1),
 	(2, 'cms:article:add', NULL, 1),
 	(3, 'cms:article:delete', NULL, 1),
-	(4, 'cms:setting:edit', NULL, 1);
+	(4, 'cms:setting', NULL, 1);
 /*!40000 ALTER TABLE `shiro_permissions` ENABLE KEYS */;
 
 
@@ -69,8 +69,8 @@ INSERT INTO `shiro_roles_permissions` (`role_id`, `permission_id`) VALUES
 /*!40000 ALTER TABLE `shiro_roles_permissions` ENABLE KEYS */;
 
 
--- 导出  表 wechat.shiro_urls_permissions 结构
-CREATE TABLE IF NOT EXISTS `shiro_urls_permissions` (
+-- 导出  表 wechat.shiro_urls 结构
+CREATE TABLE IF NOT EXISTS `shiro_urls` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `permission_id` int(11) NOT NULL,
   `url_type_id` int(11) NOT NULL,
@@ -78,17 +78,21 @@ CREATE TABLE IF NOT EXISTS `shiro_urls_permissions` (
   `text` varchar(50) NOT NULL,
   `icon` varchar(50) NOT NULL,
   `url_order` int(11) NOT NULL,
+  `is_iframe` int(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
--- 正在导出表  wechat.shiro_urls_permissions 的数据：~3 rows (大约)
-DELETE FROM `shiro_urls_permissions`;
-/*!40000 ALTER TABLE `shiro_urls_permissions` DISABLE KEYS */;
-INSERT INTO `shiro_urls_permissions` (`id`, `permission_id`, `url_type_id`, `url`, `text`, `icon`, `url_order`) VALUES
-	(1, 1, 1, '/crm/wechat', '微信管理', 'fa fa-weixin', 1),
-	(2, 2, 2, 'http://www.baidu.com', '新闻管理', 'fa fa-bookmark', 2),
-	(3, 1, 1, '/sys/index', '系统管理', 'fa fa-cog', 3);
-/*!40000 ALTER TABLE `shiro_urls_permissions` ENABLE KEYS */;
+-- 正在导出表  wechat.shiro_urls 的数据：~3 rows (大约)
+DELETE FROM `shiro_urls`;
+/*!40000 ALTER TABLE `shiro_urls` DISABLE KEYS */;
+INSERT INTO `shiro_urls` (`id`, `permission_id`, `url_type_id`, `url`, `text`, `icon`, `url_order`, `is_iframe`) VALUES
+	(1, 1, 1, '/crm/wx/customer', '客户管理', 'fa fa-weixin', 2001, 0),
+	(2, 2, 2, '/druid/index.html', 'druid监控', 'fa fa-bookmark', 1999, 1),
+	(3, 1, 1, '/crm/wx/config', '系统配置', 'fa fa-cog', 2002, 0),
+	(4, 4, 2, '/crm/sys/permission', '权限管理', 'fa fa-cog', 1001, 0),
+	(5, 4, 2, '/crm/sys/url', '链接管理', 'fa fa-cog', 1002, 0),
+	(6, 4, 2, '/crm/sys/url_type', '链接类型', 'fa fa-cog', 1003, 0);
+/*!40000 ALTER TABLE `shiro_urls` ENABLE KEYS */;
 
 
 -- 导出  表 wechat.shiro_urls_type 结构
@@ -216,17 +220,40 @@ INSERT INTO `shop_wifi` (`openId`, `captcha`, `expired_dt`) VALUES
 CREATE TABLE IF NOT EXISTS `sys_config` (
   `cfg_key` varchar(50) NOT NULL,
   `cfg_value` varchar(255) NOT NULL,
+  `cfg_type_id` int(11) NOT NULL,
   PRIMARY KEY (`cfg_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 正在导出表  wechat.sys_config 的数据：~3 rows (大约)
+-- 正在导出表  wechat.sys_config 的数据：~8 rows (大约)
 DELETE FROM `sys_config`;
 /*!40000 ALTER TABLE `sys_config` DISABLE KEYS */;
-INSERT INTO `sys_config` (`cfg_key`, `cfg_value`) VALUES
-	('wx.shop.name', '店名'),
-	('wx.shop.notification', '店铺公告'),
-	('wx.welcome', '关注成功！');
+INSERT INTO `sys_config` (`cfg_key`, `cfg_value`, `cfg_type_id`) VALUES
+	('wx.appId', 'wxbbaed5839238c4eb', 3),
+	('wx.appSecret', '064682c9add7e6756f9f435c904825a9', 3),
+	('wx.encodingAesKey', 'RBSOCvhUnTljEvosRNwwek2NB6wIuqI2B4sVNpM3Ni6', 3),
+	('wx.messageEncrypt', '0', 3),
+	('wx.shop.name', '店名', 2),
+	('wx.shop.notification', '店铺公告', 2),
+	('wx.token', 'eastbride', 3),
+	('wx.welcome', '关注成功！', 1);
 /*!40000 ALTER TABLE `sys_config` ENABLE KEYS */;
+
+
+-- 导出  表 wechat.sys_config_type 结构
+CREATE TABLE IF NOT EXISTS `sys_config_type` (
+  `cfg_type_id` int(11) NOT NULL AUTO_INCREMENT,
+  `cfg_type_name` varchar(50) NOT NULL,
+  PRIMARY KEY (`cfg_type_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- 正在导出表  wechat.sys_config_type 的数据：~3 rows (大约)
+DELETE FROM `sys_config_type`;
+/*!40000 ALTER TABLE `sys_config_type` DISABLE KEYS */;
+INSERT INTO `sys_config_type` (`cfg_type_id`, `cfg_type_name`) VALUES
+	(1, '微信配置'),
+	(2, '商城配置'),
+	(3, '微信基础配置');
+/*!40000 ALTER TABLE `sys_config_type` ENABLE KEYS */;
 
 
 -- 导出  表 wechat.wx_customer 结构

@@ -2,8 +2,6 @@ package modules.system.model;
 
 import java.util.List;
 
-import org.apache.shiro.config.Ini;
-
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
@@ -79,8 +77,19 @@ public class ShiroModel extends Model<ShiroModel> {
 	 * 
 	 * @return
 	 */
-	public Page<Record> getAllUrls(Integer pageNumber,Integer pageSize) {
+	public Page<Record> getAllUrls(Integer pageNumber, Integer pageSize) {
 		return Db.paginate(pageNumber, pageSize, "select *", "from shiro_urls su left join shiro_urls_type sut on sut.url_type_id = su.url_type_id where 1=1 order by su.url_order desc");
+	}
+
+	/**
+	 * 获取所有链接分类
+	 * 
+	 * @param pageNumber
+	 * @param pageSize
+	 * @return
+	 */
+	public Page<Record> getAllUrlsType(Integer pageNumber, Integer pageSize) {
+		return Db.paginate(pageNumber, pageSize, "select *", "from shiro_urls_type");
 	}
 
 }
