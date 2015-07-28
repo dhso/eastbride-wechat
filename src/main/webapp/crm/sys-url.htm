@@ -1,23 +1,132 @@
 <table id="_sys_url_table"></table>
+<script type="text/javascript" src="${baseUrl}/static/easyui/ext/datagrid-cellediting.js"></script>
 <script>
-	$('#_sys_url_table').datagrid({
-	    url:'${baseUrl}/crm/sys/url/get',
+(function(divId){
+	var url_type_editor = {
+            type:'combobox',
+            options:{
+                valueField:'url_type_id',
+                textField:'url_type_name',
+                url: baseUrl+'/crm/sys/url_type/get',
+                queryParams:{
+                	pagination:0
+                }
+            }
+        };
+	var url_type_formatter = function(value,row){
+        return row.url_type_name;
+    };
+    
+    var permission_editor = {
+            type:'combobox',
+            options:{
+                valueField:'id',
+                textField:'permission_desc',
+                url: baseUrl+'/crm/sys/permission/get',
+                queryParams:{
+                	pagination:0
+                },
+                onSelect:function(rec){
+                	console.log(rec);
+                	var cell = $(divId).datagrid('cell');
+                	console.log(cell);
+                }
+            }
+        };
+	var permission_formatter = function(value,row){
+        return row.permission_desc;
+    };
+    
+    var is_iframe_editor={
+    		type:'checkbox',
+    		options:{on:'1',off:'0'}
+    };
+    
+	$(divId).datagrid({
+	    url:baseUrl+'/crm/sys/url/get',
 	    columns:[[
+			{field:'checkbox',checkbox:true},
 	        {field:'id',title:'ID',width:35},
-	        {field:'url',title:'链接',width:250},
-	        {field:'text',title:'链接名称',width:150},
-	        {field:'icon',title:'链接图标',width:150},
-	        {field:'url_type_name',title:'所属分类',width:150},
-	        {field:'icon',title:'所属分类图标',width:150},
-	        {field:'url_order',title:'排序',width:60},
-	        {field:'is_iframe',title:'是否Iframe',width:80,align:'center'}
+	        {field:'url',title:'链接',width:250,editor:'text'},
+	        {field:'text',title:'链接名称',width:150,editor:'text'},
+	        {field:'icon',title:'链接图标',width:150,editor:'text'},
+	        {field:'url_type_id',title:'所属分类',width:150,formatter:url_type_formatter,editor:url_type_editor},
+	        {field:'permission_id',title:'权限',width:150,formatter:permission_formatter,editor:permission_editor},
+	        {field:'url_order',title:'排序',width:60,editor:'text'},
+	        {field:'is_iframe',title:'是否Iframe',width:80,align:'center',editor:is_iframe_editor}
 	    ]],
+	    queryParams:{
+	    	pagination:1
+	    },
 	    pagination:true,
-	    pagePosition:'top',
-	    singleSelect:true
-	});
-	$('#_sys_url_table').datagrid('getPager').pagination({
+	    pagePosition:'top'
+	}).datagrid('enableCellEditing');
+	
+	$(divId).datagrid('getPager').pagination({
 		displayMsg:'位置: {from} 到 {to} 行，共计 {total} 项',
-		layout:['list','sep','first','prev','sep','links','sep','next','last','sep','refresh']
+		layout:['list','sep','first','prev','sep','links','sep','next','last','sep','refresh'],
+		buttons:[{
+			iconCls: 'fa fa-plus',
+			text:'添加',
+			handler: function(){
+				addRow();
+				}
+		},'-',{
+			iconCls: 'fa fa-remove',
+			text:'删除',
+			handler: function(){
+				delRow();
+			}
+		},'-',{
+			iconCls: 'fa fa-save',
+			text:'保存',
+			handler: function(){
+				saveRow();
+				}
+		},'-']
     });
+
+	function addRow(){
+		endEdit();
+		$(divId).datagrid('appendRow',{is_iframe:'0'});
+    }
+	
+	function delRow(){
+		endEdit();
+		$.each($(divId).datagrid('getChecked'), function(index, element) {
+			var rowIndex = $(divId).datagrid('getRowIndex', element);
+			$(divId).datagrid('deleteRow', rowIndex);
+		});
+	}
+
+	function saveRow() {
+		endEdit();
+		var insertRows = $(divId).datagrid('getChanges', 'inserted');
+		var updateRows = $(divId).datagrid('getChanges', 'updated');
+		var deleteRows = $(divId).datagrid('getChanges', 'deleted');
+		$.post(baseUrl+"/crm/sys/url/save", {
+			inserted : JSON.stringify(insertRows),
+			updated : JSON.stringify(updateRows),
+			deleted : JSON.stringify(deleteRows)
+		}, function(data) {
+			if (data && data.msgType == 'success'){
+				refreshTable();
+				$.messager.alert(data.msgType, data.msgDesc, 'info');
+			}else{
+				$.messager.alert('错误', '未知错误！', 'error');
+			}
+		});
+	}
+
+	function endEdit() {
+		var editCell = $(divId).datagrid('cell');
+		if (editCell) {
+			$(divId).datagrid('endEdit', editCell.index);
+		}
+	}
+
+	function refreshTable() {
+		$(divId).datagrid('reload');
+	}
+})('#_sys_url_table');
 </script>

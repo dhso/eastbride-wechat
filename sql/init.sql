@@ -14,7 +14,7 @@
 CREATE TABLE IF NOT EXISTS `shiro_permissions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `permission` varchar(100) NOT NULL,
-  `description` varchar(100) DEFAULT NULL,
+  `permission_desc` varchar(100) DEFAULT NULL,
   `available` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_permissions_permission` (`permission`)
@@ -23,11 +23,11 @@ CREATE TABLE IF NOT EXISTS `shiro_permissions` (
 -- 正在导出表  wechat.shiro_permissions 的数据：~4 rows (大约)
 DELETE FROM `shiro_permissions`;
 /*!40000 ALTER TABLE `shiro_permissions` DISABLE KEYS */;
-INSERT INTO `shiro_permissions` (`id`, `permission`, `description`, `available`) VALUES
-	(1, 'cms:article:edit', NULL, 1),
-	(2, 'cms:article:add', NULL, 1),
-	(3, 'cms:article:delete', NULL, 1),
-	(4, 'cms:setting', NULL, 1);
+INSERT INTO `shiro_permissions` (`id`, `permission`, `permission_desc`, `available`) VALUES
+	(1, 'cms:article:edit', '文章编辑', 1),
+	(2, 'cms:article:add', '文章添加', 1),
+	(3, 'cms:article:delete', '文章删除', 1),
+	(4, 'cms:setting', '系统设置', 1);
 /*!40000 ALTER TABLE `shiro_permissions` ENABLE KEYS */;
 
 
@@ -80,18 +80,19 @@ CREATE TABLE IF NOT EXISTS `shiro_urls` (
   `url_order` int(11) NOT NULL,
   `is_iframe` int(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
--- 正在导出表  wechat.shiro_urls 的数据：~3 rows (大约)
+-- 正在导出表  wechat.shiro_urls 的数据：~6 rows (大约)
 DELETE FROM `shiro_urls`;
 /*!40000 ALTER TABLE `shiro_urls` DISABLE KEYS */;
 INSERT INTO `shiro_urls` (`id`, `permission_id`, `url_type_id`, `url`, `text`, `icon`, `url_order`, `is_iframe`) VALUES
-	(1, 1, 1, '/crm/wx/customer', '客户管理', 'fa fa-weixin', 2001, 0),
+	(1, 2, 1, '/crm/wx/customer', '客户管理', 'fa fa-weixin', 2001, 0),
 	(2, 2, 2, '/druid/index.html', 'druid监控', 'fa fa-bookmark', 1999, 1),
 	(3, 1, 1, '/crm/wx/config', '系统配置', 'fa fa-cog', 2002, 0),
 	(4, 4, 2, '/crm/sys/permission', '权限管理', 'fa fa-cog', 1001, 0),
 	(5, 4, 2, '/crm/sys/url', '链接管理', 'fa fa-cog', 1002, 0),
-	(6, 4, 2, '/crm/sys/url_type', '链接类型', 'fa fa-cog', 1003, 0);
+	(6, 4, 2, '/crm/sys/url_type', '链接类型', 'fa fa-cog', 1003, 0),
+	(7, 4, 2, 'http://www.baidu.com', '百度搜索', 'fa fa-bookmark', 1004, 1);
 /*!40000 ALTER TABLE `shiro_urls` ENABLE KEYS */;
 
 
@@ -101,14 +102,14 @@ CREATE TABLE IF NOT EXISTS `shiro_urls_type` (
   `url_type_name` varchar(50) NOT NULL,
   `url_type_icon` varchar(50) NOT NULL DEFAULT '0',
   PRIMARY KEY (`url_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- 正在导出表  wechat.shiro_urls_type 的数据：~2 rows (大约)
 DELETE FROM `shiro_urls_type`;
 /*!40000 ALTER TABLE `shiro_urls_type` DISABLE KEYS */;
 INSERT INTO `shiro_urls_type` (`url_type_id`, `url_type_name`, `url_type_icon`) VALUES
-	(1, '微信', 'fa fa-weixin'),
-	(2, '系统', 'fa fa-cog');
+	(1, '微信管理', 'fa fa-weixin'),
+	(2, '系统管理', 'fa fa-cog');
 /*!40000 ALTER TABLE `shiro_urls_type` ENABLE KEYS */;
 
 
