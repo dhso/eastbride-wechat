@@ -35,7 +35,7 @@ INSERT INTO `shiro_permissions` (`id`, `permission`, `permission_desc`, `availab
 CREATE TABLE IF NOT EXISTS `shiro_roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `role` varchar(100) NOT NULL,
-  `description` varchar(100) DEFAULT NULL,
+  `role_desc` varchar(100) DEFAULT NULL,
   `available` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_roles_role` (`role`)
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `shiro_roles` (
 -- 正在导出表  wechat.shiro_roles 的数据：~2 rows (大约)
 DELETE FROM `shiro_roles`;
 /*!40000 ALTER TABLE `shiro_roles` DISABLE KEYS */;
-INSERT INTO `shiro_roles` (`id`, `role`, `description`, `available`) VALUES
+INSERT INTO `shiro_roles` (`id`, `role`, `role_desc`, `available`) VALUES
 	(1, 'admin', 'admin', 1),
 	(2, 'user', 'user', 1);
 /*!40000 ALTER TABLE `shiro_roles` ENABLE KEYS */;
@@ -80,19 +80,19 @@ CREATE TABLE IF NOT EXISTS `shiro_urls` (
   `url_order` int(11) NOT NULL,
   `is_iframe` int(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
--- 正在导出表  wechat.shiro_urls 的数据：~6 rows (大约)
+-- 正在导出表  wechat.shiro_urls 的数据：~7 rows (大约)
 DELETE FROM `shiro_urls`;
 /*!40000 ALTER TABLE `shiro_urls` DISABLE KEYS */;
 INSERT INTO `shiro_urls` (`id`, `permission_id`, `url_type_id`, `url`, `text`, `icon`, `url_order`, `is_iframe`) VALUES
 	(1, 2, 1, '/crm/wx/customer', '客户管理', 'fa fa-weixin', 2001, 0),
 	(2, 2, 2, '/druid/index.html', 'druid监控', 'fa fa-bookmark', 1999, 1),
-	(3, 1, 1, '/crm/wx/config', '系统配置', 'fa fa-cog', 2002, 0),
+	(3, 2, 1, '/crm/wx/config', '系统配置', 'fa fa-cog', 2002, 0),
 	(4, 4, 2, '/crm/sys/permission', '权限管理', 'fa fa-cog', 1001, 0),
 	(5, 4, 2, '/crm/sys/url', '链接管理', 'fa fa-cog', 1002, 0),
 	(6, 4, 2, '/crm/sys/url_type', '链接类型', 'fa fa-cog', 1003, 0),
-	(7, 4, 2, 'http://www.baidu.com', '百度搜索', 'fa fa-bookmark', 1004, 1);
+	(8, 4, 2, '/crm/sys/user', '用户管理', 'fa fa-cog', 1004, 0);
 /*!40000 ALTER TABLE `shiro_urls` ENABLE KEYS */;
 
 
@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS `shiro_users` (
   `username` varchar(255) NOT NULL,
   `password` varchar(255) DEFAULT NULL,
   `salt` varchar(255) DEFAULT NULL,
-  `locked` tinyint(1) DEFAULT '0',
+  `locked` int(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_users_username` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;

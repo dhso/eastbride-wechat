@@ -42,6 +42,26 @@ public class ShiroModel extends Model<ShiroModel> {
 	}
 
 	/**
+	 * 获取所有角色信息
+	 * 
+	 * @return
+	 */
+	public List<Record> getAllRole() {
+		return Db.find("select * from shiro_roles");
+	}
+
+	/**
+	 * 分页获取所有权限信息
+	 * 
+	 * @param pageNumber
+	 * @param pageSize
+	 * @return
+	 */
+	public Page<Record> getAllRolePage(Integer pageNumber, Integer pageSize) {
+		return Db.paginate(pageNumber, pageSize, "select *", "from shiro_roles");
+	}
+
+	/**
 	 * 获取权限
 	 * 
 	 * @param username
@@ -195,5 +215,59 @@ public class ShiroModel extends Model<ShiroModel> {
 	public int[] deleteUrlsType(List<?> list) {
 		List<Record> recordList = RecordKit.list2RecordList(list);
 		return Db.batch("delete from shiro_urls_type where url_type_id = ?", "url_type_id", recordList, recordList.size());
+	}
+
+	/**
+	 * 获取所有用户信息
+	 * 
+	 * @return
+	 */
+	public List<Record> getAllUser() {
+		return Db.find("select su.*,sur.role_id from shiro_users su left join shiro_users_roles sur on  sur.user_id = su.id");
+	}
+
+	/**
+	 * 分页获取所有用户信息
+	 * 
+	 * @param pageNumber
+	 * @param pageSize
+	 * @return
+	 */
+	public Page<Record> getAllUserPage(Integer pageNumber, Integer pageSize) {
+		return Db.paginate(pageNumber, pageSize, "select su.*,sur.role_id", "from shiro_users su left join shiro_users_roles sur on  sur.user_id = su.id");
+	}
+
+	/**
+	 * 批量添加user
+	 * 
+	 * @param list
+	 * @return
+	 */
+	public void insertUser(List<?> list) {
+		List<Record> recordList = RecordKit.list2RecordList(list);
+		Db.batch("insert into shiro_users(username,password,salt,locked) values (?,?,?,?)", "username,password,salt,locked", recordList, recordList.size());
+		Db.batch("insert into shiro_users_roles(user_id,role_id) values ((select id from shiro_users where username = ? and password = ? and salt = ?),?)", "username,password,salt,role_id", recordList, recordList.size());
+	}
+
+	/**
+	 * 批量更新user
+	 * 
+	 * @param list
+	 */
+	public void updateUser(List<?> list) {
+		List<Record> recordList = RecordKit.list2RecordList(list);
+		Db.batch("update shiro_users set username = ?,password= ?,salt=?,locked=? where id = ?", "username,password,salt,locked,id", recordList, recordList.size());
+		Db.batch("update shiro_users_roles set role_id = ? where user_id = ?", "role_id,id", recordList, recordList.size());
+	}
+
+	/**
+	 * 批量删除user
+	 * 
+	 * @param list
+	 */
+	public void deleteUser(List<?> list) {
+		List<Record> recordList = RecordKit.list2RecordList(list);
+		Db.batch("delete from shiro_users where id = ?", "id", recordList, recordList.size());
+		Db.batch("delete from shiro_users_roles where user_id = ? and role_id= ?", "id,role_id", recordList, recordList.size());
 	}
 }

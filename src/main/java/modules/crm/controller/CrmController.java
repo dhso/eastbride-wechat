@@ -78,10 +78,25 @@ public class CrmController extends Controller {
 		}
 		renderJson(new DataGrid(String.valueOf(sysConfigs.size()), rowList));
 	}
+	
+	@RequiresAuthentication
+	@ActionKey("crm/sys/role/get")
+	public void crmSysRoleGet() {
+		Integer pageNumber = getParaToInt("page", 1);
+		Integer pageSize = getParaToInt("rows", 10);
+		Integer pagination = getParaToInt("pagination", 0);
+		if (pagination == 0) {
+			List<Record> roleList = ShiroModel.dao.getAllRole();
+			renderJson(roleList);
+		} else {
+			Page<Record> rolePage = ShiroModel.dao.getAllRolePage(pageNumber, pageSize);
+			renderJson(new DataGrid(String.valueOf(rolePage.getTotalRow()), rolePage.getList()));
+		}
+	}
 
 	@RequiresAuthentication
 	@ActionKey("crm/sys/permission/get")
-	public void crmSysPermission() {
+	public void crmSysPermissionGet() {
 		Integer pageNumber = getParaToInt("page", 1);
 		Integer pageSize = getParaToInt("rows", 10);
 		Integer pagination = getParaToInt("pagination", 0);
@@ -171,6 +186,47 @@ public class CrmController extends Controller {
 		}
 		if (deletedJson.size() > 0) {
 			ShiroModel.dao.deleteUrlsType(deletedJson);
+		}
+		renderJson(new Message("200", "success", "保存成功！"));
+	}
+	
+	@RequiresAuthentication
+	@ActionKey("crm/sys/user")
+	public void crmSysUser() {
+		render("sys-user.htm");
+	}
+	
+	@RequiresAuthentication
+	@ActionKey("crm/sys/user/get")
+	public void crmSysUserGet() {
+		Integer pageNumber = getParaToInt("page", 1);
+		Integer pageSize = getParaToInt("rows", 10);
+		Integer pagination = getParaToInt("pagination", 0);
+		if (pagination == 0) {
+			List<Record> userList = ShiroModel.dao.getAllUser();
+			renderJson(userList);
+		} else {
+			Page<Record> userPage = ShiroModel.dao.getAllUserPage(pageNumber, pageSize);
+			renderJson(new DataGrid(String.valueOf(userPage.getTotalRow()), userPage.getList()));
+		}
+
+	}
+
+	@RequiresAuthentication
+	@ActionKey("crm/sys/user/save")
+	@Before(Tx.class)
+	public void crmSysUserSave() {
+		JSONArray insertedJson = JSON.parseArray(getPara("inserted"));
+		JSONArray updatedJson = JSON.parseArray(getPara("updated"));
+		JSONArray deletedJson = JSON.parseArray(getPara("deleted"));
+		if (insertedJson.size() > 0) {
+			ShiroModel.dao.insertUser(insertedJson);
+		}
+		if (updatedJson.size() > 0) {
+			ShiroModel.dao.updateUser(updatedJson);
+		}
+		if (deletedJson.size() > 0) {
+			ShiroModel.dao.deleteUser(deletedJson);
 		}
 		renderJson(new Message("200", "success", "保存成功！"));
 	}
