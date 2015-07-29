@@ -78,7 +78,13 @@ public class CrmController extends Controller {
 		}
 		renderJson(new DataGrid(String.valueOf(sysConfigs.size()), rowList));
 	}
-	
+
+	@RequiresAuthentication
+	@ActionKey("crm/sys/role")
+	public void crmSysRole() {
+		render("sys-role.htm");
+	}
+
 	@RequiresAuthentication
 	@ActionKey("crm/sys/role/get")
 	public void crmSysRoleGet() {
@@ -92,6 +98,25 @@ public class CrmController extends Controller {
 			Page<Record> rolePage = ShiroModel.dao.getAllRolePage(pageNumber, pageSize);
 			renderJson(new DataGrid(String.valueOf(rolePage.getTotalRow()), rolePage.getList()));
 		}
+	}
+
+	@RequiresAuthentication
+	@ActionKey("crm/sys/role/save")
+	@Before(Tx.class)
+	public void crmSysRoleSave() {
+		JSONArray insertedJson = JSON.parseArray(getPara("inserted"));
+		JSONArray updatedJson = JSON.parseArray(getPara("updated"));
+		JSONArray deletedJson = JSON.parseArray(getPara("deleted"));
+		if (insertedJson.size() > 0) {
+			ShiroModel.dao.insertRole(insertedJson);
+		}
+		if (updatedJson.size() > 0) {
+			ShiroModel.dao.updateRole(updatedJson);
+		}
+		if (deletedJson.size() > 0) {
+			ShiroModel.dao.deleteRole(deletedJson);
+		}
+		renderJson(new Message("200", "success", "保存成功！"));
 	}
 
 	@RequiresAuthentication
@@ -189,13 +214,13 @@ public class CrmController extends Controller {
 		}
 		renderJson(new Message("200", "success", "保存成功！"));
 	}
-	
+
 	@RequiresAuthentication
 	@ActionKey("crm/sys/user")
 	public void crmSysUser() {
 		render("sys-user.htm");
 	}
-	
+
 	@RequiresAuthentication
 	@ActionKey("crm/sys/user/get")
 	public void crmSysUserGet() {
@@ -230,4 +255,5 @@ public class CrmController extends Controller {
 		}
 		renderJson(new Message("200", "success", "保存成功！"));
 	}
+
 }

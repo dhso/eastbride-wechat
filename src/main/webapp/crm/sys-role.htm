@@ -1,0 +1,132 @@
+<table id="_sys_role_table"></table>
+<script type="text/javascript" src="${baseUrl}/static/easyui/ext/datagrid-cellediting.js"></script>
+<script>
+	(function(divId){
+		var permission_data = [];
+		$.ajaxSetup({
+			async:false
+		});
+		$.post( baseUrl+'/crm/sys/permission/get', {
+	    	pagination:0
+		}, function(data) {
+			$.each(data,function(index,element){
+				var map = {};
+				map["id"] = element.id;
+				map["text"] = element.permission_desc;
+				permission_data.push(map);
+			});
+		});
+		
+		var permission_editor = {
+	            type:'combotree',
+	            options:{
+	            	data:permission_data,
+	            	multiple:true
+	            }
+	        };
+		var permission_formatter = function(value,row,index){
+			if(value){
+				var values = value.split(',');
+				var result = '';
+				$.each(values,function(index1,element1){
+					$.each(permission_data,function(index2,element2){
+						if(element2.id == element1){
+							if(index1 != 0){
+								result += ',';
+							}
+							result += element2.text;
+							return;
+						}
+					});
+				});
+				if(!result){
+					result = value;
+				}
+		        return result;
+			}
+	    };
+	    
+		$(divId).datagrid({
+		    url:baseUrl+'/crm/sys/role/get',
+		    columns:[[
+		        {field:'checkbox',checkbox:true},
+		        {field:'id',title:'ID',width:35},
+		        {field:'role',title:'角色名称',width:150,editor:'text'},
+		        {field:'role_desc',title:'角色描述',width:150,editor:'text'},
+		        {field:'permission_ids',title:'权限',width:250,formatter:permission_formatter,editor:permission_editor}
+		    ]],
+		    queryParams:{
+		    	pagination:1
+		    },
+		    pagination:true,
+		    pagePosition:'top'
+		}).datagrid('enableCellEditing');
+		
+		$(divId).datagrid('getPager').pagination({
+			displayMsg:'位置: {from} 到 {to} 行，共计 {total} 项',
+			layout:['list','sep','first','prev','sep','links','sep','next','last','sep','refresh'],
+			buttons:[{
+				iconCls: 'fa fa-plus',
+				text:'添加',
+				handler: function(){
+					addRow();
+					}
+			},'-',{
+				iconCls: 'fa fa-remove',
+				text:'删除',
+				handler: function(){
+					delRow();
+				}
+			},'-',{
+				iconCls: 'fa fa-save',
+				text:'保存',
+				handler: function(){
+					saveRow();
+					}
+			},'-']
+	    });
+		
+		function addRow(){
+			endEdit();
+			$(divId).datagrid('appendRow',{});
+	    }
+		
+		function delRow(){
+			endEdit();
+			$.each($(divId).datagrid('getChecked'), function(index, element) {
+				var rowIndex = $(divId).datagrid('getRowIndex', element);
+				$(divId).datagrid('deleteRow', rowIndex);
+			});
+		}
+
+		function saveRow() {
+			endEdit();
+			var insertRows = $(divId).datagrid('getChanges', 'inserted');
+			var updateRows = $(divId).datagrid('getChanges', 'updated');
+			var deleteRows = $(divId).datagrid('getChanges', 'deleted');
+			$.post(baseUrl+"/crm/sys/role/save", {
+				inserted : JSON.stringify(insertRows),
+				updated : JSON.stringify(updateRows),
+				deleted : JSON.stringify(deleteRows)
+			}, function(data) {
+				if (data && data.msgType == 'success'){
+					refreshTable();
+					$.messager.alert(data.msgType, data.msgDesc, 'info');
+				}else{
+					$.messager.alert('错误', '未知错误！', 'error');
+				}
+			});
+		}
+
+		function endEdit() {
+			var editCell = $(divId).datagrid('cell');
+			if (editCell) {
+				$(divId).datagrid('endEdit', editCell.index);
+			}
+		}
+
+		function refreshTable() {
+			$(divId).datagrid('reload');
+		}
+	})('#_sys_role_table');
+</script>
