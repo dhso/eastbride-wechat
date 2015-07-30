@@ -1,4 +1,16 @@
-<table id="_sys_user_table"></table>
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'east',width:250,title:'密码生成器',collapsed:true" style="padding:5px;">
+		<label for="_pw_tool_password">密码: <input class="easyui-textbox" id="_pw_tool_password" data-options="height:22,width:80"></label>
+		<label for="_pw_tool_salt">盐值: <input class="easyui-textbox" id="_pw_tool_salt" data-options="height:22,width:80"></label>
+		<p></p>
+		<a href="javascript:generation();" class="easyui-linkbutton" data-options="iconCls:'fa fa-key',height:22">生成</a>
+		<input class="easyui-textbox" id="_pw_tool_result" data-options="height:22,width:165">
+    </div>
+	<div data-options="region:'center'">
+    	<table id="_sys_user_table"></table>
+	</div>
+</div>
+
 <script type="text/javascript" src="${baseUrl}/static/easyui/ext/datagrid-cellediting.js"></script>
 <script>
 (function(divId){
@@ -50,7 +62,8 @@
 	    	pagination:1
 	    },
 	    pagination:true,
-	    pagePosition:'top'
+	    pagePosition:'top',
+	    footbar:'#pw-tool'
 	}).datagrid('enableCellEditing');
 	
 	$(divId).datagrid('getPager').pagination({
@@ -119,5 +132,18 @@
 	function refreshTable() {
 		$(divId).datagrid('reload');
 	}
+	
 })('#_sys_user_table');
+
+function generation(){
+	$('#_pw_tool_result').textbox('setValue','正在生成...');
+	var password = $('#_pw_tool_password').textbox('getValue');
+	var salt = $('#_pw_tool_salt').textbox('getValue');
+	$.post( baseUrl+'/crm/sys/user/create/password', {
+		password:password,
+		salt:salt
+	}, function(data) {
+		$('#_pw_tool_result').textbox('setValue',data);
+	});
+}
 </script>

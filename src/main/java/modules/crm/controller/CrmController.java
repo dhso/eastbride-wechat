@@ -12,6 +12,8 @@ import modules.system.model.SysConfigModel;
 import modules.wechat.model.CustomerModel;
 
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.util.ByteSource;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -120,6 +122,12 @@ public class CrmController extends Controller {
 	}
 
 	@RequiresAuthentication
+	@ActionKey("crm/sys/permission")
+	public void crmSysPermission() {
+		render("sys-permission.htm");
+	}
+
+	@RequiresAuthentication
 	@ActionKey("crm/sys/permission/get")
 	public void crmSysPermissionGet() {
 		Integer pageNumber = getParaToInt("page", 1);
@@ -132,6 +140,25 @@ public class CrmController extends Controller {
 			Page<Record> permissionPage = ShiroModel.dao.getAllPermissionPage(pageNumber, pageSize);
 			renderJson(new DataGrid(String.valueOf(permissionPage.getTotalRow()), permissionPage.getList()));
 		}
+	}
+
+	@RequiresAuthentication
+	@ActionKey("crm/sys/permission/save")
+	@Before(Tx.class)
+	public void crmSysPermissionSave() {
+		JSONArray insertedJson = JSON.parseArray(getPara("inserted"));
+		JSONArray updatedJson = JSON.parseArray(getPara("updated"));
+		JSONArray deletedJson = JSON.parseArray(getPara("deleted"));
+		if (insertedJson.size() > 0) {
+			ShiroModel.dao.insertPermission(insertedJson);
+		}
+		if (updatedJson.size() > 0) {
+			ShiroModel.dao.updatePermission(updatedJson);
+		}
+		if (deletedJson.size() > 0) {
+			ShiroModel.dao.deletePermission(deletedJson);
+		}
+		renderJson(new Message("200", "success", "保存成功！"));
 	}
 
 	@RequiresAuthentication
@@ -256,4 +283,12 @@ public class CrmController extends Controller {
 		renderJson(new Message("200", "success", "保存成功！"));
 	}
 
+	@RequiresAuthentication
+	@ActionKey("crm/sys/user/create/password")
+	public void crmSysUserCreatePassword() {
+		String password = getPara("password", "");
+		String salt = getPara("salt", "");
+		String newPassword = new SimpleHash("md5", password, ByteSource.Util.bytes(salt), 2).toHex();
+		renderText(newPassword);
+	}
 }

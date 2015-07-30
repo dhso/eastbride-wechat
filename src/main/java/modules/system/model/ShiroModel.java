@@ -99,21 +99,11 @@ public class ShiroModel extends Model<ShiroModel> {
 	public void updateRole(List<?> list) {
 		List<Record> recordList = RecordKit.list2RecordList(list);
 		Db.batch("update shiro_roles set role = ?,role_desc = ? where id = ?", "role,role_desc,id", recordList, recordList.size());
+		Db.batch("delete from shiro_roles_permissions where role_id = ?", "id", recordList, recordList.size());
 		List<String> sqlList = new ArrayList<String>();
-		Iterator<JSONObject> delListIt = (Iterator<JSONObject>) list.iterator();
-		while (delListIt.hasNext()) {
-			JSONObject itNext = delListIt.next();
-			String permission_ids = itNext.getString("permission_ids");
-			if (null != permission_ids && !permission_ids.equals("")) {
-				String[] permissionIds = permission_ids.split(",");
-				for (int i = 0; i < permissionIds.length; i++) {
-					sqlList.add("delete from shiro_roles_permissions where role_id = \"" + itNext.getString("id") + "\"");
-				}
-			}
-		}
-		Iterator<JSONObject> updateListIt = (Iterator<JSONObject>) list.iterator();
-		while (updateListIt.hasNext()) {
-			JSONObject itNext = updateListIt.next();
+		Iterator<JSONObject> insertListIt = (Iterator<JSONObject>) list.iterator();
+		while (insertListIt.hasNext()) {
+			JSONObject itNext = insertListIt.next();
 			String permission_ids = itNext.getString("permission_ids");
 			if (null != permission_ids && !permission_ids.equals("")) {
 				String[] permissionIds = permission_ids.split(",");
@@ -132,25 +122,10 @@ public class ShiroModel extends Model<ShiroModel> {
 	 * 
 	 * @param list
 	 */
-	@SuppressWarnings("unchecked")
 	public void deleteRole(List<?> list) {
 		List<Record> recordList = RecordKit.list2RecordList(list);
 		Db.batch("delete from shiro_roles where id = ?", "id", recordList, recordList.size());
-		List<String> sqlList = new ArrayList<String>();
-		Iterator<JSONObject> delListIt = (Iterator<JSONObject>) list.iterator();
-		while (delListIt.hasNext()) {
-			JSONObject itNext = delListIt.next();
-			String permission_ids = itNext.getString("permission_ids");
-			if (null != permission_ids && !permission_ids.equals("")) {
-				String[] permissionIds = permission_ids.split(",");
-				for (int i = 0; i < permissionIds.length; i++) {
-					sqlList.add("delete from shiro_roles_permissions where role_id = \"" + itNext.getString("id") + "\"");
-				}
-			}
-		}
-		if (sqlList.size() > 0) {
-			Db.batch(sqlList, sqlList.size());
-		}
+		Db.batch("delete from shiro_roles_permissions where role_id = ?", "id", recordList, recordList.size());
 	}
 
 	/**
@@ -187,6 +162,39 @@ public class ShiroModel extends Model<ShiroModel> {
 	 */
 	public Page<Record> getAllPermissionPage(Integer pageNumber, Integer pageSize) {
 		return Db.paginate(pageNumber, pageSize, "select *", "from shiro_permissions");
+	}
+
+	/**
+	 * 批量添加Permission
+	 * 
+	 * @param list
+	 * @return
+	 */
+	public int[] insertPermission(List<?> list) {
+		List<Record> recordList = RecordKit.list2RecordList(list);
+		return Db.batch("insert into shiro_permissions(permission,permission_desc) values (?,?)", "permission,permission_desc", recordList, recordList.size());
+	}
+
+	/**
+	 * 批量更新Permission
+	 * 
+	 * @param list
+	 * @return
+	 */
+	public int[] updatePermission(List<?> list) {
+		List<Record> recordList = RecordKit.list2RecordList(list);
+		return Db.batch("update shiro_permissions set permission = ?,permission_desc = ? where id = ?", "permission,permission_desc,id", recordList, recordList.size());
+	}
+
+	/**
+	 * 批量删除Permission
+	 * 
+	 * @param list
+	 */
+	public void deletePermission(List<?> list) {
+		List<Record> recordList = RecordKit.list2RecordList(list);
+		Db.batch("delete from shiro_permissions where id = ?", "id", recordList, recordList.size());
+		Db.batch("delete from shiro_roles_permissions where permission_id = ?", "id", recordList, recordList.size());
 	}
 
 	/**
