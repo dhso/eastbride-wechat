@@ -1,12 +1,11 @@
 <div class="easyui-layout" data-options="fit:true">
-    <div data-options="region:'east',width:250,title:'密码生成器',collapsed:true" style="padding:5px;">
+    <div data-options="region:'south',title:'密码生成器',height:65,border:false,iconCls:'fa fa-key'" style="padding:5px;">
 		<label for="_pw_tool_password">密码: <input class="easyui-textbox" id="_pw_tool_password" data-options="height:22,width:80"></label>
 		<label for="_pw_tool_salt">盐值: <input class="easyui-textbox" id="_pw_tool_salt" data-options="height:22,width:80"></label>
-		<p></p>
-		<a href="javascript:generation();" class="easyui-linkbutton" data-options="iconCls:'fa fa-key',height:22">生成</a>
-		<input class="easyui-textbox" id="_pw_tool_result" data-options="height:22,width:165">
+		<a href="javascript:generation();" class="easyui-linkbutton" data-options="iconCls:'fa fa-hand-o-right',height:22">生成</a>
+		<input class="easyui-textbox" id="_pw_tool_result" data-options="height:22,width:265">
     </div>
-	<div data-options="region:'center'">
+	<div data-options="region:'center',border:false">
     	<table id="_sys_user_table"></table>
 	</div>
 </div>
