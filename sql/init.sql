@@ -18,16 +18,14 @@ CREATE TABLE IF NOT EXISTS `shiro_permissions` (
   `permission_desc` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_permissions_permission` (`permission`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
--- 正在导出表  wechat.shiro_permissions 的数据：~4 rows (大约)
+-- 正在导出表  wechat.shiro_permissions 的数据：~3 rows (大约)
 DELETE FROM `shiro_permissions`;
 /*!40000 ALTER TABLE `shiro_permissions` DISABLE KEYS */;
 INSERT INTO `shiro_permissions` (`id`, `permission`, `permission_desc`) VALUES
 	(1, 'crm:system:auth', '权限设置'),
-	(2, 'crm:wechat:view', '微信查看'),
-	(3, 'cms:wechat:setting', '微信设置'),
-	(4, 'cms:system:setting', '系统设置');
+	(2, 'cms:system:setting', '系统设置');
 /*!40000 ALTER TABLE `shiro_permissions` ENABLE KEYS */;
 
 
@@ -59,18 +57,14 @@ CREATE TABLE IF NOT EXISTS `shiro_roles_permissions` (
   PRIMARY KEY (`role_id`,`permission_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 正在导出表  wechat.shiro_roles_permissions 的数据：~8 rows (大约)
+-- 正在导出表  wechat.shiro_roles_permissions 的数据：~4 rows (大约)
 DELETE FROM `shiro_roles_permissions`;
 /*!40000 ALTER TABLE `shiro_roles_permissions` DISABLE KEYS */;
 INSERT INTO `shiro_roles_permissions` (`role_id`, `permission_id`) VALUES
 	(1, 1),
 	(1, 2),
-	(1, 3),
-	(1, 4),
 	(2, 2),
-	(2, 3),
-	(3, 1),
-	(3, 4);
+	(3, 1);
 /*!40000 ALTER TABLE `shiro_roles_permissions` ENABLE KEYS */;
 
 
@@ -86,17 +80,18 @@ CREATE TABLE IF NOT EXISTS `shiro_urls` (
   `url_order` int(11) NOT NULL,
   `is_iframe` int(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- 正在导出表  wechat.shiro_urls 的数据：~5 rows (大约)
 DELETE FROM `shiro_urls`;
 /*!40000 ALTER TABLE `shiro_urls` DISABLE KEYS */;
 INSERT INTO `shiro_urls` (`id`, `permission_id`, `url_type_id`, `url`, `text`, `icon`, `url_order`, `is_iframe`) VALUES
-	(1, 1, 2, '/system/permission', '权限管理', 'fa fa-cog', 1003, 0),
-	(2, 1, 2, '/system/url', '链接管理', 'fa fa-cog', 1001, 0),
-	(3, 1, 2, '/system/url_type', '链接类型', 'fa fa-cog', 1002, 0),
-	(4, 1, 2, '/system/user', '用户管理', 'fa fa-cog', 1005, 0),
-	(5, 1, 2, '/system/role', '角色管理', 'fa fa-cog', 1004, 0);
+	(1, 1, 1, '/system/permission', '权限管理', 'fa fa-cog', 1003, 0),
+	(2, 1, 1, '/system/url', '链接管理', 'fa fa-cog', 1001, 0),
+	(3, 1, 1, '/system/url_type', '链接类型', 'fa fa-cog', 1002, 0),
+	(4, 1, 1, '/system/user', '用户管理', 'fa fa-cog', 1005, 0),
+	(5, 1, 1, '/system/role', '角色管理', 'fa fa-cog', 1004, 0),
+	(6, 2, 2, '/druid/index.htm', 'durid监控', 'fa fa-cog', 2001, 1);
 /*!40000 ALTER TABLE `shiro_urls` ENABLE KEYS */;
 
 
@@ -113,8 +108,8 @@ CREATE TABLE IF NOT EXISTS `shiro_urls_type` (
 DELETE FROM `shiro_urls_type`;
 /*!40000 ALTER TABLE `shiro_urls_type` DISABLE KEYS */;
 INSERT INTO `shiro_urls_type` (`url_type_id`, `url_type_name`, `url_type_icon`) VALUES
-	(1, '微信管理', 'fa fa-weixin'),
-	(2, '系统管理', 'fa fa-cog');
+	(1, '权限配置', 'fa fa-cog'),
+	(2, '系统配置', 'fa fa-cog');
 /*!40000 ALTER TABLE `shiro_urls_type` ENABLE KEYS */;
 
 
