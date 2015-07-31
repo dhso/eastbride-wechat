@@ -2,6 +2,7 @@ package config;
 
 import modules.crm.controller.CrmController;
 import modules.system.controller.SecurityController;
+import modules.system.controller.SystemController;
 import modules.wechat.controller.WechatApiController;
 import modules.wechat.controller.WechatMsgController;
 import modules.weshop.controller.ShopController;
@@ -67,6 +68,7 @@ public class BaseConfig extends JFinalConfig {
 	public void configRoute(Routes me) {
 		this.routes = me;
 		me.add("/security", SecurityController.class, "/security");// 安全
+		me.add("/system", SystemController.class, "/system");// 安全
 		me.add("/shop", ShopController.class, "/shop");// 商城
 		me.add("/wechat", WechatMsgController.class);// 微信
 		me.add("/wechatApi", WechatApiController.class, "/wechatApi");// 微信API
@@ -90,7 +92,7 @@ public class BaseConfig extends JFinalConfig {
 		// 添加自动绑定model与表插件
 		AutoTableBindPlugin autoTableBindPlugin = new AutoTableBindPlugin(druidPlugin, SimpleNameStyles.LOWER_UNDERLINE);
 		autoTableBindPlugin.setShowSql(true);
-		//autoTableBindPlugin.setContainerFactory(new CaseInsensitiveContainerFactory());
+		// autoTableBindPlugin.setContainerFactory(new CaseInsensitiveContainerFactory());
 		autoTableBindPlugin.setDevMode(PropKit.getBoolean("devMode", false));
 		me.add(autoTableBindPlugin);
 		// 添加消息驱动插件

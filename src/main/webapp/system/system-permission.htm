@@ -1,59 +1,14 @@
-<table id="_sys_role_table"></table>
+<table id="_sys_permission"></table>
 <script type="text/javascript" src="${baseUrl}/static/easyui/ext/datagrid-cellediting.js"></script>
 <script>
 	(function(divId){
-		var permission_data = [];
-		$.ajaxSetup({
-			async:false
-		});
-		$.post( baseUrl+'/crm/sys/permission/get', {
-	    	pagination:0
-		}, function(data) {
-			$.each(data,function(index,element){
-				var map = {};
-				map["id"] = element.id;
-				map["text"] = element.permission_desc;
-				permission_data.push(map);
-			});
-		});
-		
-		var permission_editor = {
-	            type:'combotree',
-	            options:{
-	            	data:permission_data,
-	            	multiple:true
-	            }
-	        };
-		var permission_formatter = function(value,row,index){
-			if(value){
-				var values = value.split(',');
-				var result = '';
-				$.each(values,function(index1,element1){
-					$.each(permission_data,function(index2,element2){
-						if(element2.id == element1){
-							if(index1 != 0){
-								result += ',';
-							}
-							result += element2.text;
-							return;
-						}
-					});
-				});
-				if(!result){
-					result = value;
-				}
-		        return result;
-			}
-	    };
-	    
 		$(divId).datagrid({
-		    url:baseUrl+'/crm/sys/role/get',
+		    url:baseUrl+'/system/permission/get',
 		    columns:[[
 		        {field:'checkbox',checkbox:true},
 		        {field:'id',title:'ID',width:35},
-		        {field:'role',title:'角色名称',width:150,editor:'text'},
-		        {field:'role_desc',title:'角色描述',width:150,editor:'text'},
-		        {field:'permission_ids',title:'权限',width:500,formatter:permission_formatter,editor:permission_editor}
+		        {field:'permission',title:'权限',width:250,editor:'text'},
+		        {field:'permission_desc',title:'权限描述',width:350,editor:'text'}
 		    ]],
 		    queryParams:{
 		    	pagination:1
@@ -104,7 +59,7 @@
 			var insertRows = $(divId).datagrid('getChanges', 'inserted');
 			var updateRows = $(divId).datagrid('getChanges', 'updated');
 			var deleteRows = $(divId).datagrid('getChanges', 'deleted');
-			$.post(baseUrl+"/crm/sys/role/save", {
+			$.post(baseUrl+"/system/permission/save", {
 				inserted : JSON.stringify(insertRows),
 				updated : JSON.stringify(updateRows),
 				deleted : JSON.stringify(deleteRows)
@@ -128,5 +83,5 @@
 		function refreshTable() {
 			$(divId).datagrid('reload');
 		}
-	})('#_sys_role_table');
+	})('#_sys_permission');
 </script>

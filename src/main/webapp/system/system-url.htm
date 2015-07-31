@@ -1,68 +1,81 @@
-<div class="easyui-layout" data-options="fit:true">
-    <div data-options="region:'south',title:'密码生成器',height:65,border:false,iconCls:'fa fa-key'" style="padding:5px;">
-		<label for="_pw_tool_password">密码: <input class="easyui-textbox" id="_pw_tool_password" data-options="height:22,width:80"></label>
-		<label for="_pw_tool_salt">盐值: <input class="easyui-textbox" id="_pw_tool_salt" data-options="height:22,width:80"></label>
-		<a href="javascript:generation();" class="easyui-linkbutton" data-options="iconCls:'fa fa-hand-o-right',height:22">生成</a>
-		<input class="easyui-textbox" id="_pw_tool_result" data-options="height:22,width:265">
-    </div>
-	<div data-options="region:'center',border:false">
-    	<table id="_sys_user_table"></table>
-	</div>
-</div>
-
+<table id="_sys_url_table"></table>
 <script type="text/javascript" src="${baseUrl}/static/easyui/ext/datagrid-cellediting.js"></script>
 <script>
 (function(divId){
-	var role_data;
+	var url_type_data,permission_data;
 	$.ajaxSetup({
 		async:false
 	});
-	$.post( baseUrl+'/crm/sys/role/get', {
+	$.post( baseUrl+'/system/url_type/get', {
     	pagination:0
 	}, function(data) {
-		role_data = data;
+		url_type_data = data;
+	});
+    $.post( baseUrl+'/system/permission/get', {
+    	pagination:0
+	}, function(data) {
+		permission_data = data;
 	});
     
-	var role_editor = {
+	var url_type_editor = {
             type:'combobox',
             options:{
-                valueField:'id',
-                textField:'role_desc',
-                data:role_data
+                valueField:'url_type_id',
+                textField:'url_type_name',
+                data:url_type_data
             }
         };
-	var role_formatter = function(value,row,index){
-		$.each(role_data,function(index,element){
-			if(element.id == value){
-				value = element.role_desc;
+	var url_type_formatter = function(value,row,index){
+		$.each(url_type_data,function(index,element){
+			if(element.url_type_id == value){
+				value = element.url_type_name;
 				return;
 			}
 		});
         return value;
     };
     
-    var locked_editor={
+    var permission_editor = {
+            type:'combobox',
+            options:{
+                valueField:'id',
+                textField:'permission_desc',
+                data:permission_data
+            }
+        };
+	var permission_formatter = function(value,row,index){
+		$.each(permission_data,function(index,element){
+			if(element.id == value){
+				value = element.permission_desc;
+				return;
+			}
+		});
+        return value;
+    };
+    
+    var is_iframe_editor={
     		type:'checkbox',
     		options:{on:'1',off:'0'}
     };
     
 	$(divId).datagrid({
-	    url:baseUrl+'/crm/sys/user/get',
+	    url:baseUrl+'/system/url/get',
 	    columns:[[
 			{field:'checkbox',checkbox:true},
 	        {field:'id',title:'ID',width:35},
-	        {field:'username',title:'用户',width:100,editor:'text'},
-	        {field:'salt',title:'盐值',width:100,editor:'text'},
-	        {field:'password',title:'密码',width:250,editor:'text'},
-	        {field:'role_id',title:'角色',width:250,formatter:role_formatter,editor:role_editor},
-	        {field:'locked',title:'锁定',width:35,align:'center',editor:locked_editor}
+	        {field:'url',title:'链接',width:250,editor:'text'},
+	        {field:'text',title:'链接名称',width:150,editor:'text'},
+	        {field:'icon',title:'链接图标',width:150,editor:'text'},
+	        {field:'url_type_id',title:'所属分类',width:150,formatter:url_type_formatter,editor:url_type_editor},
+	        {field:'permission_id',title:'权限',width:150,formatter:permission_formatter,editor:permission_editor},
+	        {field:'url_order',title:'排序',width:60,editor:'text'},
+	        {field:'is_iframe',title:'是否Iframe',width:80,align:'center',editor:is_iframe_editor}
 	    ]],
 	    queryParams:{
 	    	pagination:1
 	    },
 	    pagination:true,
-	    pagePosition:'top',
-	    footbar:'#pw-tool'
+	    pagePosition:'top'
 	}).datagrid('enableCellEditing');
 	
 	$(divId).datagrid('getPager').pagination({
@@ -91,7 +104,7 @@
 
 	function addRow(){
 		endEdit();
-		$(divId).datagrid('appendRow',{locked:'0'});
+		$(divId).datagrid('appendRow',{is_iframe:'0'});
     }
 	
 	function delRow(){
@@ -107,7 +120,7 @@
 		var insertRows = $(divId).datagrid('getChanges', 'inserted');
 		var updateRows = $(divId).datagrid('getChanges', 'updated');
 		var deleteRows = $(divId).datagrid('getChanges', 'deleted');
-		$.post(baseUrl+"/crm/sys/user/save", {
+		$.post(baseUrl+"/system/url/save", {
 			inserted : JSON.stringify(insertRows),
 			updated : JSON.stringify(updateRows),
 			deleted : JSON.stringify(deleteRows)
@@ -131,18 +144,5 @@
 	function refreshTable() {
 		$(divId).datagrid('reload');
 	}
-	
-})('#_sys_user_table');
-
-function generation(){
-	$('#_pw_tool_result').textbox('setValue','正在生成...');
-	var password = $('#_pw_tool_password').textbox('getValue');
-	var salt = $('#_pw_tool_salt').textbox('getValue');
-	$.post( baseUrl+'/crm/sys/user/create/password', {
-		password:password,
-		salt:salt
-	}, function(data) {
-		$('#_pw_tool_result').textbox('setValue',data);
-	});
-}
+})('#_sys_url_table');
 </script>

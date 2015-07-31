@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `shiro_roles` (
   `role_desc` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_roles_role` (`role`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- 正在导出表  wechat.shiro_roles 的数据：~3 rows (大约)
 DELETE FROM `shiro_roles`;
@@ -47,7 +47,7 @@ DELETE FROM `shiro_roles`;
 INSERT INTO `shiro_roles` (`id`, `role`, `role_desc`) VALUES
 	(1, 'admin', '超级管理员'),
 	(2, 'wechat', '微信管理员'),
-	(14, 'system', '系统管理员');
+	(3, 'system', '系统管理员');
 /*!40000 ALTER TABLE `shiro_roles` ENABLE KEYS */;
 
 
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `shiro_roles_permissions` (
   PRIMARY KEY (`role_id`,`permission_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 正在导出表  wechat.shiro_roles_permissions 的数据：~5 rows (大约)
+-- 正在导出表  wechat.shiro_roles_permissions 的数据：~8 rows (大约)
 DELETE FROM `shiro_roles_permissions`;
 /*!40000 ALTER TABLE `shiro_roles_permissions` DISABLE KEYS */;
 INSERT INTO `shiro_roles_permissions` (`role_id`, `permission_id`) VALUES
@@ -69,8 +69,8 @@ INSERT INTO `shiro_roles_permissions` (`role_id`, `permission_id`) VALUES
 	(1, 4),
 	(2, 2),
 	(2, 3),
-	(14, 1),
-	(14, 4);
+	(3, 1),
+	(3, 4);
 /*!40000 ALTER TABLE `shiro_roles_permissions` ENABLE KEYS */;
 
 
@@ -86,20 +86,17 @@ CREATE TABLE IF NOT EXISTS `shiro_urls` (
   `url_order` int(11) NOT NULL,
   `is_iframe` int(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
--- 正在导出表  wechat.shiro_urls 的数据：~8 rows (大约)
+-- 正在导出表  wechat.shiro_urls 的数据：~5 rows (大约)
 DELETE FROM `shiro_urls`;
 /*!40000 ALTER TABLE `shiro_urls` DISABLE KEYS */;
 INSERT INTO `shiro_urls` (`id`, `permission_id`, `url_type_id`, `url`, `text`, `icon`, `url_order`, `is_iframe`) VALUES
-	(1, 2, 1, '/crm/wx/customer', '客户管理', 'fa fa-weixin', 2001, 0),
-	(2, 4, 2, '/druid/index.html', 'druid监控', 'fa fa-bookmark', 1999, 1),
-	(3, 3, 1, '/crm/wx/config', '系统配置', 'fa fa-cog', 2002, 0),
-	(4, 1, 2, '/crm/sys/permission', '权限管理', 'fa fa-cog', 1001, 0),
-	(5, 1, 2, '/crm/sys/url', '链接管理', 'fa fa-cog', 1002, 0),
-	(6, 1, 2, '/crm/sys/url_type', '链接类型', 'fa fa-cog', 1003, 0),
-	(8, 1, 2, '/crm/sys/user', '用户管理', 'fa fa-cog', 1004, 0),
-	(9, 1, 2, '/crm/sys/role', '角色管理', 'fa fa-cog', 1005, 0);
+	(1, 1, 2, '/system/permission', '权限管理', 'fa fa-cog', 1003, 0),
+	(2, 1, 2, '/system/url', '链接管理', 'fa fa-cog', 1001, 0),
+	(3, 1, 2, '/system/url_type', '链接类型', 'fa fa-cog', 1002, 0),
+	(4, 1, 2, '/system/user', '用户管理', 'fa fa-cog', 1005, 0),
+	(5, 1, 2, '/system/role', '角色管理', 'fa fa-cog', 1004, 0);
 /*!40000 ALTER TABLE `shiro_urls` ENABLE KEYS */;
 
 
@@ -110,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `shiro_urls_type` (
   `url_type_name` varchar(50) NOT NULL,
   `url_type_icon` varchar(50) NOT NULL DEFAULT '0',
   PRIMARY KEY (`url_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- 正在导出表  wechat.shiro_urls_type 的数据：~2 rows (大约)
 DELETE FROM `shiro_urls_type`;
@@ -131,15 +128,15 @@ CREATE TABLE IF NOT EXISTS `shiro_users` (
   `locked` int(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_users_username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
--- 正在导出表  wechat.shiro_users 的数据：~2 rows (大约)
+-- 正在导出表  wechat.shiro_users 的数据：~3 rows (大约)
 DELETE FROM `shiro_users`;
 /*!40000 ALTER TABLE `shiro_users` DISABLE KEYS */;
 INSERT INTO `shiro_users` (`id`, `username`, `password`, `salt`, `locked`) VALUES
 	(1, 'admin', '8e7a4a6bad4f685bd9da4f78b5f76f9f', 'shiro', 0),
 	(2, 'system', 'b5435b43cca8783d13515ecaa3c28a6c', 'shiro', 0),
-	(8, 'wechat', '8e7a4a6bad4f685bd9da4f78b5f76f9f', 'shiro', 0);
+	(3, 'wechat', '8e7a4a6bad4f685bd9da4f78b5f76f9f', 'shiro', 0);
 /*!40000 ALTER TABLE `shiro_users` ENABLE KEYS */;
 
 
@@ -151,13 +148,13 @@ CREATE TABLE IF NOT EXISTS `shiro_users_roles` (
   PRIMARY KEY (`user_id`,`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 正在导出表  wechat.shiro_users_roles 的数据：~2 rows (大约)
+-- 正在导出表  wechat.shiro_users_roles 的数据：~3 rows (大约)
 DELETE FROM `shiro_users_roles`;
 /*!40000 ALTER TABLE `shiro_users_roles` DISABLE KEYS */;
 INSERT INTO `shiro_users_roles` (`user_id`, `role_id`) VALUES
 	(1, 1),
-	(2, 14),
-	(8, 2);
+	(2, 3),
+	(3, 2);
 /*!40000 ALTER TABLE `shiro_users_roles` ENABLE KEYS */;
 
 
@@ -225,7 +222,7 @@ CREATE TABLE IF NOT EXISTS `shop_wifi` (
   PRIMARY KEY (`openId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 正在导出表  wechat.shop_wifi 的数据：~1 rows (大约)
+-- 正在导出表  wechat.shop_wifi 的数据：~0 rows (大约)
 DELETE FROM `shop_wifi`;
 /*!40000 ALTER TABLE `shop_wifi` DISABLE KEYS */;
 INSERT INTO `shop_wifi` (`openId`, `captcha`, `expired_dt`) VALUES
