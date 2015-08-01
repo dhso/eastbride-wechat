@@ -4,6 +4,7 @@ import modules.crm.controller.CrmController;
 import modules.system.controller.SecurityController;
 import modules.system.controller.SystemController;
 import modules.wechat.controller.WechatApiController;
+import modules.wechat.controller.WechatController;
 import modules.wechat.controller.WechatMsgController;
 import modules.weshop.controller.ShopController;
 
@@ -70,6 +71,7 @@ public class BaseConfig extends JFinalConfig {
 		me.add("/security", SecurityController.class, "/security");// 安全
 		me.add("/system", SystemController.class, "/system");// 安全
 		me.add("/shop", ShopController.class, "/shop");// 商城
+		me.add("/weixin", WechatController.class, "/weixin");// 微信
 		me.add("/wechat", WechatMsgController.class);// 微信
 		me.add("/wechatApi", WechatApiController.class, "/wechatApi");// 微信API
 		me.add("/crm", CrmController.class, "/crm");// CRM

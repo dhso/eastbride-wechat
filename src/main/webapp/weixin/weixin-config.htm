@@ -11,7 +11,7 @@
 </div>
 <script>
 $('#_base_config').propertygrid({
-    url: baseUrl + '/crm/wx/config/get',
+    url: baseUrl + '/weixin/config/get',
     queryParams:{
     	type:'3'
     },
@@ -20,7 +20,7 @@ $('#_base_config').propertygrid({
     showHeader:false
 });
 $('#_menu_config').propertygrid({
-    url: baseUrl + '/crm/wx/config/get',
+    url: baseUrl + '/weixin/config/get',
     queryParams:{
     	type:'2'
     },
@@ -29,12 +29,37 @@ $('#_menu_config').propertygrid({
     showHeader:false
 });
 $('#_other_config').propertygrid({
-    url: baseUrl + '/crm/wx/config/get',
+    url: baseUrl + '/weixin/config/get',
     queryParams:{
     	type:'1'
     },
     showGroup: true,
     scrollbarSize: 0,
-    showHeader:false
+    showHeader:false,
+    pagination:true,
+    pagePosition:'top'
+});
+$('#_other_config').datagrid('getPager').pagination({
+	displayMsg:'位置: {from} 到 {to} 行，共计 {total} 项',
+	layout:['list','sep','first','prev','sep','links','sep','next','last','sep','refresh'],
+	buttons:[{
+		iconCls: 'fa fa-plus',
+		text:'添加',
+		handler: function(){
+			addRow();
+			}
+	},'-',{
+		iconCls: 'fa fa-remove',
+		text:'删除',
+		handler: function(){
+			delRow();
+		}
+	},'-',{
+		iconCls: 'fa fa-save',
+		text:'保存',
+		handler: function(){
+			saveRow();
+			}
+	},'-']
 });
 </script>
