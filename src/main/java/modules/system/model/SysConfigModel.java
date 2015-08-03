@@ -2,7 +2,10 @@ package modules.system.model;
 
 import java.util.List;
 
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
+import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 
 import frame.plugin.tablebind.TableBind;
 
@@ -50,12 +53,39 @@ public class SysConfigModel extends Model<SysConfigModel> {
 	}
 
 	/**
-	 * 通过type获取配置
+	 * 分页获取配置属性
+	 * 
+	 * @return
+	 */
+	public Page<SysConfigModel> getConfigsPage(int pageNumber, int pageSize) {
+		return SysConfigModel.dao.paginate(pageNumber, pageSize, "select *", "from sys_config sc left join sys_config_type sct on sct.cfg_type_id = sc.cfg_type_id");
+	}
+
+	/**
+	 * 通过TYPE分页获取配置属性
 	 * 
 	 * @param cfg_type_id
 	 * @return
 	 */
-	public List<SysConfigModel> getConfigByType(String cfg_type_id) {
-		return SysConfigModel.dao.find("select * from sys_config sc left join sys_config_type sct on sct.cfg_type_id = sc.cfg_type_id where sc.cfg_type_id = ?", cfg_type_id);
+	public Page<SysConfigModel> getConfigsPageByType(int pageNumber, int pageSize, String cfg_type_id) {
+		return SysConfigModel.dao.paginate(pageNumber, pageSize, "select *", "from sys_config sc left join sys_config_type sct on sct.cfg_type_id = sc.cfg_type_id where sc.cfg_type_id = ?", cfg_type_id);
+	}
+
+	/**
+	 * 获取属性
+	 * 
+	 * @return
+	 */
+	public List<Record> getConfigTypes() {
+		return Db.find("select * from sys_config_type");
+	}
+
+	/**
+	 * 分页获取属性
+	 * 
+	 * @return
+	 */
+	public Page<Record> getConfigTypesPage(int pageNumber, int pageSize) {
+		return Db.paginate(pageNumber, pageSize, "select *", "from sys_config_type");
 	}
 }

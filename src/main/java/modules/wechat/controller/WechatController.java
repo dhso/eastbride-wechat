@@ -1,10 +1,6 @@
 package modules.wechat.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import modules.system.model.SysConfigModel;
 import modules.wechat.model.CustomerModel;
@@ -14,6 +10,7 @@ import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 
 import frame.plugin.easyui.DataGrid;
 
@@ -42,21 +39,31 @@ public class WechatController extends Controller {
 	@RequiresAuthentication
 	@ActionKey("weixin/config/get")
 	public void crmWxConfigGet() {
-		String type = getPara("type");
-		List<SysConfigModel> sysConfigs = SysConfigModel.dao.getConfigByType(type);
-		ArrayList<Map<String, String>> rowList = new ArrayList<Map<String, String>>();
-		Iterator<SysConfigModel> scIt = sysConfigs.iterator();
-		while (scIt.hasNext()) {
-			SysConfigModel sysConfigModel = scIt.next();
-			Map<String, String> map = new HashMap<String, String>();
-			map.put("name", String.valueOf(sysConfigModel.get("cfg_key")));
-			map.put("value", String.valueOf(sysConfigModel.get("cfg_value")));
-			map.put("group", String.valueOf(sysConfigModel.get("cfg_type_name")));
-			map.put("editor", "text");
-			rowList.add(map);
-		}
-		renderJson(new DataGrid(String.valueOf(sysConfigs.size()), rowList));
+		Integer pageNumber = getParaToInt("page", 1);
+		Integer pageSize = getParaToInt("rows", 10);
+		Page<SysConfigModel> sysConfigs = SysConfigModel.dao.getConfigsPage(pageNumber, pageSize);
+		renderJson(new DataGrid(String.valueOf(sysConfigs.getTotalRow()), sysConfigs.getList()));
 	}
 
+	@RequiresAuthentication
+	@ActionKey("weixin/config_type")
+	public void crmWxConfigType() {
+		render("weixin-config-type.htm");
+	}
 	
+	@RequiresAuthentication
+	@ActionKey("weixin/config_type/get")
+	public void crmWxConfigTypeGet() {
+		Integer pageNumber = getParaToInt("page", 1);
+		Integer pageSize = getParaToInt("rows", 10);
+		Integer pagination = getParaToInt("pagination", 0);
+		if (pagination == 0) {
+			List<Record> configTypesList = SysConfigModel.dao.getConfigTypes();
+			renderJson(configTypesList);
+		} else {
+			Page<Record> configTypesPage = SysConfigModel.dao.getConfigTypesPage(pageNumber, pageSize);
+			renderJson(new DataGrid(String.valueOf(configTypesPage.getTotalRow()), configTypesPage.getList()));
+		}
+
+	}
 }
