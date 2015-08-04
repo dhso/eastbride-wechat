@@ -1,6 +1,7 @@
 package config;
 
 import modules.crm.controller.CrmController;
+import modules.doc.controller.DocController;
 import modules.system.controller.SecurityController;
 import modules.system.controller.SystemController;
 import modules.wechat.controller.WechatApiController;
@@ -70,6 +71,7 @@ public class BaseConfig extends JFinalConfig {
 		this.routes = me;
 		me.add("/security", SecurityController.class, "/security");// 安全
 		me.add("/system", SystemController.class, "/system");// 安全
+		me.add("/doc", DocController.class, "/doc");// 文档
 		me.add("/shop", ShopController.class, "/shop");// 商城
 		me.add("/weixin", WechatController.class, "/weixin");// 微信
 		me.add("/wechat", WechatMsgController.class);// 微信

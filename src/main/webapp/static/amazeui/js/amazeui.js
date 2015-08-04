@@ -1,4 +1,4 @@
-/*! Amaze UI v2.4.1 | by Amaze UI Team | (c) 2015 AllMobilize, Inc. | Licensed under MIT | 2015-06-30T13:44:43+0800 */ 
+/*! Amaze UI v2.4.2 | by Amaze UI Team | (c) 2015 AllMobilize, Inc. | Licensed under MIT | 2015-07-06T10:25:45+0800 */ 
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.AMUI = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 'use strict';
 
@@ -75,7 +75,7 @@ var $win = $(window);
 var doc = window.document;
 var $html = $('html');
 
-UI.VERSION = '2.4.1';
+UI.VERSION = '2.4.2';
 
 UI.support = {};
 
@@ -15125,7 +15125,7 @@ function goTopInit() {
 
   checkPosition();
 
-  $win.on('scroll.gotop.amui', $.AMUI.utils.debounce(checkPosition, 100));
+  $win.on('scroll.gotop.amui', UI.utils.debounce(checkPosition, 100));
 
   $goTop.data('init', true);
 }
@@ -15779,6 +15779,8 @@ var $ = (window.jQuery);
 var UI = _dereq_(2);
 
 var isWeChat = window.navigator.userAgent.indexOf('MicroMessenger') > -1;
+
+/* global wx,alert */
 
 function appendWeChatSDK(callback) {
   var $weChatSDK = $('<script/>', {
