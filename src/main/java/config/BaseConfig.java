@@ -1,5 +1,6 @@
 package config;
 
+import modules.blog.controller.BlogController;
 import modules.crm.controller.CrmController;
 import modules.doc.controller.DocController;
 import modules.system.controller.SecurityController;
@@ -77,6 +78,7 @@ public class BaseConfig extends JFinalConfig {
 		me.add("/wechat", WechatMsgController.class);// 微信
 		me.add("/wechatApi", WechatApiController.class, "/wechatApi");// 微信API
 		me.add("/crm", CrmController.class, "/crm");// CRM
+		me.add("/blog", BlogController.class, "/blog");// 博客
 	}
 
 	public void configPlugin(Plugins me) {
