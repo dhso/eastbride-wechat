@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `shiro_permissions` (
   UNIQUE KEY `idx_permissions_permission` (`permission`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
--- 正在导出表  wechat.shiro_permissions 的数据：~4 rows (大约)
+-- 正在导出表  wechat.shiro_permissions 的数据：~3 rows (大约)
 DELETE FROM `shiro_permissions`;
 /*!40000 ALTER TABLE `shiro_permissions` DISABLE KEYS */;
 INSERT INTO `shiro_permissions` (`id`, `permission`, `permission_desc`) VALUES
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `shiro_urls` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
--- 正在导出表  wechat.shiro_urls 的数据：~8 rows (大约)
+-- 正在导出表  wechat.shiro_urls 的数据：~9 rows (大约)
 DELETE FROM `shiro_urls`;
 /*!40000 ALTER TABLE `shiro_urls` DISABLE KEYS */;
 INSERT INTO `shiro_urls` (`id`, `permission_id`, `url_type_id`, `url`, `text`, `icon`, `url_order`, `is_iframe`) VALUES
@@ -95,8 +95,8 @@ INSERT INTO `shiro_urls` (`id`, `permission_id`, `url_type_id`, `url`, `text`, `
 	(5, 1, 1, '/system/role', '角色管理', 'fa fa-cog', 1004, 0),
 	(6, 2, 2, '/druid/index.htm', 'durid监控', 'fa fa-cog', 2001, 1),
 	(7, 2, 3, '/weixin/customer', '微信客户', 'fa fa-cog', 3001, 0),
-	(8, 3, 3, '/weixin/config', '微信参数', 'fa fa-cog', 3002, 0),
-	(9, 3, 3, '/weixin/config_type', '微信参数类型', 'fa fa-cog', 3003, 0);
+	(8, 2, 2, '/weixin/config', '参数管理', 'fa fa-cog', 2002, 0),
+	(9, 2, 2, '/weixin/config_type', '参数类型', 'fa fa-cog', 2003, 0);
 /*!40000 ALTER TABLE `shiro_urls` ENABLE KEYS */;
 
 
@@ -240,7 +240,7 @@ CREATE TABLE IF NOT EXISTS `sys_config` (
   PRIMARY KEY (`cfg_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 正在导出表  wechat.sys_config 的数据：~7 rows (大约)
+-- 正在导出表  wechat.sys_config 的数据：~8 rows (大约)
 DELETE FROM `sys_config`;
 /*!40000 ALTER TABLE `sys_config` DISABLE KEYS */;
 INSERT INTO `sys_config` (`cfg_key`, `cfg_value`, `cfg_type_id`) VALUES
@@ -263,7 +263,7 @@ CREATE TABLE IF NOT EXISTS `sys_config_type` (
   PRIMARY KEY (`cfg_type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
--- 正在导出表  wechat.sys_config_type 的数据：~2 rows (大约)
+-- 正在导出表  wechat.sys_config_type 的数据：~3 rows (大约)
 DELETE FROM `sys_config_type`;
 /*!40000 ALTER TABLE `sys_config_type` DISABLE KEYS */;
 INSERT INTO `sys_config_type` (`cfg_type_id`, `cfg_type_name`) VALUES
@@ -289,11 +289,12 @@ CREATE TABLE IF NOT EXISTS `wx_customer` (
   PRIMARY KEY (`openId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 正在导出表  wechat.wx_customer 的数据：~1 rows (大约)
+-- 正在导出表  wechat.wx_customer 的数据：~0 rows (大约)
 DELETE FROM `wx_customer`;
 /*!40000 ALTER TABLE `wx_customer` DISABLE KEYS */;
 INSERT INTO `wx_customer` (`openId`, `subscribe_flag`, `true_name`, `mobile`, `address`, `money`, `create_id`, `create_dt`, `update_id`, `update_dt`) VALUES
-	('410000100', '1', '', '', '', '', '直接关注', '2015-06-10 14:50:30', '直接关注', '2015-07-07 11:06:13');
+	('410000100', '1', '', '', '', '', '直接关注', '2015-06-10 14:50:30', '直接关注', '2015-07-07 11:06:13'),
+	('acxiom', '1', NULL, NULL, NULL, NULL, '直接关注', '2015-08-05 22:28:56', '直接关注', '2015-08-05 22:58:05');
 /*!40000 ALTER TABLE `wx_customer` ENABLE KEYS */;
 
 
@@ -303,16 +304,15 @@ CREATE TABLE IF NOT EXISTS `wx_props` (
   `appId` varchar(50) NOT NULL,
   `appSecret` varchar(50) NOT NULL,
   `token` varchar(100) NOT NULL,
-  `messageEncrypt` bit(1) NOT NULL,
-  `encodingAesKey` varchar(255) NOT NULL,
-  `userId` int(11) NOT NULL
+  `messageEncrypt` tinyint(1) NOT NULL,
+  `encodingAesKey` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信配置表';
 
--- 正在导出表  wechat.wx_props 的数据：~1 rows (大约)
+-- 正在导出表  wechat.wx_props 的数据：~0 rows (大约)
 DELETE FROM `wx_props`;
 /*!40000 ALTER TABLE `wx_props` DISABLE KEYS */;
-INSERT INTO `wx_props` (`appId`, `appSecret`, `token`, `messageEncrypt`, `encodingAesKey`, `userId`) VALUES
-	('wxbbaed5839238c4eb', '064682c9add7e6756f9f435c904825a9', 'eastbride', b'0', 'RBSOCvhUnTljEvosRNwwek2NB6wIuqI2B4sVNpM3Ni6', 1);
+INSERT INTO `wx_props` (`appId`, `appSecret`, `token`, `messageEncrypt`, `encodingAesKey`) VALUES
+	('wxbbaed5839238c4eb', '064682c9add7e6756f9f435c904825a9', 'eastbride', 0, 'RBSOCvhUnTljEvosRNwwek2NB6wIuqI2B4sVNpM3Ni6');
 /*!40000 ALTER TABLE `wx_props` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

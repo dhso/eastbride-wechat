@@ -19,11 +19,6 @@ public class BlogController extends Controller {
 		render("index.htm");
 	}
 
-	@RequiresAuthentication
-	@ActionKey("crm/menus")
-	public void crmMenus() {
-		List<Record> menus = ShiroModel.dao.getUrls(ShiroKit.who());
-		renderJson(menus);
-	}
+
 	
 }

@@ -156,6 +156,20 @@ public class StringKit extends StringUtils {
 	}
 
 	/**
+	 * 转换为boolean类型
+	 * 
+	 * @param val
+	 * @return
+	 */
+	public static Boolean toBoolean(Object val) {
+		if (toDouble(val) == 0D) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	/**
 	 * 转换为Date类型
 	 * 
 	 * @param val
