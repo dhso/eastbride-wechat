@@ -30,11 +30,11 @@
 		<profile>
 			<id>pro</id>
 			<properties>
-				<log4j.rootLogger>WARN, stdout, file</log4j.rootLogger>
+				<log4j.rootLogger>INFO</log4j.rootLogger>
 				<jdbcDriver>com.mysql.jdbc.Driver</jdbcDriver>
-				<jdbcUrl></jdbcUrl>
-				<jdbcUser></jdbcUser>
-				<jdbcPassword></jdbcPassword>
+				<jdbcUrl>jdbc:mysql://rdszjqbmqrqy2in.mysql.rds.aliyuncs.com:3306/re4591m0i5dm04kj</jdbcUrl>
+				<jdbcUser>mysql_admin</jdbcUser>
+				<jdbcPassword>923389</jdbcPassword>
 				<devMode>false</devMode>
 			</properties>
 		</profile>
