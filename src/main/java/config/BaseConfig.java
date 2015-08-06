@@ -3,7 +3,7 @@ package config;
 import modules.blog.controller.BlogController;
 import modules.crm.controller.CrmController;
 import modules.doc.controller.DocController;
-import modules.home.HomeController;
+import modules.home.controller.HomeController;
 import modules.system.controller.SecurityController;
 import modules.system.controller.SystemController;
 import modules.wechat.controller.WechatApiController;
@@ -139,6 +139,7 @@ public class BaseConfig extends JFinalConfig {
 
 	public void afterJFinalStart() {
 		super.afterJFinalStart();
+		FreeMarkerRender.getConfiguration().setClassicCompatible(true);
 		FreeMarkerRender.getConfiguration().setSharedVariable("shiro", new ShiroTags());
 	}
 }

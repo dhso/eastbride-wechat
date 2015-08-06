@@ -10,6 +10,27 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
+-- 导出  表 wechat.home_carousel 结构
+DROP TABLE IF EXISTS `home_carousel`;
+CREATE TABLE IF NOT EXISTS `home_carousel` (
+  `crs_id` int(11) NOT NULL AUTO_INCREMENT,
+  `crs_h2` varchar(255) DEFAULT NULL,
+  `crs_p` text,
+  `crs_img` text,
+  `crs_href` text,
+  `crs_button` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`crs_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- 正在导出表  wechat.home_carousel 的数据：~1 rows (大约)
+DELETE FROM `home_carousel`;
+/*!40000 ALTER TABLE `home_carousel` DISABLE KEYS */;
+INSERT INTO `home_carousel` (`crs_id`, `crs_h2`, `crs_p`, `crs_img`, `crs_href`, `crs_button`) VALUES
+	(1, '美轮美奂', '用心去拍，留下最美的瞬间！', 'static/modules/home/img/slide-3.jpg', '', '关注'),
+	(2, '唯你独尊', '客户至上，给你最好的服务！', 'static/modules/home/img/slide-4.jpg', NULL, '订阅');
+/*!40000 ALTER TABLE `home_carousel` ENABLE KEYS */;
+
+
 -- 导出  表 wechat.shiro_permissions 结构
 DROP TABLE IF EXISTS `shiro_permissions`;
 CREATE TABLE IF NOT EXISTS `shiro_permissions` (
@@ -223,7 +244,7 @@ CREATE TABLE IF NOT EXISTS `shop_wifi` (
   PRIMARY KEY (`openId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 正在导出表  wechat.shop_wifi 的数据：~1 rows (大约)
+-- 正在导出表  wechat.shop_wifi 的数据：~0 rows (大约)
 DELETE FROM `shop_wifi`;
 /*!40000 ALTER TABLE `shop_wifi` DISABLE KEYS */;
 INSERT INTO `shop_wifi` (`openId`, `captcha`, `expired_dt`) VALUES
@@ -311,12 +332,30 @@ CREATE TABLE IF NOT EXISTS `wx_dev_config` (
   PRIMARY KEY (`appId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信配置表';
 
--- 正在导出表  wechat.wx_dev_config 的数据：~1 rows (大约)
+-- 正在导出表  wechat.wx_dev_config 的数据：~0 rows (大约)
 DELETE FROM `wx_dev_config`;
 /*!40000 ALTER TABLE `wx_dev_config` DISABLE KEYS */;
 INSERT INTO `wx_dev_config` (`appId`, `appSecret`, `token`, `messageEncrypt`, `encodingAesKey`) VALUES
 	('wxbbaed5839238c4eb', '064682c9add7e6756f9f435c904825a9', 'eastbride', 0, 'RBSOCvhUnTljEvosRNwwek2NB6wIuqI2B4sVNpM3Ni6');
 /*!40000 ALTER TABLE `wx_dev_config` ENABLE KEYS */;
+
+
+-- 导出  表 wechat.wx_props 结构
+DROP TABLE IF EXISTS `wx_props`;
+CREATE TABLE IF NOT EXISTS `wx_props` (
+  `appId` varchar(50) NOT NULL,
+  `appSecret` varchar(50) NOT NULL,
+  `token` varchar(100) NOT NULL,
+  `messageEncrypt` tinyint(1) NOT NULL,
+  `encodingAesKey` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信配置表';
+
+-- 正在导出表  wechat.wx_props 的数据：~0 rows (大约)
+DELETE FROM `wx_props`;
+/*!40000 ALTER TABLE `wx_props` DISABLE KEYS */;
+INSERT INTO `wx_props` (`appId`, `appSecret`, `token`, `messageEncrypt`, `encodingAesKey`) VALUES
+	('wxbbaed5839238c4eb', '064682c9add7e6756f9f435c904825a9', 'eastbride', 0, 'RBSOCvhUnTljEvosRNwwek2NB6wIuqI2B4sVNpM3Ni6');
+/*!40000 ALTER TABLE `wx_props` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

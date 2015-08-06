@@ -483,31 +483,11 @@ html,body {
 	max-height: 100%;
 }
 
-.item-1 {
+.item-background {
 	position: absolute;
 	width: 100%;
 	height: 100%;
 	background: url(../img/slide-1.jpg);
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
-}
-
-.item-2 {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	background: url(../img/slide-2.jpg);
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
-}
-
-.item-3 {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	background: url(../img/slide-3.jpg);
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;

@@ -25,42 +25,20 @@
 
           <!-- Wrapper for slides -->
           <div class="carousel-inner">
-                <div class="item active">
-                    <div class="item-1"></div>
-                    <div class="carousel-caption">
-                        <div class="container">
-                            <div class="col-md-offset-2 col-md-8 col-sm-12">
-                                <h2>STREAM</h2>
-                                <p><strong><span class="green">template</span><span class="yellow">mo</span></strong>.com website provides a lot of free responsive templates for everyone. You can download, edit and apply this layout for any purpose. Please tell your friends about our website. Thank you.</p>
-                                <a href="#" class="button default">Details</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="item-2"></div>
-                    <div class="carousel-caption">
-                        <div class="container">
-                            <div class="col-md-offset-2 col-md-8 col-sm-12">
-                                <h2>Responsive Design</h2>
-                                <p>Credit goes to <a rel="nofollow" href="#"><span class="yellow">Unsplash</span></a> for images used in this template. Vivamus sed mauris ut libero tristique ultricies. Suspendisse sagittis eget augue vel condimentum. Sed malesuada tortor venenatis enim blandit interdum.</p>
-                                <a href="#" class="button default">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="item-3"></div>
-                    <div class="carousel-caption">
-                        <div class="container">
-                            <div class="col-md-offset-2 col-md-8 col-sm-12">
-                                <h2>Mobile Ready</h2>
-                                <p>Donec malesuada pellentesque cursus. In vestibulum metus sit amet est elementum, et malesuada mi consequat. Sed ultricies lectus sit amet venenatis condimentum. Morbi hendrerit posuere enim at aliquet.</p>
-                                <a href="#" class="button default">Let's talk</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+				<#list carouselList as carousel>
+			       <div class="item <#if carousel_index = 0>active</#if>">
+	                    <div class="item-background" style="background: url(${carousel.crs_img});"></div>
+	                    <div class="carousel-caption">
+	                        <div class="container">
+	                            <div class="col-md-offset-2 col-md-8 col-sm-12">
+	                                <h2>${carousel.crs_h2}</h2>
+	                                <p>${carousel.crs_p}</p>
+	                                <a href="${carousel.crs_href}" class="button default">${carousel.crs_button}</a>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+			    </#list>
             </div>
             <!-- SLIDER OPTIONS -->
             <div class="slider-options">
@@ -79,9 +57,9 @@
                         <div class="col-md-4 col-sm-4 col-xs-4">
                             <!-- Indicators -->
                             <ol class="carousel-indicators">
-                                <li data-target="#home" data-slide-to="0" class="active"></li>
-                                <li data-target="#home" data-slide-to="1"></li>
-                                <li data-target="#home" data-slide-to="2"></li>
+                            	<#list carouselList as carousel>
+								<li data-target="#home" data-slide-to="${carousel_index}" <#if carousel_index = 0>class="active"</#if>></li>
+								</#list>
                             </ol>
                         </div>
 
@@ -104,15 +82,15 @@
                             <span class="sr-only">Toggle navigation</span>
                             <i class="fa fa-bars"></i>
                         </button>
-                        <a class="navbar-brand" href="index.html">Stream</a>
+                        <a class="navbar-brand" href="index.html">东方新娘婚纱摄影</a>
                     </div>
                     <div class="navbar-collapse collapse">
 
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a href="#home" class="current">Home</a></li>
-                            <li><a href="#about">About</a></li>
-                            <li><a href="#gallery">Gallery</a></li>
-                            <li><a href="#contact">Contact</a></li>
+                            <li><a href="#home" class="current">主页</a></li>
+                            <li><a href="#about">关于</a></li>
+                            <li><a href="#gallery">图集</a></li>
+                            <li><a href="#contact">联系</a></li>
                         </ul>
 
                     </div><!--/.nav-collapse -->
