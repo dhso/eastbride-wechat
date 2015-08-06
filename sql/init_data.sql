@@ -223,7 +223,7 @@ CREATE TABLE IF NOT EXISTS `shop_wifi` (
   PRIMARY KEY (`openId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 正在导出表  wechat.shop_wifi 的数据：~0 rows (大约)
+-- 正在导出表  wechat.shop_wifi 的数据：~1 rows (大约)
 DELETE FROM `shop_wifi`;
 /*!40000 ALTER TABLE `shop_wifi` DISABLE KEYS */;
 INSERT INTO `shop_wifi` (`openId`, `captcha`, `expired_dt`) VALUES
@@ -264,7 +264,7 @@ CREATE TABLE IF NOT EXISTS `sys_config_type` (
   PRIMARY KEY (`cfg_type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
--- 正在导出表  wechat.sys_config_type 的数据：~3 rows (大约)
+-- 正在导出表  wechat.sys_config_type 的数据：~4 rows (大约)
 DELETE FROM `sys_config_type`;
 /*!40000 ALTER TABLE `sys_config_type` DISABLE KEYS */;
 INSERT INTO `sys_config_type` (`cfg_type_id`, `cfg_type_name`) VALUES
