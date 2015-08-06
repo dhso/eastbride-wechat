@@ -18,7 +18,7 @@ function close_loading(){
 function init_menus(){
 	$.post(baseUrl + '/crm/menus',{type_id: 'wechat'},function(arry){
 		$.each(arry,function(index,element){
-			addAccordion('#_menu_accordion',element.url_type_name,element.url_type_icon,'<div id="_menu_accordion_'+element.url_type_id+'" class="easyui-menu" data-options="inline:true,fit:true,itemHeight:28" style="width:100%"></div>');
+			addAccordion('#_menu_accordion',element.url_type_name,element.url_type_icon,'<div id="_menu_accordion_'+element.url_type_id+'" class="easyui-menu" data-options="inline:true,fit:true,itemHeight:30" style="width:100%"></div>');
 			addMenu($('#_menu_accordion_'+element.url_type_id),element.text,element.icon,element.url,element.is_iframe);
 		});
 		$('#_menu_accordion').accordion({

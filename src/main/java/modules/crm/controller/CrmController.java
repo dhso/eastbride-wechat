@@ -16,6 +16,7 @@ public class CrmController extends Controller {
 	// 默认登录页面
 	@RequiresAuthentication
 	public void index() {
+		setAttr("role", ShiroModel.dao.getRole(ShiroKit.who()).getStr("role_desc"));
 		render("index.htm");
 	}
 
@@ -25,5 +26,5 @@ public class CrmController extends Controller {
 		List<Record> menus = ShiroModel.dao.getUrls(ShiroKit.who());
 		renderJson(menus);
 	}
-	
+
 }
