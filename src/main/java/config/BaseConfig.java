@@ -3,6 +3,7 @@ package config;
 import modules.blog.controller.BlogController;
 import modules.crm.controller.CrmController;
 import modules.doc.controller.DocController;
+import modules.home.HomeController;
 import modules.system.controller.SecurityController;
 import modules.system.controller.SystemController;
 import modules.wechat.controller.WechatApiController;
@@ -71,6 +72,7 @@ public class BaseConfig extends JFinalConfig {
 	public void configRoute(Routes me) {
 		this.routes = me;
 		me.add("/security", SecurityController.class, "/security");// 安全
+		me.add("/", HomeController.class, "/home");// 网站
 		me.add("/system", SystemController.class, "/system");// 安全
 		me.add("/doc", DocController.class, "/doc");// 文档
 		me.add("/shop", ShopController.class, "/shop");// 商城
