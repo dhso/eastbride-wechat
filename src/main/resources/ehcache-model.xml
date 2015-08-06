@@ -70,9 +70,4 @@
 		overflowToDisk="false">
 	</cache>
 	
-	<cache name="apiConfig" maxElementsInMemory="10000"
-		overflowToDisk="true" eternal="true" timeToLiveSeconds="0"
-		timeToIdleSeconds="0" diskPersistent="true"
-		diskExpiryThreadIntervalSeconds="600">
-	</cache>
 </ehcache>

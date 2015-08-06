@@ -4,6 +4,7 @@ import java.util.List;
 
 import modules.system.entity.Message;
 import modules.system.model.ShiroModel;
+import modules.system.model.SysConfigModel;
 
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -23,13 +24,13 @@ import frame.plugin.easyui.DataGrid;
 public class SystemController extends Controller {
 	@RequiresAuthentication
 	@ActionKey("system/role")
-	public void crmSysRole() {
+	public void sysRole() {
 		render("system-role.htm");
 	}
 
 	@RequiresAuthentication
 	@ActionKey("system/role/get")
-	public void crmSysRoleGet() {
+	public void sysRoleGet() {
 		Integer pageNumber = getParaToInt("page", 1);
 		Integer pageSize = getParaToInt("rows", 10);
 		Integer pagination = getParaToInt("pagination", 0);
@@ -45,7 +46,7 @@ public class SystemController extends Controller {
 	@RequiresAuthentication
 	@ActionKey("system/role/save")
 	@Before(Tx.class)
-	public void crmSysRoleSave() {
+	public void sysRoleSave() {
 		JSONArray insertedJson = JSON.parseArray(getPara("inserted"));
 		JSONArray updatedJson = JSON.parseArray(getPara("updated"));
 		JSONArray deletedJson = JSON.parseArray(getPara("deleted"));
@@ -63,13 +64,13 @@ public class SystemController extends Controller {
 
 	@RequiresAuthentication
 	@ActionKey("system/permission")
-	public void crmSysPermission() {
+	public void sysPermission() {
 		render("system-permission.htm");
 	}
 
 	@RequiresAuthentication
 	@ActionKey("system/permission/get")
-	public void crmSysPermissionGet() {
+	public void sysPermissionGet() {
 		Integer pageNumber = getParaToInt("page", 1);
 		Integer pageSize = getParaToInt("rows", 10);
 		Integer pagination = getParaToInt("pagination", 0);
@@ -85,7 +86,7 @@ public class SystemController extends Controller {
 	@RequiresAuthentication
 	@ActionKey("system/permission/save")
 	@Before(Tx.class)
-	public void crmSysPermissionSave() {
+	public void sysPermissionSave() {
 		JSONArray insertedJson = JSON.parseArray(getPara("inserted"));
 		JSONArray updatedJson = JSON.parseArray(getPara("updated"));
 		JSONArray deletedJson = JSON.parseArray(getPara("deleted"));
@@ -103,13 +104,13 @@ public class SystemController extends Controller {
 
 	@RequiresAuthentication
 	@ActionKey("system/url")
-	public void crmSysUrl() {
+	public void sysUrl() {
 		render("system-url.htm");
 	}
 
 	@RequiresAuthentication
 	@ActionKey("system/url/get")
-	public void crmSysUrlGet() {
+	public void sysUrlGet() {
 		Integer pageNumber = getParaToInt("page", 1);
 		Integer pageSize = getParaToInt("rows", 10);
 		Integer pagination = getParaToInt("pagination", 0);
@@ -125,7 +126,7 @@ public class SystemController extends Controller {
 	@RequiresAuthentication
 	@ActionKey("system/url/save")
 	@Before(Tx.class)
-	public void crmSysUrlSave() {
+	public void sysUrlSave() {
 		JSONArray insertedJson = JSON.parseArray(getPara("inserted"));
 		JSONArray updatedJson = JSON.parseArray(getPara("updated"));
 		JSONArray deletedJson = JSON.parseArray(getPara("deleted"));
@@ -143,13 +144,13 @@ public class SystemController extends Controller {
 
 	@RequiresAuthentication
 	@ActionKey("system/url_type")
-	public void crmSysUrlType() {
+	public void sysUrlType() {
 		render("system-url-type.htm");
 	}
 
 	@RequiresAuthentication
 	@ActionKey("system/url_type/get")
-	public void crmSysUrlTypeGet() {
+	public void sysUrlTypeGet() {
 		Integer pageNumber = getParaToInt("page", 1);
 		Integer pageSize = getParaToInt("rows", 10);
 		Integer pagination = getParaToInt("pagination", 0);
@@ -166,7 +167,7 @@ public class SystemController extends Controller {
 	@RequiresAuthentication
 	@ActionKey("system/url_type/save")
 	@Before(Tx.class)
-	public void crmSysUrlTypeSave() {
+	public void sysUrlTypeSave() {
 		JSONArray insertedJson = JSON.parseArray(getPara("inserted"));
 		JSONArray updatedJson = JSON.parseArray(getPara("updated"));
 		JSONArray deletedJson = JSON.parseArray(getPara("deleted"));
@@ -184,13 +185,13 @@ public class SystemController extends Controller {
 
 	@RequiresAuthentication
 	@ActionKey("system/user")
-	public void crmSysUser() {
+	public void sysUser() {
 		render("system-user.htm");
 	}
 
 	@RequiresAuthentication
 	@ActionKey("system/user/get")
-	public void crmSysUserGet() {
+	public void sysUserGet() {
 		Integer pageNumber = getParaToInt("page", 1);
 		Integer pageSize = getParaToInt("rows", 10);
 		Integer pagination = getParaToInt("pagination", 0);
@@ -207,7 +208,7 @@ public class SystemController extends Controller {
 	@RequiresAuthentication
 	@ActionKey("system/user/save")
 	@Before(Tx.class)
-	public void crmSysUserSave() {
+	public void sysUserSave() {
 		JSONArray insertedJson = JSON.parseArray(getPara("inserted"));
 		JSONArray updatedJson = JSON.parseArray(getPara("updated"));
 		JSONArray deletedJson = JSON.parseArray(getPara("deleted"));
@@ -225,10 +226,84 @@ public class SystemController extends Controller {
 
 	@RequiresAuthentication
 	@ActionKey("system/user/create/password")
-	public void crmSysUserCreatePassword() {
+	public void sysUserCreatePassword() {
 		String password = getPara("password", "");
 		String salt = getPara("salt", "");
 		String newPassword = new SimpleHash("md5", password, ByteSource.Util.bytes(salt), 2).toHex();
 		renderText(newPassword);
+	}
+	
+	@RequiresAuthentication
+	@ActionKey("system/config")
+	public void sysConfig() {
+		render("system-config.htm");
+	}
+
+	@RequiresAuthentication
+	@ActionKey("system/config/get")
+	public void sysConfigGet() {
+		Integer pageNumber = getParaToInt("page", 1);
+		Integer pageSize = getParaToInt("rows", 10);
+		Page<Record> sysConfigs = SysConfigModel.dao.getAllConfigPage(pageNumber, pageSize);
+		renderJson(new DataGrid(String.valueOf(sysConfigs.getTotalRow()), sysConfigs.getList()));
+	}
+
+	@RequiresAuthentication
+	@ActionKey("system/config/save")
+	@Before(Tx.class)
+	public void sysConfigSave() {
+		JSONArray insertedJson = JSON.parseArray(getPara("inserted"));
+		JSONArray updatedJson = JSON.parseArray(getPara("updated"));
+		JSONArray deletedJson = JSON.parseArray(getPara("deleted"));
+		if (insertedJson.size() > 0) {
+			SysConfigModel.dao.insertConfig(insertedJson);
+		}
+		if (updatedJson.size() > 0) {
+			SysConfigModel.dao.updateConfig(updatedJson);
+		}
+		if (deletedJson.size() > 0) {
+			SysConfigModel.dao.deleteConfig(deletedJson);
+		}
+		renderJson(new Message("200", "success", "保存成功！"));
+	}
+	
+	@RequiresAuthentication
+	@ActionKey("system/config_type")
+	public void sysConfigType() {
+		render("system-config-type.htm");
+	}
+	
+	@RequiresAuthentication
+	@ActionKey("system/config_type/get")
+	public void sysConfigTypeGet() {
+		Integer pageNumber = getParaToInt("page", 1);
+		Integer pageSize = getParaToInt("rows", 10);
+		Integer pagination = getParaToInt("pagination", 0);
+		if (pagination == 0) {
+			List<Record> configTypesList = SysConfigModel.dao.getAllConfigType();
+			renderJson(configTypesList);
+		} else {
+			Page<Record> configTypesPage = SysConfigModel.dao.getAllConfigTypePage(pageNumber, pageSize);
+			renderJson(new DataGrid(String.valueOf(configTypesPage.getTotalRow()), configTypesPage.getList()));
+		}
+	}
+	
+	@RequiresAuthentication
+	@ActionKey("system/config_type/save")
+	@Before(Tx.class)
+	public void sysConfigTypeSave() {
+		JSONArray insertedJson = JSON.parseArray(getPara("inserted"));
+		JSONArray updatedJson = JSON.parseArray(getPara("updated"));
+		JSONArray deletedJson = JSON.parseArray(getPara("deleted"));
+		if (insertedJson.size() > 0) {
+			SysConfigModel.dao.insertConfigType(insertedJson);
+		}
+		if (updatedJson.size() > 0) {
+			SysConfigModel.dao.updateConfigType(updatedJson);
+		}
+		if (deletedJson.size() > 0) {
+			SysConfigModel.dao.deleteConfigType(deletedJson);
+		}
+		renderJson(new Message("200", "success", "保存成功！"));
 	}
 }

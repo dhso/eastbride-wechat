@@ -95,8 +95,8 @@ INSERT INTO `shiro_urls` (`id`, `permission_id`, `url_type_id`, `url`, `text`, `
 	(5, 1, 1, '/system/role', '角色管理', 'fa fa-cog', 1004, 0),
 	(6, 2, 2, '/druid/index.htm', 'durid监控', 'fa fa-cog', 2001, 1),
 	(7, 2, 3, '/weixin/customer', '微信客户', 'fa fa-cog', 3001, 0),
-	(8, 2, 2, '/weixin/config', '参数管理', 'fa fa-cog', 2002, 0),
-	(9, 2, 2, '/weixin/config_type', '参数类型', 'fa fa-cog', 2003, 0);
+	(8, 2, 2, '/system/config', '参数管理', 'fa fa-cog', 2002, 0),
+	(9, 2, 2, '/system/config_type', '参数类型', 'fa fa-cog', 2003, 0);
 /*!40000 ALTER TABLE `shiro_urls` ENABLE KEYS */;
 
 
@@ -234,24 +234,25 @@ INSERT INTO `shop_wifi` (`openId`, `captcha`, `expired_dt`) VALUES
 -- 导出  表 wechat.sys_config 结构
 DROP TABLE IF EXISTS `sys_config`;
 CREATE TABLE IF NOT EXISTS `sys_config` (
+  `cfg_id` int(11) NOT NULL AUTO_INCREMENT,
   `cfg_key` varchar(50) NOT NULL,
   `cfg_value` varchar(255) NOT NULL,
   `cfg_type_id` int(11) NOT NULL,
-  PRIMARY KEY (`cfg_key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`cfg_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- 正在导出表  wechat.sys_config 的数据：~8 rows (大约)
 DELETE FROM `sys_config`;
 /*!40000 ALTER TABLE `sys_config` DISABLE KEYS */;
-INSERT INTO `sys_config` (`cfg_key`, `cfg_value`, `cfg_type_id`) VALUES
-	('wx.appId', 'wxbbaed5839238c4eb', 3),
-	('wx.appSecret', '064682c9add7e6756f9f435c904825a9', 3),
-	('wx.encodingAesKey', 'RBSOCvhUnTljEvosRNwwek2NB6wIuqI2B4sVNpM3Ni6', 3),
-	('wx.messageEncrypt', '0', 3),
-	('wx.shop.name', '店名', 2),
-	('wx.shop.notification', '店铺公告', 2),
-	('wx.token', 'eastbride', 3),
-	('wx.welcome', '关注成功！', 1);
+INSERT INTO `sys_config` (`cfg_id`, `cfg_key`, `cfg_value`, `cfg_type_id`) VALUES
+	(1, 'wx.appId', 'wxbbaed5839238c4eb', 3),
+	(2, 'wx.appSecret', '064682c9add7e6756f9f435c904825a9', 3),
+	(3, 'wx.encodingAesKey', 'RBSOCvhUnTljEvosRNwwek2NB6wIuqI2B4sVNpM3Ni6', 3),
+	(4, 'wx.messageEncrypt', '0', 3),
+	(5, 'wx.shop.name', '店名', 2),
+	(6, 'wx.shop.notification', '店铺公告', 2),
+	(7, 'wx.token', 'eastbride', 3),
+	(8, 'wx.welcome', '感谢您的关注！', 1);
 /*!40000 ALTER TABLE `sys_config` ENABLE KEYS */;
 
 
@@ -261,7 +262,7 @@ CREATE TABLE IF NOT EXISTS `sys_config_type` (
   `cfg_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `cfg_type_name` varchar(50) NOT NULL,
   PRIMARY KEY (`cfg_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- 正在导出表  wechat.sys_config_type 的数据：~3 rows (大约)
 DELETE FROM `sys_config_type`;
@@ -269,7 +270,8 @@ DELETE FROM `sys_config_type`;
 INSERT INTO `sys_config_type` (`cfg_type_id`, `cfg_type_name`) VALUES
 	(1, '微信配置'),
 	(2, '商城配置'),
-	(3, '微信基础配置');
+	(3, '微信基础配置'),
+	(4, '颜色配置');
 /*!40000 ALTER TABLE `sys_config_type` ENABLE KEYS */;
 
 
@@ -289,31 +291,32 @@ CREATE TABLE IF NOT EXISTS `wx_customer` (
   PRIMARY KEY (`openId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 正在导出表  wechat.wx_customer 的数据：~0 rows (大约)
+-- 正在导出表  wechat.wx_customer 的数据：~2 rows (大约)
 DELETE FROM `wx_customer`;
 /*!40000 ALTER TABLE `wx_customer` DISABLE KEYS */;
 INSERT INTO `wx_customer` (`openId`, `subscribe_flag`, `true_name`, `mobile`, `address`, `money`, `create_id`, `create_dt`, `update_id`, `update_dt`) VALUES
-	('410000100', '1', '', '', '', '', '直接关注', '2015-06-10 14:50:30', '直接关注', '2015-07-07 11:06:13'),
+	('410000100', '1', '', '', '', '', '直接关注', '2015-06-10 14:50:30', '直接关注', '2015-08-06 11:23:56'),
 	('acxiom', '1', NULL, NULL, NULL, NULL, '直接关注', '2015-08-05 22:28:56', '直接关注', '2015-08-05 22:58:05');
 /*!40000 ALTER TABLE `wx_customer` ENABLE KEYS */;
 
 
--- 导出  表 wechat.wx_props 结构
-DROP TABLE IF EXISTS `wx_props`;
-CREATE TABLE IF NOT EXISTS `wx_props` (
+-- 导出  表 wechat.wx_dev_config 结构
+DROP TABLE IF EXISTS `wx_dev_config`;
+CREATE TABLE IF NOT EXISTS `wx_dev_config` (
   `appId` varchar(50) NOT NULL,
   `appSecret` varchar(50) NOT NULL,
   `token` varchar(100) NOT NULL,
   `messageEncrypt` tinyint(1) NOT NULL,
-  `encodingAesKey` varchar(255) NOT NULL
+  `encodingAesKey` varchar(255) NOT NULL,
+  PRIMARY KEY (`appId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信配置表';
 
--- 正在导出表  wechat.wx_props 的数据：~0 rows (大约)
-DELETE FROM `wx_props`;
-/*!40000 ALTER TABLE `wx_props` DISABLE KEYS */;
-INSERT INTO `wx_props` (`appId`, `appSecret`, `token`, `messageEncrypt`, `encodingAesKey`) VALUES
+-- 正在导出表  wechat.wx_dev_config 的数据：~1 rows (大约)
+DELETE FROM `wx_dev_config`;
+/*!40000 ALTER TABLE `wx_dev_config` DISABLE KEYS */;
+INSERT INTO `wx_dev_config` (`appId`, `appSecret`, `token`, `messageEncrypt`, `encodingAesKey`) VALUES
 	('wxbbaed5839238c4eb', '064682c9add7e6756f9f435c904825a9', 'eastbride', 0, 'RBSOCvhUnTljEvosRNwwek2NB6wIuqI2B4sVNpM3Ni6');
-/*!40000 ALTER TABLE `wx_props` ENABLE KEYS */;
+/*!40000 ALTER TABLE `wx_dev_config` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

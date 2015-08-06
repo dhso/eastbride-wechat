@@ -6,14 +6,13 @@ import java.net.URLEncoder;
 import modules.system.model.SysConfigModel;
 import modules.wechat.model.CustomerModel;
 import modules.wechat.model.ShopWifi;
+import modules.wechat.model.WxDevConfigModel;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.jfinal.i18n.I18n;
 import com.jfinal.kit.HttpKit;
 import com.jfinal.kit.PropKit;
-import com.jfinal.plugin.activerecord.Record;
-import com.jfinal.plugin.ehcache.CacheKit;
 
 import frame.kit.StringKit;
 import frame.sdk.fetion.Result;
@@ -49,21 +48,16 @@ public class WechatMsgController extends MsgController {
 	// 如果要支持多公众账号，只需要在此返回各个公众号对应的 ApiConfig 对象即可
 	// 可以通过在请求 url 中挂参数来动态从数据库中获取 ApiConfig 属性值
 	public ApiConfig getApiConfig() {
-		// 配置微信 API 相关常量
-		// 1：true进行加密且必须配置 encodingAesKey
-		// 2：false采用明文模式，同时也支持混合模式
-		Record record = CacheKit.get("ehcache-model", "apiConfig");
-		if (record == null) {
-			String appId = SysConfigModel.dao.getCfgValue("wx.appId");
-			String appSecret = SysConfigModel.dao.getCfgValue("wx.appSecret");
-			String token = SysConfigModel.dao.getCfgValue("wx.token");
-			Boolean messageEncrypt = StringKit.toBoolean(SysConfigModel.dao.getCfgValue("wx.messageEncrypt"));
-			String encodingAesKey = SysConfigModel.dao.getCfgValue("wx.encodingAesKey");
-			record = new Record().set("appId", appId).set("appSecret", appSecret).set("token", token).set("messageEncrypt", messageEncrypt).set("encodingAesKey", encodingAesKey);
-			CacheKit.put("ehcache-model", "apiConfig", record);
+		String appId = getPara();
+		WxDevConfigModel wxConfig = WxDevConfigModel.dao.getConfig(appId);
+		ApiConfig ac = null;
+		if (null != wxConfig) {
+			// 配置微信 API 相关常量
+			// 1：true进行加密且必须配置 encodingAesKey
+			// 2：false采用明文模式，同时也支持混合模式
+			ac = new ApiConfig(wxConfig.getStr("token"), wxConfig.getStr("appId"), wxConfig.getStr("appSecret"), wxConfig.getBoolean("messageEncrypt"), wxConfig.getStr("encodingAesKey"));
 		}
-		ApiConfig apiConfig = new ApiConfig(record.getStr("token"), record.getStr("appId"), record.getStr("appSecret"), record.getBoolean("messageEncrypt"), record.getStr("encodingAesKey"));
-		return apiConfig;
+		return ac;
 	}
 
 	// 处理文本消息

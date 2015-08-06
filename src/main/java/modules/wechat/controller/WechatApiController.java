@@ -1,6 +1,6 @@
 package modules.wechat.controller;
 
-import modules.wechat.model.WxPropsModel;
+import modules.wechat.model.WxDevConfigModel;
 import frame.sdk.wechat.api.ApiConfig;
 import frame.sdk.wechat.api.ApiResult;
 import frame.sdk.wechat.api.CallbackIpApi;
@@ -19,13 +19,13 @@ public class WechatApiController extends ApiController {
 	 */
 	public ApiConfig getApiConfig() {
 		String appId = getPara();
-		WxPropsModel wxProp = WxPropsModel.dao.getProp(appId);
+		WxDevConfigModel wxConfig = WxDevConfigModel.dao.getConfig(appId);
 		ApiConfig ac = null;
-		if (null != wxProp) {
+		if (null != wxConfig) {
 			// 配置微信 API 相关常量
 			// 1：true进行加密且必须配置 encodingAesKey
 			// 2：false采用明文模式，同时也支持混合模式
-			ac = new ApiConfig(wxProp.getStr("token"), wxProp.getStr("appId"), wxProp.getStr("appSecret"), wxProp.getBoolean("messageEncrypt"), wxProp.getStr("encodingAesKey"));
+			ac = new ApiConfig(wxConfig.getStr("token"), wxConfig.getStr("appId"), wxConfig.getStr("appSecret"), wxConfig.getBoolean("messageEncrypt"), wxConfig.getStr("encodingAesKey"));
 		}
 		return ac;
 	}

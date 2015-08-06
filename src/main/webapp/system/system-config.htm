@@ -1,13 +1,44 @@
-<table id="_wx_config_type_table"></table>
+<table id="_system_config_table"></table>
 <script type="text/javascript" src="${baseUrl}/static/easyui/ext/datagrid-cellediting.js"></script>
 <script>
 	(function(divId){
+		var cfg_type_data = [];
+		$.ajaxSetup({
+			async:false
+		});
+		$.post( baseUrl+'/system/config_type/get', {
+	    	pagination:0
+		}, function(data) {
+			cfg_type_data = data;
+		});
+		
+
+		var cfg_type_editor = {
+	            type:'combobox',
+	            options:{
+	                valueField:'cfg_type_id',
+	                textField:'cfg_type_name',
+	                data:cfg_type_data
+	            }
+	        };
+		var cfg_type_formatter = function(value,row,index){
+			$.each(cfg_type_data,function(index,element){
+				if(element.cfg_type_id == value){
+					value = element.cfg_type_name;
+					return;
+				}
+			});
+	        return value;
+	    };
+	    
 		$(divId).datagrid({
-		    url:baseUrl+'/weixin/config_type/get',
+		    url:baseUrl+'/system/config/get',
 		    columns:[[
 		        {field:'checkbox',checkbox:true},
-		        {field:'cfg_type_id',title:'ID',width:35},
-		        {field:'cfg_type_name',title:'类型名称',width:250,editor:'text'}
+		        {field:'cfg_id',title:'ID',width:40},
+		        {field:'cfg_key',title:'键',width:300,editor:'text'},
+		        {field:'cfg_value',title:'值',width:300,editor:'text'},
+		        {field:'cfg_type_id',title:'属性',width:150,formatter:cfg_type_formatter,editor:cfg_type_editor}
 		    ]],
 		    queryParams:{
 		    	pagination:1
@@ -58,7 +89,7 @@
 			var insertRows = $(divId).datagrid('getChanges', 'inserted');
 			var updateRows = $(divId).datagrid('getChanges', 'updated');
 			var deleteRows = $(divId).datagrid('getChanges', 'deleted');
-			$.post(baseUrl+"/system/config_type/save", {
+			$.post(baseUrl+"/system/config/save", {
 				inserted : JSON.stringify(insertRows),
 				updated : JSON.stringify(updateRows),
 				deleted : JSON.stringify(deleteRows)
@@ -82,5 +113,5 @@
 		function refreshTable() {
 			$(divId).datagrid('reload');
 		}
-	})('#_wx_config_type_table');
+	})('#_system_config_table');
 </script>
