@@ -13,7 +13,7 @@
         <link rel="stylesheet" href="${baseUrl}/static/modules/home/css/normalize.css">
         <link rel="stylesheet" href="${baseUrl}/static/modules/home/css/font-awesome.css">
         <link rel="stylesheet" href="${baseUrl}/static/modules/home/css/bootstrap.min.css">
-        <link rel="stylesheet" href="${baseUrl}/static/modules/home/css/templatemo-style.css">
+        <link rel="stylesheet" href="${baseUrl}/static/modules/home/css/style.css">
         <script src="${baseUrl}/static/modules/home/js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
@@ -27,7 +27,7 @@
           <div class="carousel-inner">
 				<#list carouselList as carousel>
 			       <div class="item <#if carousel_index = 0>active</#if>">
-	                    <div class="item-background" style="background: url(${carousel.crs_img});"></div>
+	                    <div class="item-background" style="background-image: url(${carousel.crs_img});"></div>
 	                    <div class="carousel-caption">
 	                        <div class="container">
 	                            <div class="col-md-offset-2 col-md-8 col-sm-12">
@@ -58,7 +58,7 @@
                             <!-- Indicators -->
                             <ol class="carousel-indicators">
                             	<#list carouselList as carousel>
-								<li data-target="#home" data-slide-to="${carousel_index}" <#if carousel_index = 0>class="active"</#if>></li>
+									<li data-target="#home" data-slide-to="${carousel_index}" class="<#if carousel_index = 0>active</#if>"></li>
 								</#list>
                             </ol>
                         </div>
@@ -79,7 +79,7 @@
                 <div class="container">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                            <span class="sr-only">Toggle navigation</span>
+                            <span class="sr-only">导航</span>
                             <i class="fa fa-bars"></i>
                         </button>
                         <a class="navbar-brand" href="index.html">东方新娘婚纱摄影</a>
