@@ -39,6 +39,7 @@ import frame.plugin.event.EventPlugin;
 import frame.plugin.shiro.core.ShiroInterceptor;
 import frame.plugin.shiro.core.ShiroPlugin;
 import frame.plugin.shiro.freemarker.ShiroTags;
+import frame.plugin.sqlinxml.SqlInXmlPlugin;
 import frame.plugin.tablebind.AutoTableBindPlugin;
 import frame.plugin.tablebind.SimpleNameStyles;
 import frame.sdk.fetion.kit.FetionPlugin;
@@ -88,6 +89,8 @@ public class BaseConfig extends JFinalConfig {
 		me.add(new FetionPlugin(PropKit.getLong("fetion.mobile"), PropKit.get("fetion.password")));
 		// 添加shiro支持
 		me.add(new ShiroPlugin(routes));
+		// add sql xml plugin
+		me.add(new SqlInXmlPlugin());
 		// 添加缓存支持
 		me.add(new EhCachePlugin(BaseConfig.class.getClassLoader().getResource("ehcache-model.xml")));
 		// 配置数据库连接池插件

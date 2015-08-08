@@ -1,0 +1,100 @@
+<sqlGroup name="blog">
+	<sql id="getArticles">
+		select
+		art.article_id as articleId,art.article_title as articleTitle,
+		art.article_content as articleContent,art.article_author as articleAuthor,
+		art.article_view as articleView,art.create_dt as articleCreateDt,
+		art.update_dt as articleUpdateDt,group_concat(tag.tag_id) as tagId,
+		group_concat(tag.tag_name) as tagName
+	</sql>
+	<sql id="getArticlesEx">
+		from blog_articles as art
+		left join blog_article_tag as art_tag on art_tag.article_id = art.article_id
+		left join blog_tags as tag on tag.tag_id = art_tag.tag_id
+		group by art.article_id
+		order by art.update_dt desc
+	</sql>
+
+	<sql id="getArticlesByTagId">
+		select
+		art.article_id as articleId,art.article_title as articleTitle,
+		art.article_content as articleContent,art.article_author as articleAuthor,
+		art.article_view as articleView,art.create_dt as articleCreateDt,
+		art.update_dt as articleUpdateDt,group_concat(tag.tag_id) as tagId,
+		group_concat(tag.tag_name) as tagName
+	</sql>
+	<sql id="getArticlesByTagIdEx">
+		from blog_articles as art
+		left join blog_article_tag as art_tag on art_tag.article_id = art.article_id
+		left join blog_tags as tag on tag.tag_id = art_tag.tag_id
+		where art.article_id in
+		(
+		select article_id from blog_article_tag where tag_id = ?
+		)
+		group by art.article_id
+		order by art.update_dt desc
+	</sql>
+
+	<sql id="getArticlesBySearch">
+		select
+		art.article_id as articleId,art.article_title as articleTitle,
+		art.article_content as articleContent,art.article_author as articleAuthor,
+		art.article_view as articleView,art.create_dt as articleCreateDt,
+		art.update_dt as articleUpdateDt,group_concat(tag.tag_id) as tagId,
+		group_concat(tag.tag_name) as tagName
+	</sql>
+	<sql id="getArticlesBySearchEx">
+		from blog_articles as art
+		left join blog_article_tag as art_tag on art_tag.article_id = art.article_id
+		left join blog_tags as tag on tag.tag_id = art_tag.tag_id
+		where art.article_content like ? or art.article_title like ?
+		group by art.article_id
+		order by art.update_dt desc
+	</sql>
+
+	<sql id="getArticleByArticleId">
+		select
+		art.article_id as articleId,art.article_title as articleTitle,
+		art.article_content as articleContent,art.article_author as articleAuthor,
+		art.article_view as articleView,art.create_dt as articleCreateDt,
+		art.update_dt as articleUpdateDt,group_concat(tag.tag_id) as tagId,
+		group_concat(tag.tag_name) as tagName
+		from blog_articles as art
+		left join blog_article_tag as art_tag on art_tag.article_id = art.article_id
+		left join blog_tags as tag on tag.tag_id = art_tag.tag_id
+		where art.article_id = ?
+		group by art.article_id
+		order by art.update_dt desc
+	</sql>
+
+	<sql id="getTags">
+		select tag_id as tagId,tag_name as tagName
+		from blog_tags
+		order by update_dt desc
+	</sql>
+
+	<sql id="getTagByTagId">
+		select tag_id as tagId,tag_name as tagName
+		from blog_tags
+		where tag_id = ?
+	</sql>
+
+	<sql id="getPopularArticles">
+		select
+		art.article_id as articleId,art.article_title as articleTitle,art.article_author as articleAuthor
+		from blog_articles as art
+		order by art.article_view desc
+		limit ?
+	</sql>
+
+	<sql id="addArticle">
+		insert into blog_articles(article_title,article_content,article_author,create_dt,update_dt)
+		values(?,?,?,?,?)
+	</sql>
+
+	<sql id="updateArticle">
+		update blog_articles
+		set article_title = ?,article_content=?,update_dt=?
+		where article_id=?
+	</sql>
+</sqlGroup>
