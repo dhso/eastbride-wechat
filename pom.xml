@@ -20,6 +20,7 @@
 			</activation>
 			<properties>
 				<log4j.rootLogger>DEBUG, stdout</log4j.rootLogger>
+				<ehcache.DiskStore>java.io.tmpdir</ehcache.DiskStore>
 				<jdbcDriver>com.mysql.jdbc.Driver</jdbcDriver>
 				<jdbcUrl>jdbc:mysql://127.0.0.1:3306/wechat</jdbcUrl>
 				<jdbcUser>root</jdbcUser>
@@ -31,10 +32,11 @@
 			<id>pro</id>
 			<properties>
 				<log4j.rootLogger>INFO</log4j.rootLogger>
+				<ehcache.DiskStore>/data/wwwroot/eastbride.minws.com</ehcache.DiskStore>
 				<jdbcDriver>com.mysql.jdbc.Driver</jdbcDriver>
-				<jdbcUrl>jdbc:mysql://rdszjqbmqrqy2in.mysql.rds.aliyuncs.com:3306/re4591m0i5dm04kj</jdbcUrl>
-				<jdbcUser>mysql_admin</jdbcUser>
-				<jdbcPassword>923389</jdbcPassword>
+				<jdbcUrl>jdbc:mysql://localhost:3306/eastbride</jdbcUrl>
+				<jdbcUser>root</jdbcUser>
+				<jdbcPassword>ECS01_MYSQL</jdbcPassword>
 				<devMode>false</devMode>
 			</properties>
 		</profile>

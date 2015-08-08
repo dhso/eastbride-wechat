@@ -3,7 +3,7 @@
 	xsi:noNamespaceSchemaLocation="ehcache.xsd" updateCheck="false"
 	monitoring="autodetect" dynamicConfig="true" name="ehcache-shiro">
 
-	<diskStore path="java.io.tmpdir" />
+	<diskStore path="${ehcache.DiskStore}" />
 
 	<defaultCache maxElementsInMemory="10000" eternal="false"
 		timeToIdleSeconds="120" timeToLiveSeconds="120" overflowToDisk="false"
