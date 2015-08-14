@@ -1,6 +1,7 @@
 package config;
 
 import modules.blog.controller.BlogController;
+import modules.codepad.controller.CodepadController;
 import modules.crm.controller.CrmController;
 import modules.doc.controller.DocController;
 import modules.home.controller.HomeController;
@@ -74,6 +75,7 @@ public class BaseConfig extends JFinalConfig {
 		this.routes = me;
 		me.add("/security", SecurityController.class, "/security");// 安全
 		me.add("/", HomeController.class, "/home");// 网站
+		me.add("/codepad", CodepadController.class, "/codepad");// codepad
 		me.add("/system", SystemController.class, "/system");// 安全
 		me.add("/doc", DocController.class, "/doc");// 文档
 		me.add("/shop", ShopController.class, "/shop");// 商城

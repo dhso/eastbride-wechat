@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>CodePad</title>
+		<link rel="stylesheet" type="text/css" href="${baseUrl}/static/easyui/themes/gray/easyui.css">
+		<link rel="stylesheet" type="text/css" href="${baseUrl}/static/easyui/themes/icon.css">
+        <link rel="stylesheet" type="text/css" href="${baseUrl}/static/awesome/css/font-awesome.min.css" />
+        <link rel="stylesheet" type="text/css" href="${baseUrl}/static/google-code-prettify/prettify_bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="${baseUrl}/static/modules/codepad/css/codepad.css">
+        <link rel="shortcut icon" href="${baseUrl}/static/img/favicon.ico" type="image/x-icon" />
+    	<script>
+    	var domain = '${baseUrl}';
+    	</script>
+    </head>
+    <body class="easyui-layout" style="text-align:left">
+        <div region="north" border="false" minHeight="38px">
+            <div class="easyui-panel" fit="true" style="padding:5px;">
+                <!-- 搜索框 -->
+                <a href="#" class="easyui-linkbutton nobb" data-options="plain:true" onClick="$('input.searchbox-text').focus();">搜索：</a><input class="easyui-searchbox" id="search_input">
+                <a href="#" id="login_menu" class="easyui-linkbutton"  style="float:right;"></a>
+                <a href="#" id="login_nick" class="easyui-linkbutton nobb" data-options="plain:true" style="float:right;"></a>
+            </div>
+        </div>
+
+        <!-- 树形列表 -->
+        <div region="west" split="true" title="代码资源" style="width:250px;padding:5px;">
+            <ul id="list_tree" class="easyui-tree"> </ul>
+        </div>
+        <!-- 添加根文件/文件夹 -->
+        <div id="list_menu" class="easyui-menu" style="width:150px;">
+            <div onclick="add_ff('folder','0')" data-options="iconCls:'tree-folder'">添加文件夹</div>
+            <div onclick="add_ff('file','0')" data-options="iconCls:'tree-file'">添加文件</div>
+            <div class="menu-sep"></div>
+            <div onclick="init_list_tree('')" data-options="iconCls:'icon-reload'">刷新列表</div>
+        </div>
+        <!-- 树形列表右键菜单 -->
+        <div id="list_tree_menu" class="easyui-menu" style="width:120px;">
+            <div id="add-ff" data-options="iconCls:'icon-add'">
+                <span>添加节点</span>
+                <div>
+                    <div id="add-folder" onclick="add_ff('folder','')" data-options="iconCls:'tree-folder'">文件夹</div>
+                    <div id="add-file" onclick="add_ff('file','')" data-options="iconCls:'tree-file'">文件</div>
+                </div>
+            </div>
+            <div id="update-ff" onclick="update_ff()" data-options="iconCls:'icon-edit'">修改节点</div>
+            <div id="delete-ff" onclick="delete_ff()" data-options="iconCls:'icon-remove'">删除节点</div>
+            <div class="menu-sep"></div>
+            <div id="update-con" onclick="update_con()" data-options="iconCls:'icon-edit'">编辑内容</div>
+        </div> 
+        <!-- tab栏右键菜单 -->
+        <div id="content_tab_menu" class="easyui-menu" style="width:120px;">
+            <div id="update-ff" onclick="close_tab('current')">关闭当前</div>
+            <div id="delete-ff" onclick="close_tab('other')">关闭其他</div>
+            <div id="update-con" onclick="close_tab('all')">关闭所有</div>
+        </div> 
+        <!-- tab栏_blank右键菜单 -->
+        <div id="content_tab_blank_menu" class="easyui-menu" style="width:120px;">
+            <div id="update-ff" onclick="reload_tab_con('')" data-options="iconCls:'icon-reload'">刷新当前</div>
+        </div> 
+        <div region="center">
+            <!-- tab栏 -->
+            <div id="content_tab" class="easyui-tabs" fit="true" border="false" plain="true">
+                <div title="首页" href="" data-options="closable:false">
+                    <div id="tools_menu" class="tools_menu">
+                        <a href="#" id="weather_menu" class="easyui-linkbutton"></a>
+                        <a href="#" id="cidian_menu" class="easyui-linkbutton"></a>
+                        <a href="#" id="fanyi_menu" class="easyui-linkbutton"></a>
+                        <a href="#" id="doubanFM_menu" class="easyui-linkbutton"></a>
+                        <a href="#" id="kuaidi100_menu" class="easyui-linkbutton"></a>
+                        <a href="#" id="exfile_menu" class="easyui-linkbutton"></a>
+                        <a href="#" id="alimama_menu" class="easyui-linkbutton"></a>
+                    </div>
+                    <div id="new_menu_list_div" class="easyui-layout" data-options="fit:true">
+                        <div data-options="region:'west',border:true" style="width:400px" title="最近更新">
+                            <ul id="new_menu_list" class="new-menu-list"></ul>
+                        </div>
+                        <div data-options="region:'center',border:true,fit:true" title="最近评论">
+                            <ul class="ds-recent-visitors" data-num-items="10"></ul>
+                            <ul class="ds-recent-comments" data-num-items="10" data-show-avatars="1" data-show-time="1" data-show-title="0" data-show-admin="1" data-excerpt-length="70"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 添加文件 -->
+        <div id="win-add-ff" class="easyui-window" style="width:220px" title="添加" data-options="modal:true,closed:true,minimizable:false,maximizable:false,resizable:false,collapsible:false,iconCls:'icon-codepad-file'">
+            <input class="easyui-textbox" type="hidden" id="win-add-ff-nodeid">
+            <input class="easyui-textbox" type="hidden" id="win-add-ff-state">
+            <input class="easyui-textbox" type="hidden" id="win-add-ff-writer">
+            <table>
+                <tr><td>标题：</td><td><input class="easyui-textbox" type="text" id="win-add-ff-text" data-options="required:true"></input></td></tr>
+                <tr><td>公开：</td><td><input type="radio" name="win-add-ff-open" value="1">是</input><input type="radio" name="win-add-ff-open" value="0">否</input></td></tr>
+                <tr><td></td><td><a href="#" class="easyui-linkbutton" onclick="add_ff_button()">添加</a></td></tr>
+            </table>
+        </div>
+        <!--修改文件属性 -->
+        <div id="win-update-ff" class="easyui-window" style="width:220px" title="修改" data-options="modal:true,closed:true,minimizable:false,maximizable:false,resizable:false,collapsible:false,iconCls:'icon-codepad-edit'">
+            <table>
+                <tr><td>标题：</td><td><input class="easyui-textbox" type="text" id="win-update-ff-text" data-options="required:true"></input></td></tr>
+                <tr><td>公开：</td><td><input type="radio" name="win-update-ff-open" value="1">是</input><input type="radio" name="win-update-ff-open" value="0">否</input></td></tr>
+                <tr><td>节点：</td><td><input class="easyui-combobox" id="node_parent"></input></td></tr>
+                <tr><td></td><td><a href="#" class="easyui-linkbutton" onclick="update_ff_button()">修改</a></td></tr>
+            </table>
+        </div>       
+        <!-- 更新文件 -->
+        <div id="win-update-file" class="easyui-window" style="width:100%" >
+            <textarea id="editor_update_file"></textarea>
+        </div>
+        <!-- 登录 -->
+        <div id="win-login" class="easyui-window" style="width:220px" title="登录" data-options="modal:true,closed:true,minimizable:false,maximizable:false,resizable:false,collapsible:false,iconCls:'icon-codepad-user'">
+            <table>
+                <tr><td>用户：</td><td><input class="easyui-textbox" type="text" id="usr_name" data-options="required:true"></input></td></tr>
+                <tr><td>密码：</td><td><input class="easyui-textbox" type="password" id="usr_password" data-options="required:true"></input></td></tr>
+                <tr><td></td><td><a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-codepad-foward'" onclick="login_button()">登录</a></td></tr>
+            </table>
+        </div>
+        <!-- 有道词典 -->
+        <div id="win-cidian" class="easyui-window" style="width:435px;height:318px;" title="有道词典" data-options="modal:false,closed:true,minimizable:false,maximizable:false,closable:true,resizable:false,collapsible:true,iconCls:'icon-codepad-youdao-cidian',href:'static/app/youdaoDICTER.html'">
+        </div>
+        <!-- 有道翻译 -->
+        <div id="win-fanyi" class="easyui-window" style="width:435px;height:318px;" title="有道翻译" data-options="modal:false,closed:true,minimizable:false,maximizable:false,closable:true,resizable:false,collapsible:true,iconCls:'icon-codepad-youdao-fanyi',href:'static/app/youdaoFANYIER.html'">
+        </div>
+        <!-- 天气预报 -->
+        <div id="win-weather" class="easyui-window" style="width:255px;height:260px;" title="天气预报" data-options="modal:false,closed:true,minimizable:false,maximizable:false,closable:true,resizable:false,collapsible:true,iconCls:'icon-codepad-zgtq-weather'">
+        </div>
+        <!-- 豆瓣FM -->
+        <div id="win-doubanFM" class="easyui-window" style="width:435px;height:229px;" title="豆瓣FM" data-options="modal:false,closed:true,minimizable:false,maximizable:false,closable:false,resizable:false,collapsible:true,iconCls:'icon-codepad-douban-FM',href:'static/app/doubanFM.html'">
+        </div>
+        <!-- 快递100 -->
+        <div id="win-kuaidi100" class="easyui-window" style="width:555px;height:459px;" title="快递100" data-options="modal:false,closed:true,minimizable:false,maximizable:false,closable:true,resizable:false,collapsible:true,iconCls:'icon-codepad-kuaidi100',href:'static/app/kuaidi100.html'">
+        </div>
+        <!-- exfile -->
+        <div id="win-exfile" class="easyui-window" style="width:815px;height:450px;" title="Ex网盘" data-options="modal:false,closed:true,minimizable:false,maximizable:false,closable:true,resizable:false,collapsible:true,iconCls:'icon-codepad-base',href:'static/app/exfile.html'">
+        </div>
+        <!-- alimama -->
+        <div id="win-alimama" class="easyui-window" style="width:370px;height:180px;" title="淘宝转换" data-options="modal:false,closed:true,minimizable:false,maximizable:false,closable:true,resizable:false,collapsible:true,iconCls:'icon-codepad-shoppingcart',href:'static/app/alimama.html'">
+        </div>
+        <script type="text/javascript" src="${baseUrl}/static/js/desktop-notify.js"></script>
+        <script type="text/javascript" src="${baseUrl}/static/jquery/jquery-1.7.2.min.js"></script>
+        <script type="text/javascript" src="${baseUrl}/static/js/jquery.cookie.js"></script>
+        <script type="text/javascript" src="${baseUrl}/static/google-code-prettify/prettify.js"></script>
+        <script type="text/javascript" src="${baseUrl}/static/easyui/jquery.easyui.min.js"></script>
+        <script type="text/javascript" src="http://static.duoshuo.com/embed.js"></script>
+        <script type="text/javascript" src="${baseUrl}/static/modules/codepad/js/codepad.js"></script>
+    </body>
+</html>

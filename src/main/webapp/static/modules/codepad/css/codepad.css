@@ -1,0 +1,77 @@
+a{
+	color: #000;
+	text-decoration: none;
+}
+a.nobb{
+	background-color: #fff!important;
+	border-color: #fff!important;
+}
+div.content_tab_header{
+	
+}
+div.content_tab_content{
+	margin: 1em;
+	overflow-wrap: break-word;
+}
+div.comment-box{
+	width: 96%;
+}
+div.tools_menu{
+	background-color: #eeeeee;
+	margin: 10px;
+	padding: 10px;
+}
+
+
+ul.new-menu-list{ list-style:none; padding:0px;}
+ul.new-menu-list li { margin:10px 15px;cursor: pointer;}
+ul.new-menu-list li p{ margin:2px 0;}
+ul.new-menu-list li p.nomal{ font-family:Arial,Helvetica,微软雅黑,宋体;font-size: 12px;font-weight:bold;color:#000;}
+ul.new-menu-list li p.small{ font-family:Arial,Helvetica,黑体,宋体;font-size: 10px;color:#ccc;}
+
+/*ICON*/
+.icon-codepad-search{
+	background:url('../img/icons/search.gif') no-repeat center center;
+}
+.icon-codepad-user{
+	background:url('../img/icons/user.gif') no-repeat center center;
+}
+.icon-codepad-foward{
+	background:url('../img/icons/foward.gif') no-repeat center center;
+}
+.icon-codepad-edit{
+	background:url('../img/icons/edit.png') no-repeat center center;
+}
+.icon-codepad-file{
+	background:url('../img/icons/file.gif') no-repeat center center;
+}
+.icon-codepad-save{
+	background:url('../img/icons/save.gif') no-repeat center center;
+}
+.icon-codepad-fanyi{
+	background:url('../img/icons/fanyi.png') no-repeat center center;
+}
+.icon-codepad-cidian{
+	background:url('../img/icons/cidian.png') no-repeat center center;
+}
+.icon-codepad-youdao-fanyi{
+	background:url('../img/icons/youdao_fanyi.png') no-repeat center center;
+}
+.icon-codepad-youdao-cidian{
+	background:url('../img/icons/youdao_cidian.png') no-repeat center center;
+}
+.icon-codepad-zgtq-weather{
+	background:url('../img/icons/weather.png') no-repeat center center;
+}
+.icon-codepad-douban-FM{
+	background:url('../img/icons/douban_FM.png') no-repeat center center;
+}
+.icon-codepad-kuaidi100{
+	background:url('../img/icons/kuaidi100.png') no-repeat center center;
+}
+.icon-codepad-base{
+	background:url('../img/icons/base.gif') no-repeat center center;
+}
+.icon-codepad-shoppingcart{
+	background:url('../img/icons/shoppingcart.gif') no-repeat center center;
+}
