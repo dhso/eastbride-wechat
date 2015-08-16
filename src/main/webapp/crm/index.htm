@@ -15,12 +15,11 @@
 	var baseUrl = '${baseUrl}';
 </script>
 </head>
-<body>
+<body class="easyui-layout">
 	<div id="loading">
 		<img src='${baseUrl}/static/img/gif/pageload/wheel.gif'/>
 		<h1><font color="#15428B">加载中···</font></h1>
 	</div>
-	<div class="easyui-layout" data-options="fit:true">
         <div data-options="region:'north',height:100">
         	<div style="padding:5px; position: absolute; bottom: 0px; right: 0px;">
 		        <a href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'fa fa-bell-o fa-lg'"></a>
@@ -37,7 +36,6 @@
         	<div title="首页">
 	        </div>
         </div>
-    </div>
 	<script type="text/javascript" src="${baseUrl}/static/easyui/jquery.min.js"></script>
     <script type="text/javascript" src="${baseUrl}/static/easyui/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="${baseUrl}/static/js/crm/crm.js"></script>
