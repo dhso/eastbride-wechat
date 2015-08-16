@@ -8,25 +8,33 @@
         <link rel="stylesheet" type="text/css" href="${baseUrl}/static/awesome/css/font-awesome.min.css" />
         <link rel="stylesheet" type="text/css" href="${baseUrl}/static/google-code-prettify/prettify_bootstrap.css">
         <link rel="stylesheet" type="text/css" href="${baseUrl}/static/modules/codepad/css/codepad.css">
-        <link rel="shortcut icon" href="${baseUrl}/static/img/favicon.ico" type="image/x-icon" />
+        <link rel="stylesheet" type="text/css" href="${baseUrl}/static/amazeui/css/amazeui.min.css">
+        <link rel="shortcut icon" type="image/x-icon" href="${baseUrl}/static/img/favicon.ico" />
     	<script>
     	var domain = '${baseUrl}';
     	</script>
     </head>
-    <body class="easyui-layout" style="text-align:left">
-        <div region="north" border="false" minHeight="38px">
-            <div class="easyui-panel" fit="true" style="padding:5px;">
-                <!-- 搜索框 -->
-                <a href="#" class="easyui-linkbutton nobb" data-options="plain:true" onClick="$('input.searchbox-text').focus();">搜索：</a><input class="easyui-searchbox" id="search_input">
-                <a href="#" id="login_menu" class="easyui-linkbutton"  style="float:right;"></a>
-                <a href="#" id="login_nick" class="easyui-linkbutton nobb" data-options="plain:true" style="float:right;"></a>
-            </div>
+    <body class="easyui-layout">
+    <div id="loading">
+		<img src='${baseUrl}/static/img/gif/pageload/wheel.gif'/>
+		<h1><font color="#15428B">加载中···</font></h1>
+	</div>
+        <div region="north" border="false" minHeight="40px">
+        	<div><h3>Codepad</h3></div>
+        	<div style="padding:5px; position: absolute; bottom: 0px; right: 0px;">
+		        <a href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'fa fa-bell-o fa-lg'"></a>
+		        <a href="${baseUrl}/security/signout" class="easyui-linkbutton" data-options="plain:true,iconCls:'fa fa-power-off fa-lg',text:'退出'"></a>
+    		</div>
         </div>
 
         <!-- 树形列表 -->
-        <div region="west" split="true" title="代码资源" style="width:250px;padding:5px;">
-            <ul id="list_tree" class="easyui-tree"> </ul>
+        <div data-options="region:'west',split:false,title:'资源目录',width:250">
+            <div id="search">
+	        	<span id="search_span">搜索：</span><input class="easyui-searchbox" id="search_input">
+	        </div>
+            <ul id="list_tree" class="easyui-tree"></ul>
         </div>
+        
         <!-- 添加根文件/文件夹 -->
         <div id="list_menu" class="easyui-menu" style="width:150px;">
             <div onclick="add_ff('folder','0')" data-options="iconCls:'tree-folder'">添加文件夹</div>
@@ -62,15 +70,6 @@
             <!-- tab栏 -->
             <div id="content_tab" class="easyui-tabs" fit="true" border="false" plain="true">
                 <div title="首页" href="" data-options="closable:false">
-                    <div id="tools_menu" class="tools_menu">
-                        <a href="#" id="weather_menu" class="easyui-linkbutton"></a>
-                        <a href="#" id="cidian_menu" class="easyui-linkbutton"></a>
-                        <a href="#" id="fanyi_menu" class="easyui-linkbutton"></a>
-                        <a href="#" id="doubanFM_menu" class="easyui-linkbutton"></a>
-                        <a href="#" id="kuaidi100_menu" class="easyui-linkbutton"></a>
-                        <a href="#" id="exfile_menu" class="easyui-linkbutton"></a>
-                        <a href="#" id="alimama_menu" class="easyui-linkbutton"></a>
-                    </div>
                     <div id="new_menu_list_div" class="easyui-layout" data-options="fit:true">
                         <div data-options="region:'west',border:true" style="width:400px" title="最近更新">
                             <ul id="new_menu_list" class="new-menu-list"></ul>
@@ -115,32 +114,20 @@
                 <tr><td></td><td><a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-codepad-foward'" onclick="login_button()">登录</a></td></tr>
             </table>
         </div>
-        <!-- 有道词典 -->
-        <div id="win-cidian" class="easyui-window" style="width:435px;height:318px;" title="有道词典" data-options="modal:false,closed:true,minimizable:false,maximizable:false,closable:true,resizable:false,collapsible:true,iconCls:'icon-codepad-youdao-cidian',href:'static/app/youdaoDICTER.html'">
-        </div>
-        <!-- 有道翻译 -->
-        <div id="win-fanyi" class="easyui-window" style="width:435px;height:318px;" title="有道翻译" data-options="modal:false,closed:true,minimizable:false,maximizable:false,closable:true,resizable:false,collapsible:true,iconCls:'icon-codepad-youdao-fanyi',href:'static/app/youdaoFANYIER.html'">
-        </div>
-        <!-- 天气预报 -->
-        <div id="win-weather" class="easyui-window" style="width:255px;height:260px;" title="天气预报" data-options="modal:false,closed:true,minimizable:false,maximizable:false,closable:true,resizable:false,collapsible:true,iconCls:'icon-codepad-zgtq-weather'">
-        </div>
-        <!-- 豆瓣FM -->
-        <div id="win-doubanFM" class="easyui-window" style="width:435px;height:229px;" title="豆瓣FM" data-options="modal:false,closed:true,minimizable:false,maximizable:false,closable:false,resizable:false,collapsible:true,iconCls:'icon-codepad-douban-FM',href:'static/app/doubanFM.html'">
-        </div>
-        <!-- 快递100 -->
-        <div id="win-kuaidi100" class="easyui-window" style="width:555px;height:459px;" title="快递100" data-options="modal:false,closed:true,minimizable:false,maximizable:false,closable:true,resizable:false,collapsible:true,iconCls:'icon-codepad-kuaidi100',href:'static/app/kuaidi100.html'">
-        </div>
-        <!-- exfile -->
-        <div id="win-exfile" class="easyui-window" style="width:815px;height:450px;" title="Ex网盘" data-options="modal:false,closed:true,minimizable:false,maximizable:false,closable:true,resizable:false,collapsible:true,iconCls:'icon-codepad-base',href:'static/app/exfile.html'">
-        </div>
-        <!-- alimama -->
-        <div id="win-alimama" class="easyui-window" style="width:370px;height:180px;" title="淘宝转换" data-options="modal:false,closed:true,minimizable:false,maximizable:false,closable:true,resizable:false,collapsible:true,iconCls:'icon-codepad-shoppingcart',href:'static/app/alimama.html'">
-        </div>
-        <script type="text/javascript" src="${baseUrl}/static/js/desktop-notify.js"></script>
-        <script type="text/javascript" src="${baseUrl}/static/jquery/jquery-1.7.2.min.js"></script>
+        
+        <!--[if (gte IE 9)|!(IE)]><!-->
+		<script type="text/javascript" src="${baseUrl}/static/jquery/jquery-2.1.4.min.js"></script>
+		<!--<![endif]-->
+		<!--[if lte IE 8 ]>
+		<script type="text/javascript" src="${baseUrl}/static/jquery/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="${baseUrl}/static/js/modernizr.js"></script>
+		<script type="text/javascript" src="${baseUrl}/static/amazeui/amazeui.ie8polyfill.min.js"></script>
+		<![endif]-->
+		 <script type="text/javascript" src="${baseUrl}/static/js/desktop-notify.js"></script>
         <script type="text/javascript" src="${baseUrl}/static/js/jquery.cookie.js"></script>
         <script type="text/javascript" src="${baseUrl}/static/google-code-prettify/prettify.js"></script>
         <script type="text/javascript" src="${baseUrl}/static/easyui/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="${baseUrl}/static/amazeui/js/amazeui.min.js"></script>
         <script type="text/javascript" src="http://static.duoshuo.com/embed.js"></script>
         <script type="text/javascript" src="${baseUrl}/static/modules/codepad/js/codepad.js"></script>
     </body>

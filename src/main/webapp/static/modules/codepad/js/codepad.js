@@ -10,20 +10,69 @@ $(document).ready(function() {
     init_content_tab_menu();
     init_content_tab();
     init_search_input();
-    init_cidian_menu();
-    init_fanyi_menu();
-    init_weather_menu();
-    init_doubanFM_menu();
-    init_kuaidi100_menu();
-    init_exfile_menu();
-    init_alimama_menu();
-    init_win_update_file();
-    //init_kindEditor();
-    init_xheditor();
     index_direct();
-    init_new_menu_list(10);
-    setInterval(get_new_menu_list,60000);
+    //init_new_menu_list(10);
+    //setInterval(get_new_menu_list,60000);
+    init_layout();
 });
+//初始化布局
+function init_layout(){
+	$.parser.onComplete = function(){
+		close_loading();
+	}
+}
+//关闭初始化遮罩页面
+function close_loading(){
+	$("#loading").fadeOut("slow",function(){
+		$(this).remove();
+	});
+}
+//展示加载/处理提示条
+function showProgress(title, text) {
+	parent.$.messager.progress({
+		title : title,
+		text : text
+	});
+}
+//关闭加载/处理提示条
+function closeProgress(){
+	parent.$.messager.progress('close');
+}
+//添加tabPanel
+function addTabPanel(divId,title,href,is_iframe){
+	showProgress('加载中','正在加载中，请耐心等待...');
+	var existTabPanel = $(divId).tabs('exists',title);
+	if (existTabPanel) {
+		$(divId).tabs('close', title);
+	}
+	if(is_iframe == '1' || is_iframe == true){
+		if (href.indexOf('http') == -1) {
+			href = baseUrl + href;
+		}
+		$(divId).tabs('add',{
+	        title: title,
+	        content: '<iframe src="' + href + '" frameborder="0" style="border:0;width:100%;height:99%;" seamless="seamless" sandbox="allow-forms allow-same-origin allow-scripts allow-top-navigation" onload="closeProgress()"></iframe>',
+	        closable: true
+	    });
+	} else {
+		$(divId).tabs('add', {
+			title : title,
+			href : baseUrl + href,
+			closable : true,
+			onLoad : function() {
+				closeProgress();
+			}
+		});
+	}
+}
+// 删除tabPanel
+function removeTabPanel(divId){
+    var tab = $(divId).tabs('getSelected');
+    if (tab){
+        var index = $(divId).tabs('getTabIndex', tab);
+        $(divId).tabs('close', index);
+    }
+}
 
 /*在新tab页打开事件*/
 function open_tab(id, text) {
@@ -644,7 +693,7 @@ function init_xheditor() {
             }
         }
     };
-    update_editor = $('#editor_update_file').xheditor({
+    /*update_editor = $('#editor_update_file').xheditor({
         plugins: allPlugin,
         tools: 'full',
         skin: 'default',
@@ -658,7 +707,7 @@ function init_xheditor() {
         upLinkUrl: 'static/xheditor-1.2.1/xheditor_plugins/upload/upload.php',
         upFlashUrl: 'static/xheditor-1.2.1/xheditor_plugins/upload/upload.php',
         upMediaUrl: 'static/xheditor-1.2.1/xheditor_plugins/upload/upload.php'
-    });
+    });*/
 };
 
 function toggleDuoshuoComments(container, content_id, content_url) {
