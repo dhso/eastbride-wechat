@@ -10,6 +10,8 @@ import org.apache.shiro.subject.Subject;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 
+import frame.kit.StringKit;
+
 public class SecurityController extends Controller {
 	// 默认登录页面
 	public void index() {
@@ -68,6 +70,45 @@ public class SecurityController extends Controller {
 		Subject currentUser = SecurityUtils.getSubject();
 		currentUser.logout();
 		redirect(getCookie("_redrictUrl", "/"));
+	}
+
+	// 登入Action
+	public void appSignin() {
+		String username = getPara("username", "");
+		String password = getPara("password", "");
+		if (StringKit.isBlank(username) || StringKit.isBlank(password)) {
+			renderJson(new Message("500", "error", "用户名/密码不能为空！"));
+			return;
+		}
+		Boolean rememberMe = "on".equalsIgnoreCase(getPara("rememberMe", "off"));
+		Subject currentUser = SecurityUtils.getSubject();
+		UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
+		try {
+			currentUser.login(token);
+			renderJson(new Message("200", "success", username));
+		} catch (Exception e) {
+			// 登录失败
+			String esn = e.getClass().getSimpleName();
+			String errorMsg = "";
+			if ("IncorrectCredentialsException".equalsIgnoreCase(esn)) {
+				errorMsg = "用户名或者密码不正确！";
+			} else if ("UnknownAccountException".equalsIgnoreCase(esn)) {
+				errorMsg = "用户名错误！";
+			} else if ("LockedAccountException".equalsIgnoreCase(esn)) {
+				errorMsg = "用户已锁定！";
+			} else if ("AuthenticationException".equalsIgnoreCase(esn)) {
+				errorMsg = "用户认证失败！";
+			} else if ("ExcessiveAttemptsException".equalsIgnoreCase(esn)) {
+				errorMsg = "用户登录错误次数过多，10分钟内禁止登录！";
+			} else if ("DisabledAccountException".equalsIgnoreCase(esn)) {
+				errorMsg = "用户已禁用！";
+			} else if ("ExpiredCredentialsException".equalsIgnoreCase(esn)) {
+				errorMsg = "用户已过期！";
+			} else {
+				errorMsg = "未知错误！";
+			}
+			renderJson(new Message("500", "error", errorMsg));
+		}
 	}
 
 	// 登出Action

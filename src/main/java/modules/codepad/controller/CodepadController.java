@@ -8,6 +8,8 @@ import modules.codepad.model.CodepadModel;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Record;
 
+import frame.kit.StringKit;
+
 public class CodepadController extends Controller {
 
 	public void index() {
@@ -15,9 +17,18 @@ public class CodepadController extends Controller {
 	}
 
 	public void getListing() {
-		List<Record> listingRecord = CodepadModel.dao.getListing();
-		List<Record> listingFormat = TreeKit.formatTree(listingRecord, 0);
-		renderJson(listingFormat);
+		String search = getPara("search", "");
+		List<Record> listingRecord = CodepadModel.dao.getListing(search);
+		if (!StringKit.isNotBlank(search)) {
+			listingRecord = TreeKit.formatTree(listingRecord, 0);
+		}
+		renderJson(listingRecord);
+	}
+
+	public void getArticle() {
+		Integer id = getParaToInt("id");
+		Record articleRecord = CodepadModel.dao.getArticle(id);
+		renderJson(articleRecord);
 	}
 
 }

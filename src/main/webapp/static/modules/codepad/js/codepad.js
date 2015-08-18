@@ -5,21 +5,19 @@ var duoshuoQuery = {
 var new_list_menu_li = "";
 var search_value = '';
 $(document).ready(function() {
-    init_login_menu();
-    init_list_tree_menu();
-    init_content_tab_menu();
-    init_content_tab();
-    init_search_input();
-    index_direct();
-    //init_new_menu_list(10);
-    //setInterval(get_new_menu_list,60000);
-    init_layout();
+	init_layout();
 });
+
 //初始化布局
 function init_layout(){
 	$.parser.onComplete = function(){
 		close_loading();
 	}
+	load_list_tree(search_value);
+	reg_search_input();
+	reg_security_button();
+	reg_login_win_enter();
+	close_loading();
 }
 //关闭初始化遮罩页面
 function close_loading(){
@@ -38,80 +36,177 @@ function showProgress(title, text) {
 function closeProgress(){
 	parent.$.messager.progress('close');
 }
-//添加tabPanel
-function addTabPanel(divId,title,href,is_iframe){
-	showProgress('加载中','正在加载中，请耐心等待...');
-	var existTabPanel = $(divId).tabs('exists',title);
-	if (existTabPanel) {
-		$(divId).tabs('close', title);
-	}
-	if(is_iframe == '1' || is_iframe == true){
-		if (href.indexOf('http') == -1) {
-			href = baseUrl + href;
-		}
-		$(divId).tabs('add',{
-	        title: title,
-	        content: '<iframe src="' + href + '" frameborder="0" style="border:0;width:100%;height:99%;" seamless="seamless" sandbox="allow-forms allow-same-origin allow-scripts allow-top-navigation" onload="closeProgress()"></iframe>',
-	        closable: true
-	    });
-	} else {
-		$(divId).tabs('add', {
-			title : title,
-			href : baseUrl + href,
-			closable : true,
-			onLoad : function() {
-				closeProgress();
-			}
-		});
-	}
-}
-// 删除tabPanel
-function removeTabPanel(divId){
-    var tab = $(divId).tabs('getSelected');
-    if (tab){
-        var index = $(divId).tabs('getTabIndex', tab);
-        $(divId).tabs('close', index);
+
+/*加载资源列表*/
+function load_list_tree(search_value) {
+	var url = domain + '/getListing';
+    if (search_value ) {
+    	url = domain + '/getListing?&search=' + search_value;
     }
-}
+    $('#list_tree').tree({
+        url: url,
+        method: 'get',
+        animate: true,
+        formatter: function(node) {
+            var s = node.text;
+            return s;
+        },
+        onContextMenu: function(e, node) {
+            e.preventDefault();
+            if(isLogin()){
+            	$(this).tree('select', node.target);
+                $('#list_tree_menu').menu('show', {
+                    left: e.pageX,
+                    top: e.pageY,
+                });
+                if (node.node == '0') {
+                    $('#list_tree_menu').menu('disableItem', $('#add-ff')[0]);
+                    $('#list_tree_menu').menu('enableItem', $('#update-con')[0]);
+                } else {
+                    $('#list_tree_menu').menu('enableItem', $('#add-ff')[0]);
+                    $('#list_tree_menu').menu('disableItem', $('#update-con')[0]);
+                };
+            }
+        },
+        onClick: function(node) {
+            if (node.node == '0') {
+            	open_tab(node.id, node.text);
+            }
+        }
+    });
+};
 
 /*在新tab页打开事件*/
 function open_tab(id, text) {
-    if ($('#content_tab').tabs('exists', id + '#' + text)) {
-        $('#content_tab').tabs('select', id + '#' + text);
+    if ($('#content_tab').tabs('exists', id + '.' + text)) {
+        $('#content_tab').tabs('select', id + '.' + text);
     } else {
-        var direct_url = '<br /><div class="direct-url-box"><span>本文地址：</span>http://' + window.location.host + '?cid=' + id + '</div>';
+    	showProgress('加载中','正在加载中，请耐心等待...');
+        var direct_url = '<br /><div class="direct-url-box"><span>本文地址：</span>http://' + domain + '?cid=' + id + '</div>';
         var duoshuo = '<br /><div id="comment-box-' + id + '" class="comment-box"></div>';
         $('#content_tab').tabs('add', {
-            id: id,
-            title: id + '#' + text,
-            href: domain + 'codepad/getListing',
+            id: 'tab_page_'+id,
+            title: id + '.' + text,
+            href: domain + '/getArticle?id='+id,
             closable: true,
-            cls: 'content_tab_header',
-            bodyCls: 'content_tab_content',
+            cls: 'content-tab-header',
+            bodyCls: 'content-tab-content',
             extractor: function(data) {
+            	var dataJson = JSON.parse(data);
                 var pattern = /<body[^>]*>((.|[\n\r])*)<\/body>/im;
-                var matches = pattern.exec(data);
+                var matches = pattern.exec(dataJson.article);
                 var content = '';
                 if (matches) {
                     content = matches[1];
                 } else {
-                    content = data;
+                    content = dataJson.article;
                 }
                 return content + direct_url + duoshuo;
             },
             onLoad: function() {
-                toggleDuoshuoComments('#comment-box-' + id, id, window.location.host + '?cid=' + id);
+            	reg_tab_page_menus();
+            	closeProgress();
+                //toggleDuoshuoComments('#comment-box-' + id, id, window.location.host + '?cid=' + id);
             }
-        });
-        $('#' + id).bind('contextmenu', function(e) {
-            e.preventDefault();
-            $('#content_tab_blank_menu').menu('show', {
-                left: e.pageX,
-                top: e.pageY
-            });
         });
     }
 };
+/*搜索功能*/
+function reg_search_input() {
+    $('#search_input').searchbox({
+        prompt: '关键词',
+        searcher: function(value, name) {
+            search_value = value;
+            load_list_tree(search_value);
+        }
+    });
+};
+/* 登录注销功能*/
+function reg_security_button(){
+	if(isLogin()){
+		$('#security_button').linkbutton({
+			iconCls:'fa fa-power-off fa-lg',
+			onClick:function(){
+				$.get(baseUrl+'/security/appSignout',function(res){
+					if(res && res.msgCode == '200'){
+						$.messager.alert(res.msgType, '注销成功！','info');
+						$.cookie('c_nick',null);
+						reg_security_button();
+					}
+				});
+			}
+		});
+	}else{
+		$('#security_button').linkbutton({
+			iconCls:'fa fa-user fa-lg',
+			onClick:function(){
+				$('#login_win').window('open');
+			}
+		});
+	}
+}
+
+/*注册登录框回车事件*/
+function reg_login_win_enter() {
+	$('#usr_name').textbox('textbox').keydown(function(e) {
+		if (e.keyCode == 13) {
+			do_login();
+		}
+	});
+	$('#usr_password').textbox('textbox').keydown(function(e) {
+		if (e.keyCode == 13) {
+			do_login();
+		}
+	});
+}
+
+/* 执行登录功能 */
+function do_login(){
+	$.post(baseUrl+'/security/appSignin',{
+		username:$('#usr_name').val(),
+		password:$('#usr_password').val()
+	}, function(res) {
+		if (res && res.msgCode == '200') {
+			$.cookie('c_nick',res.msgDesc);
+			$('a.panel-tool-close').trigger("click");
+			reg_security_button();
+			$('#usr_password').textbox('setText','');
+            DesktopNotify('Codepad','static/img/favicon.ico','欢迎 '+res.msgDesc+' 登录！');
+		}
+		if (res && res.msgCode == '500') {
+			$.messager.alert(res.msgType, res.msgDesc, res.msgType);
+		}
+	});
+}
+//添加page页右键菜单
+function reg_tab_page_menus(){
+	$('div[id^="tab_page_"]').bind('contextmenu', function(e) {
+        e.preventDefault();
+        $('#content_tab_page_menu').menu('show', {
+            left: e.pageX,
+            top: e.pageY
+        });
+    });
+}
+function isLogin(){
+	if($.cookie('c_nick') != 'null'){
+		return true;
+	}
+	return false;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*添加节点*/
 function add_ff(type, s_node) {
     var c_nick = $.cookie('c_nick');
@@ -359,41 +454,6 @@ function delete_ff() {
     }
 };
 
-/*初始化登录按钮*/
-function init_login_menu() {
-    var c_nick = $.cookie('c_nick');
-    $('#login_menu').empty();
-    if (c_nick) {
-        $('#login_menu').linkbutton({
-            iconCls: 'icon-codepad-user',
-            plain: true,
-            text: '注销'
-        });
-        $('#login_menu').unbind('click');
-        $('#login_menu').bind('click', function() {
-            $.cookie('c_nick', '');
-            init_login_menu();
-        });
-        $('#login_nick').linkbutton({
-            text: 'Hi,' + c_nick + '!'
-        });
-    } else {
-        $('#login_menu').linkbutton({
-            iconCls: 'icon-codepad-user',
-            plain: true,
-            text: '登录'
-        });
-        $('#login_menu').unbind('click');
-        $('#login_menu').bind('click', function() {
-            $('#win-login').window('center');
-            $('#win-login').window('open');
-        });
-        $('#login_nick').linkbutton({
-            text: 'Hi,游客!'
-        });
-    }
-    init_list_tree(search_value);
-};
 /*登录按钮提交*/
 function login_button() {
     var name = $('#usr_name').val();
@@ -420,145 +480,7 @@ function login_button() {
         complete: function(XMLHttpRequest, textStatus) {}
     });
 };
-/*初始化词典按钮*/
-function init_cidian_menu() {
-    $('#cidian_menu').linkbutton({
-        iconCls: 'icon-codepad-youdao-cidian',
-        text: '有道词典'
-    });
-    $('#cidian_menu').bind('click', function() {
-        $('#win-cidian').window('open');
-    });
-};
-/*初始化翻译按钮*/
-function init_fanyi_menu() {
-    $('#fanyi_menu').linkbutton({
-        iconCls: 'icon-codepad-youdao-fanyi',
-        text: '有道翻译'
-    });
-    $('#fanyi_menu').bind('click', function() {
-        $('#win-fanyi').window('open');
-    });
-};
-/*初始化天气按钮*/
-function init_weather_menu() {
-    $('#weather_menu').linkbutton({
-        iconCls: 'icon-codepad-zgtq-weather',
-        text: '天气预报'
-    });
-    $('#weather_menu').bind('click', function() {
-        $('#win-weather').window('open').panel('refresh', 'static/app/zgtqWEATHER.html');
-    });
-};
-/*初始化豆瓣FM按钮*/
-function init_doubanFM_menu() {
-    $('#doubanFM_menu').linkbutton({
-        iconCls: 'icon-codepad-douban-FM',
-        text: '打开豆瓣FM'
-    });
-    $('#doubanFM_menu').bind('click', function() {
-        var text = $('#doubanFM_menu').linkbutton('options').text;
-        if (text === '打开豆瓣FM') {
-            $('#win-doubanFM').window('open');
-            $('#doubanFM_menu').linkbutton({
-                text: '关闭豆瓣FM'
-            });
-        } else {
-            $('#win-doubanFM').window('close');
-            $('#doubanFM_menu').linkbutton({
-                text: '打开豆瓣FM'
-            });
-        }
-    });
-};
-/*初始化快递100按钮*/
-function init_kuaidi100_menu() {
-    $('#kuaidi100_menu').linkbutton({
-        iconCls: 'icon-codepad-kuaidi100',
-        text: '快递查询'
-    });
-    $('#kuaidi100_menu').bind('click', function() {
-        $('#win-kuaidi100').window('open');
-    });
-};
-/*初始化exfile按钮*/
-function init_exfile_menu() {
-    $('#exfile_menu').linkbutton({
-        iconCls: 'icon-codepad-base',
-        text: 'Ex网盘'
-    });
-    $('#exfile_menu').bind('click', function() {
-        var c_nick = $.cookie('c_nick');
-        if (c_nick) {
-            $('#win-exfile').window('open');
-        }else{
-            $.messager.alert('Message', '请先登录！');
-        }
-    });
-};
-/*初始化alimama按钮*/
-function init_alimama_menu() {
-    $('#alimama_menu').linkbutton({
-        iconCls: 'icon-codepad-shoppingcart',
-        text: '淘宝转换'
-    });
-    $('#alimama_menu').bind('click', function() {
-        $('#win-alimama').window('open');
-    });
-};
-/*初始化树形列表*/
-function init_list_tree(search_value) {
-    if (search_value === '') {
-        d_url = domain + '/codepad/getListing';
-    } else {
-        d_url = domain + '/codepad/getListing?&search=' + search_value;
-    }
-    $('#list_tree').tree({
-        url: d_url,
-        method: 'get',
-        animate: true,
-        formatter: function(node) {
-            var s = node.text;
-            if ($.cookie('c_nick') !== node.create_id && node.open === '0') {
-                s = '<span style="color:#ccc">' + s + '</span>';
-            };
-            if (node.node === '0') {
-                if (node.open === '0') {
-                    s += '<span style="color:#ccc">&nbsp;私</span>';
-                } else {
-                    s += '<span style="color:#ccc">&nbsp;公</span>';
-                }
-                s += '<span style="color:#ccc">&nbsp;' + node.create_id + '</span>';
-            }
-            return s;
-        },
-        onContextMenu: function(e, node) {
-            e.preventDefault();
-            $(this).tree('select', node.target);
-            $('#list_tree_menu').menu('show', {
-                left: e.pageX,
-                top: e.pageY,
-            });
-            if (node.node === '0') {
-                $('#list_tree_menu').menu('disableItem', $('#add-ff')[0]);
-                $('#list_tree_menu').menu('enableItem', $('#update-con')[0]);
-            } else {
-                $('#list_tree_menu').menu('enableItem', $('#add-ff')[0]);
-                $('#list_tree_menu').menu('disableItem', $('#update-con')[0]);
-            };
-        },
-        onClick: function(node) {
-            if (node.node === '0') {
-                if (node.open === '1' || node.create_id === $.cookie('c_nick')) {
-                    open_tab(node.id, node.text);
-                } else {
-                    $.messager.alert('Message', '您没有权限查看此节点内容！');
-                }
 
-            }
-        }
-    });
-};
 /*初始化树形列表空白菜单*/
 function init_list_tree_menu() {
     $('div[region="west"]').bind('contextmenu', function(e) {
@@ -632,16 +554,7 @@ function init_content_tab() {
         }
     });
 };
-/*初始化查询事件*/
-function init_search_input() {
-    $('#search_input').searchbox({
-        prompt: '关键词',
-        searcher: function(value, name) {
-            search_value = value;
-            init_list_tree(search_value);
-        }
-    });
-};
+
 /*重载tab内容*/
 function reload_tab_con(tab_id) {
     if (tab_id === '') {
