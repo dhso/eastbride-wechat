@@ -21,9 +21,9 @@ public class CodepadModel extends Model<CodepadModel> {
 	 */
 	public List<Record> getListing(String search) {
 		if (StringKit.isNotBlank(search)) {
-			return Db.find("select id,pid,text,iconCls,state,node,open,create_id,create_dt,update_id,update_dt from codepad_article where node = 0 and (text like ? or article like ?)", "%" + search + "%", "%" + search + "%");
+			return Db.find("select id,pid,text,iconCls,'open' as state,node,open,create_id,create_dt,update_id,update_dt from codepad_article where node = 0 and (text like ? or article like ?)", "%" + search + "%", "%" + search + "%");
 		}
-		return Db.find("select id,pid,text,iconCls,state,node,open,create_id,create_dt,update_id,update_dt from codepad_article");
+		return Db.find("select id,pid,text,iconCls,'open' as state,node,open,create_id,create_dt,update_id,update_dt from codepad_article");
 	}
 
 	/**

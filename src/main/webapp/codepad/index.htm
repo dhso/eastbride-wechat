@@ -5,7 +5,6 @@
         <title>CodePad</title>
 		<link rel="stylesheet" type="text/css" href="${baseUrl}/static/easyui/themes/gray/easyui.css">
 		<link rel="stylesheet" type="text/css" href="${baseUrl}/static/easyui/themes/icon.css">
-        <link rel="stylesheet" type="text/css" href="${baseUrl}/static/awesome/css/font-awesome.min.css" />
         <link rel="stylesheet" type="text/css" href="${baseUrl}/static/google-code-prettify/prettify_bootstrap.css">
         <link rel="stylesheet" type="text/css" href="${baseUrl}/static/mCustomScrollbar/jquery.mCustomScrollbar.min.css">
         <link rel="stylesheet" type="text/css" href="${baseUrl}/static/modules/codepad/css/codepad.css">
@@ -25,8 +24,7 @@
         <div id="region-north" data-options="region:'north',minHeight:33,border:false">
         	<div style="height:35px;padding:5px 0 0 10px;"><img src="${baseUrl}/static/images/codepad/codepad.ico" height="25"><img src="${baseUrl}/static/images/codepad/codepad.png" height="25"></div>
         	<div style="padding:5px; position: absolute; bottom: 0px; right: 0px;">
-		        <a href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'fa fa-bell-o fa-lg'"></a>
-		        <a href="javascript:void(0);" id="security_button" class="easyui-linkbutton" data-options="plain:true,iconCls:'fa fa-sign-in fa-lg'"></a>
+		        <a href="javascript:void(0);" id="security_button" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-m-user'"></a>
     		</div>
         </div>
         <!-- 左边部分 -->
@@ -49,18 +47,18 @@
         
         <!-- 添加根文件/文件夹 -->
         <div id="list_menu" class="easyui-menu" style="width:150px;">
-            <div onclick="add_ff('folder','0')" data-options="iconCls:'tree-folder'">添加文件夹</div>
-            <div onclick="add_ff('file','0')" data-options="iconCls:'tree-file'">添加文件</div>
+            <div onclick="add_folder()" data-options="iconCls:'tree-folder'">添加文件夹</div>
+            <div onclick="add_file()" data-options="iconCls:'tree-file'">添加文件</div>
             <div class="menu-sep"></div>
-            <div onclick="init_list_tree('')" data-options="iconCls:'icon-reload'">刷新列表</div>
+            <div onclick="load_list_tree('')" data-options="iconCls:'icon-reload'">刷新列表</div>
         </div>
         <!-- 树形列表右键菜单 -->
         <div id="list_tree_menu" class="easyui-menu" style="width:120px;">
             <div id="add-ff" data-options="iconCls:'icon-add'">
                 <span>添加节点</span>
                 <div>
-                    <div id="add-folder" onclick="add_ff('folder','')" data-options="iconCls:'tree-folder'">文件夹</div>
-                    <div id="add-file" onclick="add_ff('file','')" data-options="iconCls:'tree-file'">文件</div>
+                    <div id="add-folder" onclick="add_folder()" data-options="iconCls:'tree-folder'">文件夹</div>
+                    <div id="add-file" onclick="add_file()" data-options="iconCls:'tree-file'">文件</div>
                 </div>
             </div>
             <div id="update-ff" onclick="update_ff()" data-options="iconCls:'icon-edit'">修改节点</div>
@@ -90,14 +88,13 @@
             </table>
         </div>
         <!-- 添加文件 -->
-        <div id="win-add-file" class="easyui-window" style="width:220px" title="添加" data-options="modal:true,closed:true,minimizable:false,maximizable:false,resizable:false,collapsible:false,iconCls:'tree-file'">
-            <input class="easyui-textbox" type="hidden" id="win-add-ff-nodeid">
-            <input class="easyui-textbox" type="hidden" id="win-add-ff-state">
-            <input class="easyui-textbox" type="hidden" id="win-add-ff-writer">
+        <div id="win_add_file" class="easyui-window" title="添加" data-options="modal:true,closed:true,minimizable:false,maximizable:false,resizable:false,collapsible:false,iconCls:'tree-file',minHeight:500">
+            <div class="hidden">
+            	<input class="easyui-textbox" type="hidden" id="win_add_file_nodeid">
+            </div>
             <table>
-                <tr><td>标题：</td><td><input class="easyui-textbox" type="text" id="win-add-ff-text" data-options="required:true"></input></td></tr>
-                <tr><td>公开：</td><td><input type="radio" name="win-add-ff-open" value="1">是</input><input type="radio" name="win-add-ff-open" value="0">否</input></td></tr>
-                <tr><td></td><td><a href="#" class="easyui-linkbutton" onclick="add_ff_button()">添加</a></td></tr>
+                <tr><td>标题：<input class="easyui-textbox" type="text" id="win_add_file_title" data-options="required:true,width:450"></input></td><td>私有：<input type="checkbox" id="win_add_file_checkbox" value="1"></td><td><a href="javascript:void(0);" class="easyui-linkbutton" onclick="do_add_file_submit()">提交</a></td></tr>
+                <tr><td colspan="3"><textarea id="win_add_file_editor" rows="50" cols="100"></textarea></td></tr>
             </table>
         </div>
         <!--修改文件属性 -->
@@ -123,12 +120,13 @@
         </div>
         
 		<script type="text/javascript" src="${baseUrl}/static/jquery/jquery-1.7.2.min.js"></script>
-		<script type="text/javascript" src="${baseUrl}/static/js/desktop-notify.js"></script>
-        <script type="text/javascript" src="${baseUrl}/static/js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="${baseUrl}/static/js/jquery.cookie.js"></script>
+        <script type="text/javascript" src="${baseUrl}/static/easyui/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="${baseUrl}/static/ckeditor/ckeditor.js"></script>
+        <script type="text/javascript" src="${baseUrl}/static/js/desktop-notify.js"></script>
         <script type="text/javascript" src="${baseUrl}/static/google-code-prettify/prettify.js"></script>
         <!-- <script type="text/javascript" src="http://static.duoshuo.com/embed.js"></script> -->
         <script type="text/javascript" src="${baseUrl}/static/mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
-        <script type="text/javascript" src="${baseUrl}/static/easyui/jquery.easyui.min.js"></script>
         <script type="text/javascript" src="${baseUrl}/static/modules/codepad/js/codepad.js"></script>
     </body>
 </html>

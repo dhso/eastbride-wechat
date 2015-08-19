@@ -1,4 +1,3 @@
-var update_editor;
 var duoshuoQuery = {
     short_name: "codepad"
 };
@@ -17,6 +16,7 @@ function init_layout(){
 	reg_search_input();
 	reg_security_button();
 	reg_login_win_enter();
+	reg_add_file_editor();
 	close_loading();
 }
 //关闭初始化遮罩页面
@@ -121,11 +121,19 @@ function reg_search_input() {
         }
     });
 };
+/*注册添加文件编辑器*/
+function reg_add_file_editor(){
+	CKEDITOR.replace('win_add_file_editor',{
+		height:335,
+		resize_minHeight:430
+	});
+}
+
 /* 登录注销功能*/
 function reg_security_button(){
 	if(isLogin()){
 		$('#security_button').linkbutton({
-			iconCls:'fa fa-power-off fa-lg',
+			iconCls:'icon-m-power-off',
 			onClick:function(){
 				$.get(baseUrl+'/security/appSignout',function(res){
 					if(res && res.msgCode == '200'){
@@ -138,7 +146,7 @@ function reg_security_button(){
 		});
 	}else{
 		$('#security_button').linkbutton({
-			iconCls:'fa fa-user fa-lg',
+			iconCls:'icon-m-user',
 			onClick:function(){
 				$('#login_win').window('open');
 			}
@@ -178,6 +186,7 @@ function do_login(){
 		}
 	});
 }
+
 //添加page页右键菜单
 function reg_tab_page_menus(){
 	$('div[id^="tab_page_"]').bind('contextmenu', function(e) {
@@ -188,11 +197,35 @@ function reg_tab_page_menus(){
         });
     });
 }
+/*判断登录*/
 function isLogin(){
 	if($.cookie('c_nick') != 'null'){
 		return true;
 	}
 	return false;
+}
+/*添加文件*/
+function add_file() {
+    if (isLogin()) {
+        var id = $('#list_tree').tree('getSelected').id;
+        $('#win_add_file').window('center');
+        $('#win_add_file').window('open');
+        $("#win_add_file_nodeid").textbox('setText',id);
+        $('#win_add_file_title').val('');
+        $('#win_add_file_checkbox').removeAttr("checked");
+    } else {
+        $.messager.alert('Message', '请先登录！');
+    }
+};
+/*执行添加文件功能*/
+function do_add_file_submit(){
+	var article = CKEDITOR.instances.win_add_file_editor.getData();
+	var open = $('#win_add_file_checkbox').val();
+	var title = $('#win_add_file_title').textbox('getValue');
+	var pid = $('#win_add_file_nodeid').textbox('getValue');
+	console.log(open);
+	console.log(title);
+	console.log(pid);
 }
 
 
@@ -206,29 +239,6 @@ function isLogin(){
 
 
 
-
-/*添加节点*/
-function add_ff(type, s_node) {
-    var c_nick = $.cookie('c_nick');
-    if (c_nick) {
-        var id = "0";
-        if (s_node !== '0') {
-            id = $('#list_tree').tree('getSelected').id;
-        }
-        var state = "open";
-        if (type === "folder") {
-            state = "closed";
-        }
-        $('#win-add-ff').window('center');
-        $('#win-add-ff').window('open');
-        $("#win-add-ff-state").val(state);
-        $("#win-add-ff-nodeid").val(id);
-        $('#win-add-ff-text').val('');
-        $('input[name="win-add-ff-open"]:radio[value="1"]').attr("checked", "true");
-    } else {
-        $.messager.alert('Message', '请先登录！');
-    }
-};
 /*添加节点按钮提交*/
 function add_ff_button() {
     var text = $("#win-add-ff-text").val();
@@ -580,47 +590,6 @@ function init_kindEditor() {
             filterMode: false
         });
     });
-};
-/*xheditor编辑器初始化*/
-function init_xheditor() {
-    var allPlugin = {
-        Code: {
-            c: 'xheBtnPlugCode',
-            t: '插入代码',
-            h: 1,
-            e: function() {
-                var _this = this;
-                var htmlCode = '<div><select id="xheCodeType"><option value="js">JavaScript</option><option value="html">HTML</option><option value="css">CSS</option><option value="php">PHP</option><option value="pl">Perl</option><option value="py">Python</option><option value="rb">Ruby</option><option value="java">Java</option><option value="vb">ASP/VB</option><option value="cpp">C/C++</option><option value="cs">C#</option><option value="xml">XML</option><option value="bsh">Shell</option><option value="">Other</option></select></div><div><textarea id="xheCodeValue" wrap="soft" spellcheck="false" style="width:300px;height:100px;" /></div><div style="text-align:right;"><input type="button" id="xheSave" value="确定" /></div>';
-                var jCode = $(htmlCode),
-                    jType = $('#xheCodeType', jCode),
-                    jValue = $('#xheCodeValue', jCode),
-                    jSave = $('#xheSave', jCode);
-                jSave.click(function() {
-                    _this.loadBookmark();
-                    _this.pasteHTML('<pre class="prettyprint linenums lang-' + jType.val() + '">' + _this.domEncode(jValue.val()).replace(/[\r\n]/g, '<br />') + '</pre><br />');
-                    _this.hidePanel();
-                    return false;
-                });
-                _this.saveBookmark();
-                _this.showDialog(jCode);
-            }
-        }
-    };
-    /*update_editor = $('#editor_update_file').xheditor({
-        plugins: allPlugin,
-        tools: 'full',
-        skin: 'default',
-        //clickCancelDialog:false,
-        loadCSS: ['static/google-code-prettify/prettify_bootstrap.css'],
-        width: $('#win-update_file').width() - 2,
-        height: '400',
-        disableContextmenu: true,
-        hoverExecDelay: -1,
-        upImgUrl: 'static/xheditor-1.2.1/xheditor_plugins/upload/upload.php',
-        upLinkUrl: 'static/xheditor-1.2.1/xheditor_plugins/upload/upload.php',
-        upFlashUrl: 'static/xheditor-1.2.1/xheditor_plugins/upload/upload.php',
-        upMediaUrl: 'static/xheditor-1.2.1/xheditor_plugins/upload/upload.php'
-    });*/
 };
 
 function toggleDuoshuoComments(container, content_id, content_url) {

@@ -58,6 +58,10 @@ body {
 	font-weight: normal;
 }
 
+.hidden{
+	display:none;
+}
+
 a {
 	color: #000;
 	text-decoration: none;
