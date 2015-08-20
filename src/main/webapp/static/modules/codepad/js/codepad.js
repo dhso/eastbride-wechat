@@ -17,6 +17,7 @@ function init_layout(){
 	reg_security_button();
 	reg_login_win_enter();
 	reg_add_file_editor();
+	reg_update_file_editor();
 	close_loading();
 }
 //关闭初始化遮罩页面
@@ -36,17 +37,25 @@ function showProgress(title, text) {
 function closeProgress(){
 	parent.$.messager.progress('close');
 }
-
-/*加载资源列表*/
+//展示信息板
+function showMessageBoard(title, msg) {
+	$.messager.show({
+		title : title,
+		msg : msg,
+		timeout : 5000,
+		showType : 'slide'
+	});
+}
+/* 加载资源列表 */
 function load_list_tree(search_value) {
-	var url = domain + '/getListing';
+	var url = domain + '/getTree';
     if (search_value ) {
-    	url = domain + '/getListing?&search=' + search_value;
+    	url = domain + '/getTree?&search=' + search_value;
     }
     $('#list_tree').tree({
         url: url,
-        method: 'get',
         animate: true,
+        dnd:true,
         formatter: function(node) {
             var s = node.text;
             return s;
@@ -60,11 +69,11 @@ function load_list_tree(search_value) {
                     top: e.pageY,
                 });
                 if (node.node == '0') {
-                    $('#list_tree_menu').menu('disableItem', $('#add-ff')[0]);
-                    $('#list_tree_menu').menu('enableItem', $('#update-con')[0]);
+                    $('#list_tree_menu').menu('disableItem', $('#add_ff')[0]);
+                    $('#list_tree_menu').menu('enableItem', $('#update_con')[0]);
                 } else {
-                    $('#list_tree_menu').menu('enableItem', $('#add-ff')[0]);
-                    $('#list_tree_menu').menu('disableItem', $('#update-con')[0]);
+                    $('#list_tree_menu').menu('enableItem', $('#add_ff')[0]);
+                    $('#list_tree_menu').menu('disableItem', $('#update_con')[0]);
                 };
             }
         },
@@ -72,6 +81,11 @@ function load_list_tree(search_value) {
             if (node.node == '0') {
             	open_tab(node.id, node.text);
             }
+        },
+        onDrop:function(target,source,point){
+        	console.log(target);
+        	console.log(source);
+        	console.log(point);
         }
     });
 };
@@ -125,7 +139,15 @@ function reg_search_input() {
 function reg_add_file_editor(){
 	CKEDITOR.replace('win_add_file_editor',{
 		height:335,
-		resize_minHeight:430
+		resize_enabled:false
+	});
+}
+
+/*注册更新文件编辑器*/
+function reg_update_file_editor(){
+	CKEDITOR.replace('win_update_file_editor',{
+		height:335,
+		resize_enabled:false
 	});
 }
 
@@ -178,7 +200,7 @@ function do_login(){
 			$.cookie('c_nick',res.msgDesc);
 			$('a.panel-tool-close').trigger("click");
 			reg_security_button();
-			$('#usr_password').textbox('setText','');
+			$('#usr_password').textbox('setValue','');
             DesktopNotify('Codepad','static/img/favicon.ico','欢迎 '+res.msgDesc+' 登录！');
 		}
 		if (res && res.msgCode == '500') {
@@ -206,26 +228,133 @@ function isLogin(){
 }
 /*添加文件*/
 function add_file() {
-    if (isLogin()) {
-        var id = $('#list_tree').tree('getSelected').id;
-        $('#win_add_file').window('center');
-        $('#win_add_file').window('open');
-        $("#win_add_file_nodeid").textbox('setText',id);
-        $('#win_add_file_title').val('');
-        $('#win_add_file_checkbox').removeAttr("checked");
-    } else {
-        $.messager.alert('Message', '请先登录！');
-    }
+    $('#win_add_file').window('center');
+    $('#win_add_file').window('open');
+    $("#win_add_file_nodeid").textbox('setValue',$('#list_tree').tree('getSelected').id);
+    $('#win_add_file_title').textbox('setValue','');
+    $('#win_add_file_checkbox').removeAttr("checked");
+    CKEDITOR.instances.win_add_file_editor.setData('');
 };
 /*执行添加文件功能*/
 function do_add_file_submit(){
-	var article = CKEDITOR.instances.win_add_file_editor.getData();
-	var open = $('#win_add_file_checkbox').val();
-	var title = $('#win_add_file_title').textbox('getValue');
-	var pid = $('#win_add_file_nodeid').textbox('getValue');
-	console.log(open);
-	console.log(title);
-	console.log(pid);
+	var open = setDefault($('input[name="win_add_file_checkbox"]:checked').val(),'1');
+	var iconCls = 'icon-m-file';
+	if(open == '0'){
+		iconCls = 'icon-m-file-lock';
+	}
+	$.post(domain + '/addArticle', {
+		pid : $('#win_add_file_nodeid').textbox('getValue'),
+		text : $('#win_add_file_title').textbox('getValue'),
+		iconCls : iconCls,
+		open : open,
+		article : CKEDITOR.instances.win_add_file_editor.getData(),
+		create_id : $.cookie('c_nick')
+	},function(res){
+		if(res && res.resCode == '200'){
+			$('a.panel-tool-close').trigger("click");
+			appendTree(res.resDesc,true);
+			showMessageBoard('提示', '文件添加成功！');
+		}else{
+			$.messager.alert('错误', '未知错误！', 'error');
+		}
+	});
+}
+/*添加文件夹*/
+function add_folder() {
+	$.messager.prompt('提示', '请输入文件夹名称：', function(r){
+        if (r){
+        	$.post(domain + '/addTree', {
+        		pid : $('#list_tree').tree('getSelected').id,
+        		text : r,
+        		iconCls : 'icon-m-folder',
+        		create_id : $.cookie('c_nick')
+        	},function(res){
+        		if(res && res.resCode == '200'){
+        			appendTree(res.resDesc,true);
+        			showMessageBoard('提示', '文件夹添加成功！');
+        		}else{
+        			$.messager.alert('错误', '未知错误！', 'error');
+        		}
+        	}); 
+        }
+    });
+};
+/*删除节点*/
+function delete_ff() {
+	var node = $('#list_tree').tree('getSelected');
+	if ($.cookie('c_nick') == node.create_id) {
+		$.messager.confirm('确认', '确认删除节点？', function(r) {
+			if (r) {
+				var id = node.id;
+				$.post(domain + '/delTree', {
+					id : node.id
+				}, function(res) {
+					if (res && res.resCode == '200') {
+						removeTree();
+						showMessageBoard('提示', '删除成功！');
+					} else {
+						$.messager.alert('错误', '未知错误！', 'error');
+					}
+				});
+			}
+		});
+	} else {
+		$.messager.alert('Message', '您没有权限删除此节点！', 'error');
+	}
+}
+/*修改内容*/
+function update_con() {
+	var node = $('#list_tree').tree('getSelected');
+    if ($.cookie('c_nick') == node.create_id) {
+        $.get(domain + '/getArticle?id='+node.id,function(data){
+            CKEDITOR.instances.win_update_file_editor.setData(data.article);
+            $("#win_update_file_id").textbox('setValue',data.id);
+            $('#win_update_file_title').textbox('setValue',data.text);
+            if(data.open == '1'){
+            	$('#win_update_file_checkbox').removeAttr("checked");
+            }else{
+            	$('#win_update_file_checkbox').attr("checked",true);
+            }
+            $('#win_update_file').window('center');
+            $('#win_update_file').window('open');
+        });
+    } else {
+        $.messager.alert('Message', '您没有权限修改此节点内容！');
+    }
+
+};
+/*设置默认值*/
+function setDefault(val,def){
+	if(val){
+		return val;
+	}
+	return def;
+}
+/*添加子叶*/
+function appendTree(data, expand) {
+	$('#list_tree').tree('append', {
+		parent : $('#list_tree').tree('getSelected').target,
+		data : data
+	});
+	if (expand) {
+		var target = $('#list_tree').tree('find', data.id).target;
+		$('#list_tree').tree('expandTo', target).tree('select', target);
+	}
+}
+/*添加树干*/
+function insertTree(data, expand) {
+	$('#list_tree').tree('insert', {
+		after : $('#list_tree').tree('getSelected').target,
+		data : data
+	});
+	if (expand) {
+		var target = $('#list_tree').tree('find', data.id).target;
+		$('#list_tree').tree('expandTo', target).tree('select', target);
+	}
+}
+/*删除树*/
+function removeTree(){
+	$('#list_tree').tree('remove', $('#list_tree').tree('getSelected').target);
 }
 
 
@@ -239,7 +368,29 @@ function do_add_file_submit(){
 
 
 
-/*添加节点按钮提交*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 添加节点按钮提交 */
 function add_ff_button() {
     var text = $("#win-add-ff-text").val();
     var open = $('input[name="win-add-ff-open"]:checked').val();
@@ -328,41 +479,7 @@ function update_ff_button() {
     });
 };
 
-/*修改内容*/
-function update_con() {
-    var c_nick = $.cookie('c_nick');
-    if (c_nick) {
-        if (c_nick === $('#list_tree').tree('getSelected').attributes.writer) {
-            $('#win-update-file').window('center');
-            $('#win-update-file').window('open');
-            var textarea_html = '';
-            var node = $('#list_tree').tree('getSelected');
-            if (node) {
-                var id = node.id;
-                $.ajax({
-                    type: "get",
-                    url: domain + 'codepad/ui/content_tab/select_content?callback=?&tid=' + id,
-                    async: false,
-                    success: function(data, textStatus) {
-                        textarea_html = data;
-                    },
-                    error: function() {
-                        $.messager.alert('Message', '请求出错！');
-                    },
-                    complete: function(XMLHttpRequest, textStatus) {}
-                });
-            }
-            update_editor.setSource(textarea_html);
-            /*if(KindEditor.instances.length>0){
-                window.editor.html(textarea_html);
-            }*/
-        } else {
-            $.messager.alert('Message', '您没有权限修改此节点内容！');
-        }
-    } else {
-        $.messager.alert('Message', '请先登录！');
-    }
-};
+
 /*修改内容窗口事件*/
 function init_win_update_file() {
     $('#win-update-file').window({
@@ -421,48 +538,7 @@ function init_win_update_file() {
         }
     });
 };
-/*删除节点*/
-function delete_ff() {
-    var c_nick = $.cookie('c_nick');
-    if (c_nick) {
-        if (c_nick === $('#list_tree').tree('getSelected').attributes.writer) {
-            $.messager.confirm('Message', '确认删除节点？', function(r) {
-                if (r) {
-                    var node = $('#list_tree').tree('getSelected');
-                    if (node) {
-                        var id = node.id;
-                        $.ajax({
-                            type: "post",
-                            url: domain + 'codepad/ui/menu_tree/del_menu?id=' + id,
-                            async: false,
-                            success: function(data, textStatus) {
-                                if (data.responseDesc !== "Success") {
-                                    $.messager.alert('Message', data.responseDesc);
-                                } else {
-                                    init_list_tree(search_value);
-                                    $('a.panel-tool-close').trigger("click");
-                                    $.messager.show({
-                                        title: '提示',
-                                        msg: data.responseDesc,
-                                        showType: 'show'
-                                    });
-                                }
-                            },
-                            error: function() {
-                                $.messager.alert('Message', '请求出错！');
-                            },
-                            complete: function(XMLHttpRequest, textStatus) {}
-                        });
-                    }
-                }
-            });
-        } else {
-            $.messager.alert('Message', '您没有权限删除此节点！');
-        }
-    } else {
-        $.messager.alert('Message', '请先登录！');
-    }
-};
+
 
 /*登录按钮提交*/
 function login_button() {

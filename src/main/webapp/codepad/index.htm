@@ -54,17 +54,16 @@
         </div>
         <!-- 树形列表右键菜单 -->
         <div id="list_tree_menu" class="easyui-menu" style="width:120px;">
-            <div id="add-ff" data-options="iconCls:'icon-add'">
+            <div id="add_ff" data-options="">
                 <span>添加节点</span>
                 <div>
-                    <div id="add-folder" onclick="add_folder()" data-options="iconCls:'tree-folder'">文件夹</div>
-                    <div id="add-file" onclick="add_file()" data-options="iconCls:'tree-file'">文件</div>
+                    <div id="add_folder" onclick="add_folder()" data-options="iconCls:'tree-folder'">文件夹</div>
+                    <div id="add_file" onclick="add_file()" data-options="iconCls:'tree-file'">文件</div>
                 </div>
             </div>
-            <div id="update-ff" onclick="update_ff()" data-options="iconCls:'icon-edit'">修改节点</div>
-            <div id="delete-ff" onclick="delete_ff()" data-options="iconCls:'icon-remove'">删除节点</div>
+            <div id="delete_ff" onclick="delete_ff()" data-options="">删除节点</div>
             <div class="menu-sep"></div>
-            <div id="update-con" onclick="update_con()" data-options="iconCls:'icon-edit'">编辑内容</div>
+            <div id="update_con" onclick="update_con()" data-options="">编辑内容</div>
         </div> 
         <!-- tab栏右键菜单 -->
         <div id="content_tab_menu" class="easyui-menu" style="width:120px;">
@@ -76,25 +75,24 @@
         <div id="content_tab_page_menu" class="easyui-menu" style="width:120px;">
             <div id="update-ff" onclick="reload_tab_con('')" data-options="iconCls:'icon-reload'">刷新当前</div>
         </div>
-        <!-- 添加文件夹 -->
-        <div id="win-add-folder" class="easyui-window" style="width:220px" title="添加" data-options="modal:true,closed:true,minimizable:false,maximizable:false,resizable:false,collapsible:false,iconCls:'tree-folder'">
-            <input class="easyui-textbox" type="hidden" id="win-add-ff-nodeid">
-            <input class="easyui-textbox" type="hidden" id="win-add-ff-state">
-            <input class="easyui-textbox" type="hidden" id="win-add-ff-writer">
-            <table>
-                <tr><td>标题：</td><td><input class="easyui-textbox" type="text" id="win-add-ff-text" data-options="required:true"></input></td></tr>
-                <tr><td>公开：</td><td><input type="radio" name="win-add-ff-open" value="1">是</input><input type="radio" name="win-add-ff-open" value="0">否</input></td></tr>
-                <tr><td></td><td><a href="#" class="easyui-linkbutton" onclick="add_ff_button()">添加</a></td></tr>
-            </table>
-        </div>
         <!-- 添加文件 -->
-        <div id="win_add_file" class="easyui-window" title="添加" data-options="modal:true,closed:true,minimizable:false,maximizable:false,resizable:false,collapsible:false,iconCls:'tree-file',minHeight:500">
+        <div id="win_add_file" class="easyui-window" title="添加文件" data-options="modal:true,closed:true,minimizable:false,maximizable:false,resizable:false,collapsible:false,iconCls:'tree-file',minHeight:500">
             <div class="hidden">
             	<input class="easyui-textbox" type="hidden" id="win_add_file_nodeid">
             </div>
             <table>
-                <tr><td>标题：<input class="easyui-textbox" type="text" id="win_add_file_title" data-options="required:true,width:450"></input></td><td>私有：<input type="checkbox" id="win_add_file_checkbox" value="1"></td><td><a href="javascript:void(0);" class="easyui-linkbutton" onclick="do_add_file_submit()">提交</a></td></tr>
-                <tr><td colspan="3"><textarea id="win_add_file_editor" rows="50" cols="100"></textarea></td></tr>
+                <tr><td>标题：<input class="easyui-textbox" type="text" id="win_add_file_title" data-options="required:true,width:450"></input></td><td>私有：<input type="checkbox" name="win_add_file_checkbox" id="win_add_file_checkbox" value="0"></td><td><a href="javascript:void(0);" class="easyui-linkbutton" onclick="do_add_file_submit()">提交</a></td></tr>
+                <tr><td colspan="3"><textarea id="win_add_file_editor" rows="50" cols="95"></textarea></td></tr>
+            </table>
+        </div>
+        <!-- 添加文件 -->
+        <div id="win_update_file" class="easyui-window" title="修改文件" data-options="modal:true,closed:true,minimizable:false,maximizable:false,resizable:false,collapsible:false,iconCls:'tree-file',minHeight:500">
+            <div class="hidden">
+            	<input class="easyui-textbox" type="hidden" id="win_update_file_id">
+            </div>
+            <table>
+                <tr><td>标题：<input class="easyui-textbox" type="text" id="win_update_file_title" data-options="required:true,width:450"></input></td><td>私有：<input type="checkbox" name="win_update_file_checkbox" id="win_update_file_checkbox" value="0"></td><td><a href="javascript:void(0);" class="easyui-linkbutton" onclick="do_update_file_submit()">提交</a></td></tr>
+                <tr><td colspan="3"><textarea id="win_update_file_editor" rows="50" cols="95"></textarea></td></tr>
             </table>
         </div>
         <!--修改文件属性 -->
@@ -106,10 +104,6 @@
                 <tr><td></td><td><a href="#" class="easyui-linkbutton" onclick="update_ff_button()">修改</a></td></tr>
             </table>
         </div>       
-        <!-- 更新文件 -->
-        <!-- <div id="win-update-file" class="easyui-window" style="width:100%" >
-            <textarea id="editor_update_file"></textarea>
-        </div> -->
         <!-- 登录 -->
         <div id="login_win" class="easyui-window" style="width:220px" title="登录" data-options="modal:true,closed:true,minimizable:false,maximizable:false,resizable:false,collapsible:false,iconCls:'fa fa-user'">
             <table>

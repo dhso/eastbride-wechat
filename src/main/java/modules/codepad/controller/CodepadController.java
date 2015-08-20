@@ -2,13 +2,11 @@ package modules.codepad.controller;
 
 import java.util.List;
 
-import modules.codepad.kit.TreeKit;
+import modules.codepad.entity.Result;
 import modules.codepad.model.CodepadModel;
 
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Record;
-
-import frame.kit.StringKit;
 
 public class CodepadController extends Controller {
 
@@ -16,19 +14,43 @@ public class CodepadController extends Controller {
 		render("index.htm");
 	}
 
-	public void getListing() {
+	public void getTree() {
 		String search = getPara("search", "");
-		List<Record> listingRecord = CodepadModel.dao.getListing(search);
-		if (!StringKit.isNotBlank(search)) {
-			listingRecord = TreeKit.formatTree(listingRecord, 0);
-		}
-		renderJson(listingRecord);
+		Integer id = getParaToInt("id", 0);
+		List<Record> treeRecord = CodepadModel.dao.getTree(id, search);
+		renderJson(treeRecord);
 	}
 
 	public void getArticle() {
 		Integer id = getParaToInt("id");
 		Record articleRecord = CodepadModel.dao.getArticle(id);
 		renderJson(articleRecord);
+	}
+
+	public void addArticle() {
+		Integer pid = getParaToInt("pid");
+		String text = getPara("text");
+		String iconCls = getPara("iconCls");
+		Integer open = getParaToInt("open");
+		String article = getPara("article");
+		String create_id = getPara("create_id");
+		Record articleRecord = CodepadModel.dao.addArticle(pid, text, iconCls, open, article, create_id);
+		renderJson(new Result("200", articleRecord));
+	}
+
+	public void addTree() {
+		Integer pid = getParaToInt("pid");
+		String text = getPara("text");
+		String iconCls = getPara("iconCls");
+		String create_id = getPara("create_id");
+		Record treeRecord = CodepadModel.dao.addTree(pid, text, iconCls, create_id);
+		renderJson(new Result("200", treeRecord));
+	}
+
+	public void delTree() {
+		Integer id = getParaToInt("id");
+		CodepadModel.dao.delTree(id);
+		renderJson(new Result("200", "删除成功！"));
 	}
 
 }
