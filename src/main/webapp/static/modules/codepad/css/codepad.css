@@ -32,12 +32,12 @@ body {
 	margin-top: 35px;
 }
 
-#region-north,#region-north .l-btn {
+#region_north,#region_north .l-btn {
 	background-color: #548ac1;
 	color: #fff;
 }
 
-#region-west {
+#region_west {
 	background-color: aliceblue;
 }
 
@@ -62,6 +62,9 @@ body {
 	display:none;
 }
 
+.tree-info{
+	color:#ccc;
+}
 a {
 	color: #000;
 	text-decoration: none;

@@ -53,6 +53,20 @@ public class CodepadModel extends Model<CodepadModel> {
 	}
 
 	/**
+	 * 更新文章
+	 * 
+	 * @param id
+	 * @param text
+	 * @param iconCls
+	 * @param open
+	 * @param article
+	 * @param update_id
+	 */
+	public void updateArticle(Integer id, String text, String iconCls, Integer open, String article, String update_id) {
+		Db.update("update codepad_article set text = ?, iconCls = ?, open = ?, article = ?, update_id = ?, update_dt = now() where id = ?", text, iconCls, open, article, update_id, id);
+	}
+
+	/**
 	 * 添加文件夹
 	 * 
 	 * @param pid
@@ -73,5 +87,15 @@ public class CodepadModel extends Model<CodepadModel> {
 	 */
 	public void delTree(Integer id) {
 		Db.update("delete from codepad_article where id = ?", id);
+	}
+
+	/**
+	 * 更新节点
+	 * 
+	 * @param id
+	 * @param pid
+	 */
+	public void updateTree(Integer id, Integer pid) {
+		Db.update("update codepad_article set pid = ? where id = ?", pid, id);
 	}
 }

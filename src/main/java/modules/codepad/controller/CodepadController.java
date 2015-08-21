@@ -38,6 +38,17 @@ public class CodepadController extends Controller {
 		renderJson(new Result("200", articleRecord));
 	}
 
+	public void updateArticle() {
+		Integer id = getParaToInt("id");
+		String text = getPara("text");
+		String iconCls = getPara("iconCls");
+		Integer open = getParaToInt("open");
+		String article = getPara("article");
+		String update_id = getPara("update_id");
+		CodepadModel.dao.updateArticle(id, text, iconCls, open, article, update_id);
+		renderJson(new Result("200", "更新成功！"));
+	}
+
 	public void addTree() {
 		Integer pid = getParaToInt("pid");
 		String text = getPara("text");
@@ -51,6 +62,13 @@ public class CodepadController extends Controller {
 		Integer id = getParaToInt("id");
 		CodepadModel.dao.delTree(id);
 		renderJson(new Result("200", "删除成功！"));
+	}
+
+	public void updateTree() {
+		Integer id = getParaToInt("id");
+		Integer pid = getParaToInt("pid");
+		CodepadModel.dao.updateTree(id, pid);
+		renderJson(new Result("200", "更新成功！"));
 	}
 
 }

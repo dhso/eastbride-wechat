@@ -18,6 +18,8 @@ function init_layout(){
 	reg_login_win_enter();
 	reg_add_file_editor();
 	reg_update_file_editor();
+	reg_list_blank_menu();
+	reg_content_tab_menu();
 	close_loading();
 }
 //关闭初始化遮罩页面
@@ -57,35 +59,60 @@ function load_list_tree(search_value) {
         animate: true,
         dnd:true,
         formatter: function(node) {
-            var s = node.text;
+            var s = '<a href="javascript:void(0);" title="'+node.text+' '+node.create_id+' '+node.create_dt+'">'+node.text+' <span class="tree-info">'+node.create_id+'</span></a>';
             return s;
         },
         onContextMenu: function(e, node) {
             e.preventDefault();
+            $(this).tree('select', node.target);
+            $('#list_tree_menu').menu('show', {
+                left: e.pageX,
+                top: e.pageY,
+            });
             if(isLogin()){
-            	$(this).tree('select', node.target);
-                $('#list_tree_menu').menu('show', {
-                    left: e.pageX,
-                    top: e.pageY,
-                });
-                if (node.node == '0') {
-                    $('#list_tree_menu').menu('disableItem', $('#add_ff')[0]);
-                    $('#list_tree_menu').menu('enableItem', $('#update_con')[0]);
+            	if (node.node == '0') {
+                    $('#list_tree_menu').menu('hideItem', $('#add_tree_ff')[0]);
+                    $('#list_tree_menu').menu('showItem', $('#update_tree_con')[0]);
                 } else {
-                    $('#list_tree_menu').menu('enableItem', $('#add_ff')[0]);
-                    $('#list_tree_menu').menu('disableItem', $('#update_con')[0]);
+                    $('#list_tree_menu').menu('showItem', $('#add_tree_ff')[0]);
+                    $('#list_tree_menu').menu('hideItem', $('#update_tree_con')[0]);
                 };
+                $('#list_tree_menu').menu('showItem', $('#delete_tree_ff')[0]);
+            }else{
+            	 $('#list_tree_menu').menu('hideItem', $('#add_ff')[0]);
+                 $('#list_tree_menu').menu('hideItem', $('#update_tree_con')[0]);
+                 $('#list_tree_menu').menu('hideItem', $('#delete_tree_ff')[0]);
             }
+            
         },
         onClick: function(node) {
             if (node.node == '0') {
             	open_tab(node.id, node.text);
             }
         },
-        onDrop:function(target,source,point){
-        	console.log(target);
-        	console.log(source);
-        	console.log(point);
+        onBeforeDrop:function(target,source,point){
+        	if(isLogin()){
+        		console.log(point);
+        		var targetNode = $('#list_tree').tree('getNode', target);
+        		if(point == 'append' && targetNode.node == '1'){
+                	$.post(domain + '/updateTree',{
+                		id:source.id,
+                		pid:targetNode.id
+                	},function(res){
+                		if(res && res.resCode == '200'){
+                			showMessageBoard('提示', '改变节点成功！');
+                		}else{
+                			$.messager.alert('错误', '未知错误！', 'error');
+                			return false;
+                		}
+                	});
+            	}else{
+            		return false;
+            	}
+        	}else{
+        		return false;
+        		$.messager.alert('提示', '您没有权限修改此节点！','info');
+        	}
         }
     });
 };
@@ -119,6 +146,7 @@ function open_tab(id, text) {
             },
             onLoad: function() {
             	reg_tab_page_menus();
+            	apply_highlighting('tab_page_'+id);
             	closeProgress();
                 //toggleDuoshuoComments('#comment-box-' + id, id, window.location.host + '?cid=' + id);
             }
@@ -259,6 +287,33 @@ function do_add_file_submit(){
 		}
 	});
 }
+/*更新文件*/
+function do_update_file_submit(){
+	var open = setDefault($('input[name="win_update_file_checkbox"]:checked').val(),'1');
+	var iconCls = 'icon-m-file';
+	if(open == '0'){
+		iconCls = 'icon-m-file-lock';
+	}
+	var id = $('#win_update_file_id').textbox('getValue');
+	var text = $('#win_update_file_title').textbox('getValue');
+	$.post(domain + '/updateArticle', {
+		id : id,
+		text : text,
+		iconCls : iconCls,
+		open : open,
+		article : CKEDITOR.instances.win_update_file_editor.getData(),
+		update_id : $.cookie('c_nick')
+	},function(res){
+		if(res && res.resCode == '200'){
+			updateTree(id,text,iconCls);
+			reload_tab_con(id);
+			$('a.panel-tool-close').trigger("click");
+			showMessageBoard('提示', '文件更新成功！');
+		}else{
+			$.messager.alert('错误', '未知错误！', 'error');
+		}
+	});
+}
 /*添加文件夹*/
 function add_folder() {
 	$.messager.prompt('提示', '请输入文件夹名称：', function(r){
@@ -283,6 +338,10 @@ function add_folder() {
 function delete_ff() {
 	var node = $('#list_tree').tree('getSelected');
 	if ($.cookie('c_nick') == node.create_id) {
+		if(!$('#list_tree').tree('isLeaf',node.target)){
+			$.messager.alert('警告', '该节点有子文件，不能删除！', 'error');
+			return false;
+		}
 		$.messager.confirm('确认', '确认删除节点？', function(r) {
 			if (r) {
 				var id = node.id;
@@ -352,245 +411,42 @@ function insertTree(data, expand) {
 		$('#list_tree').tree('expandTo', target).tree('select', target);
 	}
 }
+/*更新树*/
+function updateTree(id, text, iconCls) {
+	$('#list_tree').tree('update', {
+		target : $('#list_tree').tree('find', id).target,
+		text : text,
+		iconCls : iconCls
+	});
+}
 /*删除树*/
 function removeTree(){
 	$('#list_tree').tree('remove', $('#list_tree').tree('getSelected').target);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* 添加节点按钮提交 */
-function add_ff_button() {
-    var text = $("#win-add-ff-text").val();
-    var open = $('input[name="win-add-ff-open"]:checked').val();
-    var id = $("#win-add-ff-nodeid").val();
-    var state = $("#win-add-ff-state").val();
-    var writer = $.cookie('c_nick');
-    var data = '{"state":"' + state + '","text":"' + text + '", "open":"' + open + '", "writer":"' + writer + '"}';
-    $.ajax({
-        type: "post",
-        url: domain + 'codepad/ui/menu_tree/add_menu?pid=' + id,
-        async: false,
-        data: data,
-        success: function(data, textStatus) {
-            if (data.responseDesc !== "Success") {
-                $.messager.alert('Message', data.responseDesc);
-            } else {
-                init_list_tree(search_value);
-                $('a.panel-tool-close').trigger("click");
-                $.messager.show({
-                    title: '提示',
-                    msg: data.responseDesc,
-                    showType: 'show'
-                });
-            }
-        },
-        error: function() {
-            $.messager.alert('Message', '请求出错！');
-        },
-        complete: function(XMLHttpRequest, textStatus) {}
-    });
-};
-
-/*修改文件属性*/
-function update_ff() {
-    var c_nick = $.cookie('c_nick');
-    if (c_nick) {
-        if (c_nick === $('#list_tree').tree('getSelected').attributes.writer) {
-            var node = $('#list_tree').tree('getSelected');
-            if (node) {
-                var id = node.id;
-                var pid = node.attributes.pid;
-                var open = node.attributes.open;
-                var text = node.text;
-                $('#win-update-ff').window('center');
-                $('#win-update-ff').window('open');
-                $('#win-update-ff-text').val(text);
-                $('input[name="win-update-ff-open"]:radio[value=' + open + ']').attr("checked", "true");
-                init_node_parent(pid);
-            }
-        } else {
-            $.messager.alert('Message', '您没有权限修改此节点！');
-        }
+/*重载tab内容*/
+function reload_tab_con(id) {
+    if (id && $('#tab_page_' + id)) {
+    	$('#tab_page_' + id).panel('refresh', domain + '/getArticle?id=' + id);
     } else {
-        $.messager.alert('Message', '请先登录！');
+    	var tab = $('#content_tab').tabs('getSelected');
+    	var id = tab.panel('options').id.replace('tab_page_','');
+        tab.panel('refresh', domain + '/getArticle?id=' + id);
     }
-}
-/*修改文件按钮提交*/
-function update_ff_button() {
-    var id = $('#list_tree').tree('getSelected').id;
-    var pid = $('#node_parent').combobox('getValue');
-    var text = $("#win-update-ff-text").val();
-    var open = $('input[name="win-update-ff-open"]:checked').val();
-    var data = '{"pid":"' + pid + '", "text":"' + text + '", "open":"' + open + '"}';
-    $.ajax({
-        type: "post",
-        url: domain + 'codepad/ui/menu_tree/update_menu?id=' + id,
-        async: false,
-        data: data,
-        success: function(data, textStatus) {
-            if (data.responseDesc !== "Success") {
-                $.messager.alert('Message', data.responseDesc);
-            } else {
-                init_list_tree(search_value);
-                $('a.panel-tool-close').trigger("click");
-                $.messager.show({
-                    title: '提示',
-                    msg: data.responseDesc,
-                    showType: 'show'
-                });
-            }
-        },
-        error: function() {
-            $.messager.alert('Message', '请求出错！');
-        },
-        complete: function(XMLHttpRequest, textStatus) {}
-    });
 };
-
-
-/*修改内容窗口事件*/
-function init_win_update_file() {
-    $('#win-update-file').window({
-        title: '更新',
-        modal: true,
-        width: 600,
-        collapsible: false,
-        minimizable: false,
-        closed: true,
-        resizable: false,
-        shadow: false,
-        tools: [{
-            iconCls: 'icon-codepad-save',
-            handler: function() {
-                $.ajax({
-                    type: "post",
-                    url: domain + 'codepad/ui/content_tab/update_content?tid=' + $('#list_tree').tree('getSelected').id,
-                    async: false,
-                    data: update_editor.getSource(), //window.editor.html(),
-                    success: function(data, textStatus) {
-                        if (data.responseDesc !== "Success") {
-                            $.messager.alert('Message', data.responseDesc);
-                        } else {
-                            reload_tab_con($('#list_tree').tree('getSelected').id);
-                            $('a.panel-tool-close').trigger("click");
-                            $.messager.show({
-                                title: '提示',
-                                msg: data.responseDesc,
-                                showType: 'show'
-                            });
-                        }
-                    },
-                    error: function() {
-                        $.messager.alert('Message', '请求出错！');
-                    },
-                    complete: function(XMLHttpRequest, textStatus) {}
-                });
-            }
-        }],
-        onMaximize: function() {
-            /*if(KindEditor.instances.length>0){
-                $('#win-update-file .ke-edit').css('height',$('#win-update-file').height()-$('#win-update-file .ke-toolbar').height()-20);
-            } */
-            $('#win-update-file td.xheIframeArea').css('height', $('#win-update-file').height() - $('#win-update-file td.xheTool').height() - 5)
-        },
-        onRestore: function() {
-            /*if(KindEditor.instances.length>0){
-                $('#win-update-file .ke-edit').css('height','290px');
-            } */
-            $('#win-update-file td.xheIframeArea').css('height', '400px');
-        },
-        onResize: function() {
-            /*if(KindEditor.instances.length>0){
-                $('#win-update-file .ke-container').css('width',$('#win-update-file').width()-2);
-            } */
-        }
-    });
+/*注册tabs菜单*/
+function reg_content_tab_menu() {
+	$('#content_tab').tabs({
+		onContextMenu : function(e, title, index) {
+			e.preventDefault();
+			$('#content_tab_menu').menu('show', {
+				left : e.pageX,
+				top : e.pageY,
+			}).data("tabTitle", title);
+		}
+	});
 };
-
-
-/*登录按钮提交*/
-function login_button() {
-    var name = $('#usr_name').val();
-    var password = $('#usr_password').val();
-    var data = '{"nick":"' + name + '","password":"' + password + '"}';
-    $.ajax({
-        type: "post",
-        url: domain + 'user/login?' + makeSignature(),
-        contentType: 'text/plain;charset=UTF-8',
-        data: data,
-        success: function(data, textStatus) {
-            if (data.responseDesc !== "Success") {
-                $.messager.alert('Message', data.responseDesc);
-            } else {
-                $.cookie('c_nick', data.user.nick);
-                init_login_menu();
-                $('a.panel-tool-close').trigger("click");
-                DesktopNotify('Codepad','static/img/favicon.ico','欢迎 '+data.user.nick+' 登录！');
-            };
-        },
-        error: function() {
-            $.messager.alert('Message', '请求出错！');
-        },
-        complete: function(XMLHttpRequest, textStatus) {}
-    });
-};
-
-/*初始化树形列表空白菜单*/
-function init_list_tree_menu() {
-    $('div[region="west"]').bind('contextmenu', function(e) {
-        e.preventDefault();
-        $('#list_menu').menu('show', {
-            left: e.pageX,
-            top: e.pageY
-        });
-    });
-};
-/*初始化tabs菜单*/
-function init_content_tab_menu() {
-    $('#content_tab').tabs({
-        onContextMenu: function(e, title) {
-            e.preventDefault();
-            $('#content_tab_menu').menu('show', {
-                left: e.pageX,
-                top: e.pageY,
-            }).data("tabTitle", title);
-        }
-    });
-};
-
-function close_tab(option) {
+/*关闭tabs菜单*/
+function do_close_tab(option) {
     var curTabTitle = $('#content_tab_menu').data("tabTitle");
     if (option === "current") {
         if (curTabTitle !== '首页') {
@@ -612,26 +468,63 @@ function close_tab(option) {
         $('#content_tab').tabs("close", closeTabsTitle[i]);
     };
 }
-/*初始化父节点下拉*/
-function init_node_parent(value) {
-    $('#node_parent').combobox({
-        url: domain + 'codepad/ui/menu_tree/select_menu_p?callback=?',
-        valueField: 'id',
-        textField: 'text'
+/*注册树形列表空白菜单*/
+function reg_list_blank_menu() {
+    $('#region_west').bind('contextmenu', function(e) {
+        e.preventDefault();
+        $('#list_blank_menu').menu('show', {
+            left: e.pageX,
+            top: e.pageY
+        });
+        if(isLogin()){
+        	$('#list_blank_menu').menu('showItem',$('#add_blank_folder')[0]);
+        	$('#list_blank_menu').menu('showItem',$('#add_blank_file')[0]);
+        }else{
+        	$('#list_blank_menu').menu('hideItem',$('#add_blank_folder')[0]);
+        	$('#list_blank_menu').menu('hideItem',$('#add_blank_file')[0]);
+        }
     });
-    if (value === '0') {
-        value = '';
-    }
-    $('#node_parent').combobox('setValue', value);
 };
+/*应用高亮代码*/
+function apply_highlighting(id) {
+	$('#' + id).find('pre code').each(function(i, block) {
+		hljs.highlightBlock(block);
+	});
+}
 
-/*扩展到节点*/
-function node_expandTo(node_id) {
-    var node = $('#list_tree').tree('find', node_id);
-    if (node) {
-        $('#list_tree').tree('expand', node.target).tree('select', node.target);
-    }
-};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*初始化tab栏事件*/
 function init_content_tab() {
     $('#content_tab').tabs({
@@ -641,15 +534,7 @@ function init_content_tab() {
     });
 };
 
-/*重载tab内容*/
-function reload_tab_con(tab_id) {
-    if (tab_id === '') {
-        var tab = $('#content_tab').tabs('getSelected');
-        tab.panel('refresh', domain + 'codepad/ui/content_tab/select_content?callback=?&tid=' + tab.panel('options').id);
-    } else {
-        $('#' + tab_id).panel('refresh', domain + 'codepad/ui/content_tab/select_content?callback=?&tid=' + tab_id);
-    }
-};
+
 /*KindEditor编辑器初始化*/
 function init_kindEditor() {
     KindEditor.ready(function(K) {
