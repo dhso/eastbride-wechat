@@ -5,6 +5,7 @@ var new_list_menu_li = "";
 var search_value = '';
 $(document).ready(function() {
 	init_layout();
+	load_directPage();
 });
 
 //初始化布局
@@ -491,67 +492,39 @@ function apply_highlighting(id) {
 		hljs.highlightBlock(block);
 	});
 }
+/*加载跳转页面*/
+function load_directPage() {
+    var aid = getUrlParam('aid');
+    if (aid) {
+    	showProgress('加载中','正在加载中，请耐心等待...');
+    	$.get(domain + '/getArticle?id='+aid,function(res){
+    		$('#content_tab').tabs('add', {
+    			id:'tab_page_'+res.id,
+    			title:res.id+'.'+res.text,
+    		    closable:true,
+    		    cls: 'content-tab-header',
+                bodyCls: 'content-tab-content',
+                content: do_makeContent(res.id,res.article),
+                onOpen: function() {
+                	reg_tab_page_menus();
+                	apply_highlighting('tab_page_'+res.id);
+                	closeProgress();
+                    //toggleDuoshuoComments('#comment-box-' + id, id, window.location.host + '?cid=' + id);
+                }
+    		});
+    	})
+    }
+}
+/*获取URL参数*/
+function getUrlParam(key) {
+    var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+    var r = window.location.search.substr(1).match(reg); //匹配目标参数
+    if (r != null) return unescape(r[2]);
+    return null; //返回参数值
+}
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*初始化tab栏事件*/
-function init_content_tab() {
-    $('#content_tab').tabs({
-        onLoad: function(panel) {
-            prettyPrint();
-        }
-    });
-};
-
-
-/*KindEditor编辑器初始化*/
-function init_kindEditor() {
-    KindEditor.ready(function(K) {
-        window.editor = K.create('#editor_update-file', {
-            width: $('#win-update_file').width() - 2,
-            height: '400',
-            //minWidth:$('#win-update-file').width()-2,
-            //minHeight:'50%',
-            minWidth: 1,
-            minHeight: 1,
-            resizeType: 1,
-            filterMode: false,
-            newlineTag: 'p',
-            filterMode: false
-        });
-    });
-};
 
 function toggleDuoshuoComments(container, content_id, content_url) {
     var el = document.createElement('div'); //该div不需要设置class="ds-thread"
@@ -563,65 +536,22 @@ function toggleDuoshuoComments(container, content_id, content_url) {
     jQuery(container).append(el);
 };
 
-function init_new_menu_list(num){
-    $.ajax({
-        type: "get",
-        url: domain + 'codepad/ui/menu_list/select_top_menu?num=' + num,
-        async: false,
-        success: function(data, textStatus) {
-            if (data) {
-                for(var i = 0; i<data.length;i++){
-                    new_list_menu_li += '<li onClick="open_tab(\''+data[i].id+'\',\''+data[i].text+'\')"><p class="nomal">'+(i+1)+') '+data[i].text+'</p><p class="small">'+data[i].attributes.writer+' '+getLocalTime(data[i].attributes.update_dt)+'</p></li>';
-                }
-                $("#new_menu_list").html(new_list_menu_li);
-                $('#new_menu_list_div').layout('resize', {});
-            }
-        },
-        error: function() {
-            $.messager.alert('Message', '请求出错！');
-        },
-        complete: function(XMLHttpRequest, textStatus) {}
-    });
-}
 
-function get_new_menu_list(){
-    $.ajax({
-        type: "get",
-        url: domain + 'codepad/ui/menu_list/select_top_menu?num=10',
-        async: false,
-        success: function(data, textStatus) {
-            if (data) {
-                var new_list_menu_lis = "";
-                for(var i = 0; i<data.length;i++){
-                    new_list_menu_lis += '<li onClick="open_tab(\''+data[i].id+'\',\''+data[i].text+'\')"><p class="nomal">'+(i+1)+') '+data[i].text+'</p><p class="small">'+data[i].attributes.writer+' '+getLocalTime(data[i].attributes.update_dt)+'</p></li>';
-                }
-                if(new_list_menu_li !== new_list_menu_lis){
-                    $("#new_menu_list").html(new_list_menu_lis);
-                    $('#new_menu_list_div').layout('resize', {});
-                    new_list_menu_li = new_list_menu_lis;
-                    DesktopNotify('Codepad动态','static/img/favicon.ico',data[0].text +'\n'+ data[0].attributes.writer +' '+ getLocalTime(data[0].attributes.update_dt));
-                }
-            }
-        },
-        error: function() {
-            $.messager.alert('Message', '请求出错！');
-        },
-        complete: function(XMLHttpRequest, textStatus) {}
-    });
-}
 
-function getUrlParam(key) {
-    var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
-    var r = window.location.search.substr(1).match(reg); //匹配目标参数
-    if (r != null) return unescape(r[2]);
-    return null; //返回参数值
-}
 
-function index_direct() {
-    var cid = getUrlParam('cid');
-    if (cid) {
-        open_tab(cid, '节点文章');
+/*格式化文章*/
+function do_makeContent(id,article){
+	var direct_url = '<br /><div class="direct-url-box"><span>本文地址：</span>'+window.location.protocol + domain + '?aid=' + id + '</div>';
+    var duoshuo = '<br /><div id="comment-box-' + id + '" class="comment-box"></div>';
+    var pattern = /<body[^>]*>((.|[\n\r])*)<\/body>/im;
+    var matches = pattern.exec(article);
+    var content = '';
+    if (matches) {
+        content = matches[1];
+    } else {
+        content = article;
     }
+    return content + direct_url + duoshuo;
 }
 
 function getLocalTime(nS) {     

@@ -48,7 +48,7 @@ public class CodepadModel extends Model<CodepadModel> {
 	 * @return
 	 */
 	public Record addArticle(Integer pid, String text, String iconCls, Integer open, String article, String create_id) {
-		Db.update("insert into codepad_article(pid,text,iconCls,state,node,open,article,create_id,create_dt) values (?,?,?,'open',0,?,?,?,now())", pid, text, iconCls, open, article, create_id);
+		Db.update("insert into codepad_article(pid,text,iconCls,state,node,open,article,create_id,create_dt,update_id,update_dt) values (?,?,?,'open',0,?,?,?,now(),?,now())", pid, text, iconCls, open, article, create_id, create_id);
 		return Db.findFirst("select id,pid,text,iconCls, state,node,open,create_id,create_dt,update_id,update_dt from codepad_article where pid= ? and text = ? and iconCls = ? and open=? and article=? and create_id=?", pid, text, iconCls, open, article, create_id);
 	}
 
@@ -76,7 +76,7 @@ public class CodepadModel extends Model<CodepadModel> {
 	 * @return
 	 */
 	public Record addTree(Integer pid, String text, String iconCls, String create_id) {
-		Db.update("insert into codepad_article(pid,text,iconCls,state,node,open,create_id,create_dt) values (?,?,?,'closed',1,1,?,now())", pid, text, iconCls, create_id);
+		Db.update("insert into codepad_article(pid,text,iconCls,state,node,open,create_id,create_dt,update_id,update_dt) values (?,?,?,'closed',1,1,?,now(),?,now())", pid, text, iconCls, create_id, create_id);
 		return Db.findFirst("select id,pid,text,iconCls, state,node,open,create_id,create_dt,update_id,update_dt from codepad_article where pid= ? and text = ? and iconCls = ? and state='closed' and node = 1 and open = 1  and create_id=?", pid, text, iconCls, create_id);
 	}
 
@@ -96,6 +96,6 @@ public class CodepadModel extends Model<CodepadModel> {
 	 * @param pid
 	 */
 	public void updateTree(Integer id, Integer pid) {
-		Db.update("update codepad_article set pid = ? where id = ?", pid, id);
+		Db.update("update codepad_article set pid = ?,update_dt = now() where id = ?", pid, id);
 	}
 }
