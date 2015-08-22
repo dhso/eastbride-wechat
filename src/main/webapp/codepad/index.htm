@@ -8,7 +8,7 @@
         <link rel="stylesheet" type="text/css" href="${baseUrl}/static/ckeditor/plugins/codesnippet/lib/highlight/styles/default.css">
         <link rel="stylesheet" type="text/css" href="${baseUrl}/static/mCustomScrollbar/jquery.mCustomScrollbar.min.css">
         <link rel="stylesheet" type="text/css" href="${baseUrl}/static/modules/codepad/css/codepad.css">
-        <link rel="shortcut icon" type="image/x-icon" href="${baseUrl}/static/images/codepad/codepad.ico" />
+        <link rel="shortcut icon" type="image/x-icon" href="${baseUrl}/static/modules/codepad/img/codepad.ico" />
     	<script>
     	var baseUrl = '${baseUrl}';
     	var domain = '${baseUrl}/codepad';
@@ -22,7 +22,7 @@
 		
 		<!-- 上面部分 -->
         <div id="region_north" data-options="region:'north',minHeight:33,border:false">
-        	<div style="height:35px;padding:5px 0 0 10px;"><img src="${baseUrl}/static/images/codepad/codepad.ico" height="25"><img src="${baseUrl}/static/images/codepad/codepad.png" height="25"></div>
+        	<div style="height:35px;padding:5px 0 0 10px;"><img src="${baseUrl}/static/modules/codepad/img/codepad.ico" height="25"><img src="${baseUrl}/static/modules/codepad/img/codepad.png" height="25"></div>
         	<div style="padding:5px; position: absolute; bottom: 0px; right: 0px;">
 		        <a href="javascript:void(0);" id="security_button" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-m-user'"></a>
     		</div>
@@ -60,7 +60,7 @@
                     <div onclick="add_file()" data-options="iconCls:'tree-file'">文件</div>
                 </div>
             </div>
-            <div id="update_tree_con" onclick="update_con()" data-options="iconCls:'icon-edit'">编辑内容</div>
+            <div id="update_tree_ff" onclick="update_ff()" data-options="iconCls:'icon-edit'">编辑内容</div>
             <div id="delete_tree_ff" onclick="delete_ff()" data-options="iconCls:'icon-remove'">删除节点</div>
             <div onclick="load_list_tree()" data-options="iconCls:'icon-reload'">刷新列表</div>
         </div> 
@@ -75,31 +75,31 @@
             <div id="update_ff" onclick="reload_tab_con()" data-options="iconCls:'icon-reload'">刷新页面</div>
         </div>
         <!-- 添加文件 -->
-        <div id="win_add_file" class="easyui-window" title="添加文件" data-options="modal:true,closed:true,minimizable:false,maximizable:false,resizable:false,collapsible:false,iconCls:'tree-file',minHeight:500">
+        <div id="win_add_file" class="easyui-window" title="添加文件" data-options="modal:true,closed:true,minimizable:false,maximizable:false,resizable:false,collapsible:false,iconCls:'tree-file',minHeight:500,width:642">
             <div class="hidden">
             	<input class="easyui-textbox" type="hidden" id="win_add_file_nodeid">
             </div>
             <table>
-                <tr><td>标题：<input class="easyui-textbox" type="text" id="win_add_file_title" data-options="required:true,width:450"></input></td><td>私有：<input type="checkbox" name="win_add_file_checkbox" id="win_add_file_checkbox" value="0"></td><td><a href="javascript:void(0);" class="easyui-linkbutton" onclick="do_add_file_submit()">提交</a></td></tr>
-                <tr><td colspan="3"><textarea id="win_add_file_editor" rows="50" cols="95"></textarea></td></tr>
+                <tr><td>标题：<input class="easyui-textbox" type="text" id="win_add_file_title" data-options="required:true,width:460"></input></td><td>私有：<input type="checkbox" name="win_add_file_checkbox" id="win_add_file_checkbox" value="0"></td><td><a href="javascript:void(0);" class="easyui-linkbutton" onclick="do_add_file_submit()">提交</a></td></tr>
+                <tr><td colspan="3"><textarea id="win_add_file_editor"></textarea></td></tr>
             </table>
         </div>
         <!-- 更新文件 -->
-        <div id="win_update_file" class="easyui-window" title="修改文件" data-options="modal:true,closed:true,minimizable:false,maximizable:false,resizable:false,collapsible:false,iconCls:'tree-file',minHeight:500">
+        <div id="win_update_file" class="easyui-window" title="修改文件" data-options="modal:true,closed:true,minimizable:false,maximizable:false,resizable:false,collapsible:false,iconCls:'tree-file',minHeight:500,width:642">
             <div class="hidden">
             	<input class="easyui-textbox" type="hidden" id="win_update_file_id">
             </div>
             <table>
-                <tr><td>标题：<input class="easyui-textbox" type="text" id="win_update_file_title" data-options="required:true,width:450"></input></td><td>私有：<input type="checkbox" name="win_update_file_checkbox" id="win_update_file_checkbox" value="0"></td><td><a href="javascript:void(0);" class="easyui-linkbutton" onclick="do_update_file_submit()">提交</a></td></tr>
-                <tr><td colspan="3"><textarea id="win_update_file_editor" rows="50" cols="95"></textarea></td></tr>
+                <tr><td>标题：<input class="easyui-textbox" type="text" id="win_update_file_title" data-options="required:true,width:460"></input></td><td>私有：<input type="checkbox" name="win_update_file_checkbox" id="win_update_file_checkbox" value="0"></td><td><a href="javascript:void(0);" class="easyui-linkbutton" onclick="do_update_file_submit()">提交</a></td></tr>
+                <tr><td colspan="3"><textarea id="win_update_file_editor"></textarea></td></tr>
             </table>
         </div>
         <!-- 登录 -->
-        <div id="login_win" class="easyui-window" style="width:220px" title="登录" data-options="modal:true,closed:true,minimizable:false,maximizable:false,resizable:false,collapsible:false,iconCls:'fa fa-user'">
+        <div id="login_win" class="easyui-window" title="登录" data-options="modal:true,closed:true,minimizable:false,maximizable:false,resizable:false,collapsible:false,iconCls:'icon-m-user'">
             <table>
                 <tr><td>用户：</td><td><input class="easyui-textbox" type="text" id="usr_name" data-options="required:true"></input></td></tr>
                 <tr><td>密码：</td><td><input class="easyui-textbox" type="password" id="usr_password" data-options="required:true"></input></td></tr>
-                <tr><td></td><td><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'fa fa-sign-in fa-lg'" onclick="do_login()">登录</a></td></tr>
+                <tr><td></td><td><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="do_login()">登录</a></td></tr>
             </table>
         </div>
         
