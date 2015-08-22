@@ -94,8 +94,15 @@ public class CodepadModel extends Model<CodepadModel> {
 	 * 
 	 * @param id
 	 * @param pid
+	 * @return
 	 */
-	public void updateTree(Integer id, Integer pid) {
-		Db.update("update codepad_article set pid = ?,update_dt = now() where id = ?", pid, id);
+	public int updateTree(Integer id, Integer pid, String text, String update_id) {
+		if (pid != -1) {
+			return Db.update("update codepad_article set pid = ?,update_id = ?,update_dt = now() where id = ?", pid, update_id, id);
+		}
+		if (StringKit.isNotBlank(text)) {
+			return Db.update("update codepad_article set text = ?,update_id = ?,update_dt = now() where id = ?", text, update_id, id);
+		}
+		return 0;
 	}
 }

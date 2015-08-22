@@ -23,6 +23,18 @@ function init_layout(){
 	reg_content_tab_menu();
 	close_loading();
 }
+
+function reg_zclip(){
+	$('body').zclip({
+		path: baseUrl+'/static/zclip/ZeroClipboard.swf',
+		copy:function(){
+			return 'copy';
+		},
+		afterCopy:function(){
+			$.messager.alert('提示', '链接复制成功！', 'info');
+		}
+	});
+}
 //关闭初始化遮罩页面
 function close_loading(){
 	$("#loading").fadeOut("slow",function(){
@@ -73,15 +85,14 @@ function load_list_tree(search_value) {
             if(isLogin()){
             	if (node.node == '0') {
                     $('#list_tree_menu').menu('hideItem', $('#add_tree_ff')[0]);
-                    $('#list_tree_menu').menu('showItem', $('#update_tree_con')[0]);
                 } else {
                     $('#list_tree_menu').menu('showItem', $('#add_tree_ff')[0]);
-                    $('#list_tree_menu').menu('hideItem', $('#update_tree_con')[0]);
                 };
+                $('#list_tree_menu').menu('showItem', $('#update_tree_ff')[0]);
                 $('#list_tree_menu').menu('showItem', $('#delete_tree_ff')[0]);
             }else{
-            	 $('#list_tree_menu').menu('hideItem', $('#add_ff')[0]);
-                 $('#list_tree_menu').menu('hideItem', $('#update_tree_con')[0]);
+            	 $('#list_tree_menu').menu('hideItem', $('#add_tree_ff')[0]);
+                 $('#list_tree_menu').menu('hideItem', $('#update_tree_ff')[0]);
                  $('#list_tree_menu').menu('hideItem', $('#delete_tree_ff')[0]);
             }
             
@@ -98,7 +109,8 @@ function load_list_tree(search_value) {
         		if(point == 'append' && targetNode.node == '1'){
                 	$.post(domain + '/updateTree',{
                 		id:source.id,
-                		pid:targetNode.id
+                		pid:targetNode.id,
+                		update_id:$.cookie('c_nick')
                 	},function(res){
                 		if(res && res.resCode == '200'){
                 			showMessageBoard('提示', '改变节点成功！');
@@ -111,8 +123,8 @@ function load_list_tree(search_value) {
             		return false;
             	}
         	}else{
-        		return false;
         		$.messager.alert('提示', '您没有权限修改此节点！','info');
+        		return false;
         	}
         }
     });
@@ -124,8 +136,6 @@ function open_tab(id, text) {
         $('#content_tab').tabs('select', id + '.' + text);
     } else {
     	showProgress('加载中','正在加载中，请耐心等待...');
-        var direct_url = '<br /><div class="direct-url-box"><span>本文地址：</span>http://' + domain + '?cid=' + id + '</div>';
-        var duoshuo = '<br /><div id="comment-box-' + id + '" class="comment-box"></div>';
         $('#content_tab').tabs('add', {
             id: 'tab_page_'+id,
             title: id + '.' + text,
@@ -134,22 +144,11 @@ function open_tab(id, text) {
             cls: 'content-tab-header',
             bodyCls: 'content-tab-content',
             extractor: function(data) {
-            	var dataJson = JSON.parse(data);
-                var pattern = /<body[^>]*>((.|[\n\r])*)<\/body>/im;
-                var matches = pattern.exec(dataJson.article);
-                var content = '';
-                if (matches) {
-                    content = matches[1];
-                } else {
-                    content = dataJson.article;
-                }
-                return content + direct_url + duoshuo;
+            	var res = JSON.parse(data);
+                return do_makeContent(res);
             },
             onLoad: function() {
-            	reg_tab_page_menus();
-            	apply_highlighting('tab_page_'+id);
-            	closeProgress();
-                //toggleDuoshuoComments('#comment-box-' + id, id, window.location.host + '?cid=' + id);
+            	after_tab_load(id);
             }
         });
     }
@@ -230,7 +229,7 @@ function do_login(){
 			$('a.panel-tool-close').trigger("click");
 			reg_security_button();
 			$('#usr_password').textbox('setValue','');
-            DesktopNotify('Codepad','static/img/favicon.ico','欢迎 '+res.msgDesc+' 登录！');
+            DesktopNotify('Codepad','','欢迎 '+res.msgDesc+' 登录！');
 		}
 		if (res && res.msgCode == '500') {
 			$.messager.alert(res.msgType, res.msgDesc, res.msgType);
@@ -250,7 +249,7 @@ function reg_tab_page_menus(){
 }
 /*判断登录*/
 function isLogin(){
-	if($.cookie('c_nick') != 'null'){
+	if($.cookie('c_nick') && $.cookie('c_nick') != 'null'){
 		return true;
 	}
 	return false;
@@ -363,21 +362,41 @@ function delete_ff() {
 	}
 }
 /*修改内容*/
-function update_con() {
+function update_ff() {
 	var node = $('#list_tree').tree('getSelected');
     if ($.cookie('c_nick') == node.create_id) {
-        $.get(domain + '/getArticle?id='+node.id,function(data){
-            CKEDITOR.instances.win_update_file_editor.setData(data.article);
-            $("#win_update_file_id").textbox('setValue',data.id);
-            $('#win_update_file_title').textbox('setValue',data.text);
-            if(data.open == '1'){
-            	$('#win_update_file_checkbox').removeAttr("checked");
-            }else{
-            	$('#win_update_file_checkbox').attr("checked",true);
-            }
-            $('#win_update_file').window('center');
-            $('#win_update_file').window('open');
-        });
+    	if(node.node == '1'){
+    		$.messager.prompt('修改文件夹', '请输入新的文件夹名称：', function(r){
+                if (r){
+                	$.post(domain + '/updateTree', {
+                		id : node.id,
+                		text : r,
+                		update_id : $.cookie('c_nick')
+                	},function(res){
+                		if(res && res.resCode == '200'){
+                			updateTree(node.id,r,node.iconCls);
+                			showMessageBoard('提示', '文件夹更新成功！');
+                		}else{
+                			$.messager.alert('错误', '未知错误！', 'error');
+                		}
+                	});
+                }
+            });
+    	}
+    	if(node.node == '0'){
+    		$.get(domain + '/getArticle?id='+node.id,function(data){
+                CKEDITOR.instances.win_update_file_editor.setData(data.article);
+                $("#win_update_file_id").textbox('setValue',data.id);
+                $('#win_update_file_title').textbox('setValue',data.text);
+                if(data.open == '1'){
+                	$('#win_update_file_checkbox').removeAttr("checked");
+                }else{
+                	$('#win_update_file_checkbox').attr("checked",true);
+                }
+                $('#win_update_file').window('center');
+                $('#win_update_file').window('open');
+            });
+    	}
     } else {
         $.messager.alert('Message', '您没有权限修改此节点内容！');
     }
@@ -472,6 +491,9 @@ function do_close_tab(option) {
 /*注册树形列表空白菜单*/
 function reg_list_blank_menu() {
     $('#region_west').bind('contextmenu', function(e) {
+    	if($('#list_tree').html()){
+    		return false;
+    	}
         e.preventDefault();
         $('#list_blank_menu').menu('show', {
             left: e.pageX,
@@ -504,16 +526,20 @@ function load_directPage() {
     		    closable:true,
     		    cls: 'content-tab-header',
                 bodyCls: 'content-tab-content',
-                content: do_makeContent(res.id,res.article),
+                content: do_makeContent(res),
                 onOpen: function() {
-                	reg_tab_page_menus();
-                	apply_highlighting('tab_page_'+res.id);
-                	closeProgress();
-                    //toggleDuoshuoComments('#comment-box-' + id, id, window.location.host + '?cid=' + id);
+                	after_tab_load(res.id);
                 }
     		});
     	})
     }
+}
+/*tab打开之后*/
+function after_tab_load(id){
+	reg_tab_page_menus();
+	apply_highlighting('tab_page_'+id);
+	closeProgress();
+    //toggleDuoshuoComments('#comment-box-' + id, id, window.location.host + '?cid=' + id);
 }
 /*获取URL参数*/
 function getUrlParam(key) {
@@ -540,18 +566,21 @@ function toggleDuoshuoComments(container, content_id, content_url) {
 
 
 /*格式化文章*/
-function do_makeContent(id,article){
-	var direct_url = '<br /><div class="direct-url-box"><span>本文地址：</span>'+window.location.protocol + domain + '?aid=' + id + '</div>';
-    var duoshuo = '<br /><div id="comment-box-' + id + '" class="comment-box"></div>';
+function do_makeContent(res){
+	var meat_title = '<h2>'+res.text+'</h2>';
+	var meat_sub_title = '<h5>创建：'+res.create_id+' / '+res.create_dt+'&nbsp;&nbsp;更新：'+setDefault(res.update_id,'-')+' / '+setDefault(res.update_dt,'-')+'</h5>';
+	var page_url = window.location.protocol +'//'+ window.location.host +window.location.pathname+ '?aid=' + res.id;
+	var meat_url = '<br /><p>本文地址：'+ page_url + '</p>';
+    var duoshuo = '<br /><div id="comment-box-' + res.id + '" class="comment-box"></div>';
     var pattern = /<body[^>]*>((.|[\n\r])*)<\/body>/im;
-    var matches = pattern.exec(article);
+    var matches = pattern.exec(res.article);
     var content = '';
     if (matches) {
         content = matches[1];
     } else {
-        content = article;
+        content = res.article;
     }
-    return content + direct_url + duoshuo;
+    return meat_title + meat_sub_title + content + meat_url + duoshuo;
 }
 
 function getLocalTime(nS) {     
@@ -570,6 +599,9 @@ function makeSignature() {
 }
 
 function DesktopNotify(nTitle,nIcon,nBody) {
+	if(!nIcon || nIcon == ''){
+		nIcon = domain+'/static/modules/codepad/img/codepad.ico';
+	}
     var option = {icon:nIcon,body:nBody}
     if (("Notification" in window)) {
         if (Notification.permission === "granted") {

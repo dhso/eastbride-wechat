@@ -66,9 +66,16 @@ public class CodepadController extends Controller {
 
 	public void updateTree() {
 		Integer id = getParaToInt("id");
-		Integer pid = getParaToInt("pid");
-		CodepadModel.dao.updateTree(id, pid);
-		renderJson(new Result("200", "更新成功！"));
+		Integer pid = getParaToInt("pid", -1);
+		String text = getPara("text", "");
+		String update_id = getPara("update_id");
+		Integer resCount = CodepadModel.dao.updateTree(id, pid, text, update_id);
+		if (resCount > 0) {
+			renderJson(new Result("200", "更新成功！"));
+		} else {
+			renderJson(new Result("500", "更新失败！"));
+		}
+
 	}
 
 }
