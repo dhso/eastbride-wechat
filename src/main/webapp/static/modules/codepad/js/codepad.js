@@ -63,9 +63,9 @@ function showMessageBoard(title, msg) {
 }
 /* 加载资源列表 */
 function load_list_tree(search_value) {
-	var url = domain + '/getTree';
+	var url = baseUrl + '/getTree';
     if (search_value ) {
-    	url = domain + '/getTree?&search=' + search_value;
+    	url = baseUrl + '/getTree?&search=' + search_value;
     }
     $('#list_tree').tree({
         url: url,
@@ -107,7 +107,7 @@ function load_list_tree(search_value) {
         		console.log(point);
         		var targetNode = $('#list_tree').tree('getNode', target);
         		if(point == 'append' && targetNode.node == '1'){
-                	$.post(domain + '/updateTree',{
+                	$.post(baseUrl + '/updateTree',{
                 		id:source.id,
                 		pid:targetNode.id,
                 		update_id:$.cookie('c_nick')
@@ -139,7 +139,7 @@ function open_tab(id, text) {
         $('#content_tab').tabs('add', {
             id: 'tab_page_'+id,
             title: id + '.' + text,
-            href: domain + '/getArticle?id='+id,
+            href: baseUrl + '/getArticle?id='+id,
             closable: true,
             cls: 'content-tab-header',
             bodyCls: 'content-tab-content',
@@ -184,10 +184,11 @@ function reg_security_button(){
 	if(isLogin()){
 		$('#security_button').linkbutton({
 			iconCls:'icon-m-power-off',
+			text:$.cookie('c_nick'),
 			onClick:function(){
 				$.get(baseUrl+'/security/appSignout',function(res){
 					if(res && res.msgCode == '200'){
-						$.messager.alert(res.msgType, '注销成功！','info');
+						$.messager.alert('提示', '注销成功！','info');
 						$.cookie('c_nick',null);
 						reg_security_button();
 					}
@@ -197,6 +198,7 @@ function reg_security_button(){
 	}else{
 		$('#security_button').linkbutton({
 			iconCls:'icon-m-user',
+			text:'游客',
 			onClick:function(){
 				$('#login_win').window('open');
 			}
@@ -270,7 +272,7 @@ function do_add_file_submit(){
 	if(open == '0'){
 		iconCls = 'icon-m-file-lock';
 	}
-	$.post(domain + '/addArticle', {
+	$.post(baseUrl + '/addArticle', {
 		pid : $('#win_add_file_nodeid').textbox('getValue'),
 		text : $('#win_add_file_title').textbox('getValue'),
 		iconCls : iconCls,
@@ -296,7 +298,7 @@ function do_update_file_submit(){
 	}
 	var id = $('#win_update_file_id').textbox('getValue');
 	var text = $('#win_update_file_title').textbox('getValue');
-	$.post(domain + '/updateArticle', {
+	$.post(baseUrl + '/updateArticle', {
 		id : id,
 		text : text,
 		iconCls : iconCls,
@@ -318,7 +320,7 @@ function do_update_file_submit(){
 function add_folder() {
 	$.messager.prompt('提示', '请输入文件夹名称：', function(r){
         if (r){
-        	$.post(domain + '/addTree', {
+        	$.post(baseUrl + '/addTree', {
         		pid : $('#list_tree').tree('getSelected').id,
         		text : r,
         		iconCls : 'icon-m-folder',
@@ -345,7 +347,7 @@ function delete_ff() {
 		$.messager.confirm('确认', '确认删除节点？', function(r) {
 			if (r) {
 				var id = node.id;
-				$.post(domain + '/delTree', {
+				$.post(baseUrl + '/delTree', {
 					id : node.id
 				}, function(res) {
 					if (res && res.resCode == '200') {
@@ -368,7 +370,7 @@ function update_ff() {
     	if(node.node == '1'){
     		$.messager.prompt('修改文件夹', '请输入新的文件夹名称：', function(r){
                 if (r){
-                	$.post(domain + '/updateTree', {
+                	$.post(baseUrl + '/updateTree', {
                 		id : node.id,
                 		text : r,
                 		update_id : $.cookie('c_nick')
@@ -384,7 +386,7 @@ function update_ff() {
             });
     	}
     	if(node.node == '0'){
-    		$.get(domain + '/getArticle?id='+node.id,function(data){
+    		$.get(baseUrl + '/getArticle?id='+node.id,function(data){
                 CKEDITOR.instances.win_update_file_editor.setData(data.article);
                 $("#win_update_file_id").textbox('setValue',data.id);
                 $('#win_update_file_title').textbox('setValue',data.text);
@@ -446,11 +448,11 @@ function removeTree(){
 /*重载tab内容*/
 function reload_tab_con(id) {
     if (id && $('#tab_page_' + id)) {
-    	$('#tab_page_' + id).panel('refresh', domain + '/getArticle?id=' + id);
+    	$('#tab_page_' + id).panel('refresh', baseUrl + '/getArticle?id=' + id);
     } else {
     	var tab = $('#content_tab').tabs('getSelected');
     	var id = tab.panel('options').id.replace('tab_page_','');
-        tab.panel('refresh', domain + '/getArticle?id=' + id);
+        tab.panel('refresh', baseUrl + '/getArticle?id=' + id);
     }
 };
 /*注册tabs菜单*/
@@ -519,7 +521,7 @@ function load_directPage() {
     var aid = getUrlParam('aid');
     if (aid) {
     	showProgress('加载中','正在加载中，请耐心等待...');
-    	$.get(domain + '/getArticle?id='+aid,function(res){
+    	$.get(baseUrl + '/getArticle?id='+aid,function(res){
     		$('#content_tab').tabs('add', {
     			id:'tab_page_'+res.id,
     			title:res.id+'.'+res.text,
@@ -600,7 +602,7 @@ function makeSignature() {
 
 function DesktopNotify(nTitle,nIcon,nBody) {
 	if(!nIcon || nIcon == ''){
-		nIcon = domain+'/static/modules/codepad/img/codepad.ico';
+		nIcon = baseUrl+'/static/modules/codepad/img/codepad.ico';
 	}
     var option = {icon:nIcon,body:nBody}
     if (("Notification" in window)) {
