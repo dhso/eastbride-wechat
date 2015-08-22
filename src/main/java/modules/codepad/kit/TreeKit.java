@@ -12,6 +12,7 @@ public class TreeKit {
 			if (pidStart == r.getInt("pid")) {
 				List<Record> childMap = formatTree(listingRecord, r.getInt("id"));
 				if (childMap.size() > 0) {
+					r.set("state", "closed");
 					r.set("children", childMap);
 				}
 				recordList.add(r);

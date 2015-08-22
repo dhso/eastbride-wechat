@@ -1,3 +1,7 @@
+body {
+	font-family: 'Microsoft Yahei', Helvetica, Arial, sans-serif;
+}
+
 #loading {
 	position: absolute;
 	z-index: 1000;
@@ -9,94 +13,115 @@
 	text-align: center;
 	padding-top: 10%;
 }
-#search{
-	padding:5px;
+
+#search {
+	padding: 5px;
 	position: fixed;
-	background-color: #fff;
+	background-color: aliceblue;
 }
-#search_span{
+
+#search_span {
 	vertical-align: middle;
 }
-#search_input{
-	width:180px;
+
+#search_input {
+	width: 190px;
 }
-#list_tree{
-	margin-top:30px;
+
+#list_tree {
+	margin-top: 35px;
 }
-a{
+
+#region_north,#region_north .l-btn {
+	background-color: #548ac1;
+	color: #fff;
+}
+
+#region_west {
+	background-color: aliceblue;
+}
+
+.region-header {
+	border: none;
+	background-color: #fff;
+	background: -webkit-linear-gradient(top, #548ac1 0, aliceblue 100%);
+	background: -moz-linear-gradient(top, #548ac1 0, aliceblue 100%);
+	background: -o-linear-gradient(top, #548ac1 0, aliceblue 100%);
+	background: linear-gradient(to bottom, #548ac1 0, aliceblue 100%);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#548ac1,
+		endColorstr=aliceblue, GradientType=0);
+}
+
+.region-header,.region-header .panel-title {
+	color: #fff;
+	font-weight: normal;
+}
+
+.hidden{
+	display:none;
+}
+
+.tree-info{
+	color:#ccc;
+}
+a {
 	color: #000;
 	text-decoration: none;
 }
-a.nobb{
-	background-color: #fff!important;
-	border-color: #fff!important;
+
+a.nobb {
+	background-color: #fff !important;
+	border-color: #fff !important;
 }
-div.content_tab_header{
+
+div.content-tab-header {
 	
 }
-div.content_tab_content{
-	margin: 1em;
+
+div.content-tab-content {
+	padding: 10px;
 	overflow-wrap: break-word;
 }
-div.comment-box{
+
+div.comment-box {
 	width: 96%;
 }
-div.tools_menu{
+
+div.tools_menu {
 	background-color: #eeeeee;
 	margin: 10px;
 	padding: 10px;
 }
 
+ul.new-menu-list {
+	list-style: none;
+	padding: 0px;
+}
 
-ul.new-menu-list{ list-style:none; padding:0px;}
-ul.new-menu-list li { margin:10px 15px;cursor: pointer;}
-ul.new-menu-list li p{ margin:2px 0;}
-ul.new-menu-list li p.nomal{ font-family:Arial,Helvetica,微软雅黑,宋体;font-size: 12px;font-weight:bold;color:#000;}
-ul.new-menu-list li p.small{ font-family:Arial,Helvetica,黑体,宋体;font-size: 10px;color:#ccc;}
+ul.new-menu-list li {
+	margin: 10px 15px;
+	cursor: pointer;
+}
+
+ul.new-menu-list li p {
+	margin: 2px 0;
+}
+
+ul.new-menu-list li p.nomal {
+	font-family: Arial, Helvetica, 微软雅黑, 宋体;
+	font-size: 12px;
+	font-weight: bold;
+	color: #000;
+}
+
+ul.new-menu-list li p.small {
+	font-family: Arial, Helvetica, 黑体, 宋体;
+	font-size: 10px;
+	color: #ccc;
+}
 
 /*ICON*/
-.icon-codepad-search{
-	background:url('../img/icons/search.gif') no-repeat center center;
-}
-.icon-codepad-user{
-	background:url('../img/icons/user.gif') no-repeat center center;
-}
-.icon-codepad-foward{
-	background:url('../img/icons/foward.gif') no-repeat center center;
-}
-.icon-codepad-edit{
-	background:url('../img/icons/edit.png') no-repeat center center;
-}
-.icon-codepad-file{
-	background:url('../img/icons/file.gif') no-repeat center center;
-}
-.icon-codepad-save{
-	background:url('../img/icons/save.gif') no-repeat center center;
-}
-.icon-codepad-fanyi{
-	background:url('../img/icons/fanyi.png') no-repeat center center;
-}
-.icon-codepad-cidian{
-	background:url('../img/icons/cidian.png') no-repeat center center;
-}
-.icon-codepad-youdao-fanyi{
-	background:url('../img/icons/youdao_fanyi.png') no-repeat center center;
-}
-.icon-codepad-youdao-cidian{
-	background:url('../img/icons/youdao_cidian.png') no-repeat center center;
-}
-.icon-codepad-zgtq-weather{
-	background:url('../img/icons/weather.png') no-repeat center center;
-}
-.icon-codepad-douban-FM{
-	background:url('../img/icons/douban_FM.png') no-repeat center center;
-}
-.icon-codepad-kuaidi100{
-	background:url('../img/icons/kuaidi100.png') no-repeat center center;
-}
-.icon-codepad-base{
-	background:url('../img/icons/base.gif') no-repeat center center;
-}
-.icon-codepad-shoppingcart{
-	background:url('../img/icons/shoppingcart.gif') no-repeat center center;
+.icon-codepad-search {
+	background: url('../img/icons/search.gif') no-repeat center center;
 }

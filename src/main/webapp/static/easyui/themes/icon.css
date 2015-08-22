@@ -94,3 +94,18 @@
 .icon-large-chart{
 	background:url('icons/large_chart.png') no-repeat center center;
 }
+.icon-m-folder{
+	background:url('icons/m_folder.gif') no-repeat center center;
+}
+.icon-m-file{
+	background:url('icons/m_file.gif') no-repeat center center;
+}
+.icon-m-file-lock{
+	background:url('icons/m_file_lock.gif') no-repeat center center;
+}
+.icon-m-power-off{
+	background:url('icons/m_power_off.png') no-repeat center center;
+}
+.icon-m-user{
+	background:url('icons/m_user.png') no-repeat center center;
+}
