@@ -138,7 +138,7 @@ function generation(){
 	$('#_pw_tool_result').textbox('setValue','正在生成...');
 	var password = $('#_pw_tool_password').textbox('getValue');
 	var salt = $('#_pw_tool_salt').textbox('getValue');
-	$.post( baseUrl+'/system/system/user/create/password', {
+	$.post( baseUrl+'/system/user/create/password', {
 		password:password,
 		salt:salt
 	}, function(data) {
