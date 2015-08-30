@@ -4,7 +4,6 @@ encoding//src/main/resources=UTF-8
 encoding//src/main/resources/config.txt=UTF-8
 encoding//src/main/resources/log4j.properties=UTF-8
 encoding//src/main/resources/shiro.ini=UTF-8
-encoding//src/main/webapp/crm/home.htm=UTF-8
 encoding//src/main/webapp/crm/index.htm=UTF-8
 encoding//src/main/webapp/system/system-config-type.htm=UTF-8
 encoding//src/main/webapp/weixin/weixin-customer.htm=UTF-8

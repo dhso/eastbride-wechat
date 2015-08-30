@@ -1,10 +1,7 @@
 package config;
 
-import modules.blog.controller.BlogController;
-import modules.codepad.controller.CodepadController;
 import modules.crm.controller.CrmController;
-import modules.doc.controller.DocController;
-import modules.home.controller.HomeController;
+import modules.eastbride.controller.EastbrideController;
 import modules.system.controller.SecurityController;
 import modules.system.controller.SystemController;
 import modules.wechat.controller.WechatApiController;
@@ -74,16 +71,13 @@ public class BaseConfig extends JFinalConfig {
 	public void configRoute(Routes me) {
 		this.routes = me;
 		me.add("/security", SecurityController.class, "/security");// 安全
-		me.add("/", HomeController.class, "/home");// 网站
-		me.add("/codepad", CodepadController.class, "/codepad");// codepad
+		me.add("/", EastbrideController.class, "/eastbride");// eastbride网站
 		me.add("/system", SystemController.class, "/system");// 安全
-		me.add("/doc", DocController.class, "/doc");// 文档
 		me.add("/shop", ShopController.class, "/shop");// 商城
-		me.add("/weixin", WechatController.class, "/weixin");// 微信
-		me.add("/wechat", WechatMsgController.class);// 微信
-		me.add("/wechatApi", WechatApiController.class, "/wechatApi");// 微信API
+		me.add("/wechat", WechatController.class, "/weixin");// 微信
+		me.add("/wechatMsg", WechatMsgController.class);// 微信消息
+		me.add("/wechatApi", WechatApiController.class, "/wechatApi");// 微信接口
 		me.add("/crm", CrmController.class, "/crm");// CRM
-		me.add("/blog", BlogController.class, "/blog");// 博客
 	}
 
 	public void configPlugin(Plugins me) {
