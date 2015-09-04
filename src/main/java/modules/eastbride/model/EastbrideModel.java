@@ -7,6 +7,7 @@ import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 
+import frame.kit.RecordKit;
 import frame.plugin.tablebind.TableBind;
 
 @SuppressWarnings("serial")
@@ -32,6 +33,39 @@ public class EastbrideModel extends Model<EastbrideModel> {
 	 */
 	public Page<EastbrideModel> getCarouselPage(int pageNumber, int pageSize) {
 		return EastbrideModel.dao.paginate(pageNumber, pageSize, "select *", "from eastbride_carousel");
+	}
+
+	/**
+	 * 批量插入轮播
+	 * 
+	 * @param list
+	 * @return
+	 */
+	public int[] insertCarousel(List<?> list) {
+		List<Record> recordList = RecordKit.list2RecordList(list);
+		return Db.batch("insert into eastbride_carousel(crs_h2,crs_p,crs_img,crs_href,crs_button) values (?,?,?,?,?)", "crs_h2,crs_p,crs_img,crs_href,crs_button", recordList, recordList.size());
+	}
+
+	/**
+	 * 批量更新轮播
+	 * 
+	 * @param list
+	 * @return
+	 */
+	public int[] updateCarousel(List<?> list) {
+		List<Record> recordList = RecordKit.list2RecordList(list);
+		return Db.batch("update eastbride_carousel set crs_h2 = ?,crs_p= ?,crs_img=?,crs_href=?,crs_button=? where crs_id = ?", "crs_h2,crs_p,crs_img,crs_href,crs_button,crs_id", recordList, recordList.size());
+	}
+
+	/**
+	 * 批量删除轮播
+	 * 
+	 * @param list
+	 * @return
+	 */
+	public int[] deleteCarousel(List<?> list) {
+		List<Record> recordList = RecordKit.list2RecordList(list);
+		return Db.batch("delete from eastbride_carousel where crs_id = ?", "crs_id", recordList, recordList.size());
 	}
 
 	/**

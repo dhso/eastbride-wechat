@@ -6,9 +6,12 @@
 		    url:baseUrl+'/eastbride/carousel/get',
 		    columns:[[
 		        {field:'checkbox',checkbox:true},
-		        {field:'crs_button',title:'ID',width:35},
-		        {field:'url_type_name',title:'类型名称',width:250,editor:'text'},
-		        {field:'url_type_icon',title:'类型图标',width:150,editor:'text'}
+		        {field:'crs_id',title:'ID',width:35},
+		        {field:'crs_h2',title:'大标题',width:150,editor:'text'},
+		        {field:'crs_p',title:'小标题',width:250,editor:'text'},
+		        {field:'crs_button',title:'按钮标题',width:60,editor:'text'},
+		        {field:'crs_href',title:'按钮脚本',width:250,editor:'text'},
+		        {field:'crs_img',title:'背景图片',width:250,editor:'text'}
 		    ]],
 		    queryParams:{
 		    	pagination:1
