@@ -2,7 +2,9 @@ package modules.eastbride.model;
 
 import java.util.List;
 
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
+import com.jfinal.plugin.activerecord.Record;
 
 import frame.plugin.tablebind.TableBind;
 
@@ -18,6 +20,15 @@ public class EastbrideModel extends Model<EastbrideModel> {
 	 */
 	public List<EastbrideModel> getCarousel() {
 		return EastbrideModel.dao.find("select * from eastbride_carousel");
+	}
+
+	/**
+	 * 获取图集
+	 * 
+	 * @return
+	 */
+	public List<Record> getGallery() {
+		return Db.find("select * from eastbride_gallery");
 	}
 
 }

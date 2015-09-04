@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="${baseUrl}/static/modules/eastbride/css/normalize.css">
         <link rel="stylesheet" href="${baseUrl}/static/modules/eastbride/css/font-awesome.css">
         <link rel="stylesheet" href="${baseUrl}/static/modules/eastbride/css/bootstrap.min.css">
+        <link rel="stylesheet" href="${baseUrl}/static/prettyPhoto/css/prettyPhoto.css" type="text/css" media="screen" title="prettyPhoto main stylesheet" charset="utf-8" />
         <link rel="stylesheet" href="${baseUrl}/static/modules/eastbride/css/style.css">
     </head>
     <body>
@@ -110,22 +111,11 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div id="controls"></div>
-					<div id="loading"></div>
-					<div id="slideshow"></div>
-					<div id="caption"></div>
-					<div id="thumbs">
-					    <ul class="thumbs noscript">
-					        <li>
-					            <a class="thumb" name="optionalCustomIdentifier" href="path/to/slide" title="your image title">
-					                <img src="path/to/thumbnail" alt="your image title again for graceful degradation" />
-					            </a>
-					            <div class="caption">
-					                (Any html can go here)
-					            </div>
-					        </li>
-					    </ul>
-					</div>
+                	<ul class="gallery-wall">
+                		<#list galleryList as gallery>
+							<li><a href="${gallery.fullsize_url}" rel="prettyPhoto[gallery]" title="${gallery.gry_title}"><img src="${gallery.smallsize_url}" alt="${gallery.gry_alt}" width="100" height="100"/></a></li>
+						</#list>
+					</ul>
                 </div>
             </div>
         </section>
@@ -249,13 +239,19 @@
             </div>
         </footer>
 		<script src="${baseUrl}/static/modules/eastbride/js/vendor/modernizr-2.6.2.min.js"></script>
-        <script src="${baseUrl}/static/modules/eastbride/js/vendor/jquery-1.10.2.min.js"></script>
+        <script src="${baseUrl}/static/jquery/jquery-1.11.1.min.js"></script>
         <script src="${baseUrl}/static/modules/eastbride/js/bootstrap.min.js"></script>
         <script src="${baseUrl}/static/modules/eastbride/js/min/plugins.min.js"></script>
-        <script src="${baseUrl}/static/galleriffic/js/jquery.galleriffic.js"></script>
-        <script src="${baseUrl}/static/galleriffic/js/jquery.history.js"></script>
-        <script src="${baseUrl}/static/galleriffic/js/jquery.opacityrollover.js"></script>
+        <script src="${baseUrl}/static/prettyPhoto/js/jquery.prettyPhoto.js"></script>
         <script src="${baseUrl}/static/modules/eastbride/js/min/main.min.js"></script>
-
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$(".gallery-wall [rel^='prettyPhoto']").prettyPhoto({
+					show_title: true,
+					overlay_gallery: false,
+					social_tools:''
+				});
+			});
+		</script>
     </body>
 </html>

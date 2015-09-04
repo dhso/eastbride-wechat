@@ -731,3 +731,14 @@ html,body {
 .navbar-default .navbar-toggle:hover {
 	background-color: transparent;
 }
+
+.gallery-wall li {
+  display: inline-block;
+  margin: 10px;
+}
+.gallery-wall li img {
+  border-radius: 7px;
+}
+.pp_description{
+	color:#000;
+}
