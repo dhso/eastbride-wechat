@@ -87,5 +87,38 @@ public class EastbrideModel extends Model<EastbrideModel> {
 	public Page<Record> getGalleryPage(int pageNumber, int pageSize) {
 		return Db.paginate(pageNumber, pageSize, "select *", "from eastbride_gallery");
 	}
+	
+	/**
+	 * 批量插入图集
+	 * 
+	 * @param list
+	 * @return
+	 */
+	public int[] insertGallery(List<?> list) {
+		List<Record> recordList = RecordKit.list2RecordList(list);
+		return Db.batch("insert into eastbride_gallery(fullsize_url,smallsize_url,gry_title,gry_alt) values (?,?,?,?)", "fullsize_url,smallsize_url,gry_title,gry_alt", recordList, recordList.size());
+	}
+
+	/**
+	 * 批量更新图集
+	 * 
+	 * @param list
+	 * @return
+	 */
+	public int[] updateGallery(List<?> list) {
+		List<Record> recordList = RecordKit.list2RecordList(list);
+		return Db.batch("update eastbride_gallery set fullsize_url = ?,smallsize_url= ?,gry_title=?,gry_alt=? where gry_id = ?", "fullsize_url,smallsize_url,gry_title,gry_alt,gry_id", recordList, recordList.size());
+	}
+
+	/**
+	 * 批量删除图集
+	 * 
+	 * @param list
+	 * @return
+	 */
+	public int[] deleteGallery(List<?> list) {
+		List<Record> recordList = RecordKit.list2RecordList(list);
+		return Db.batch("delete from eastbride_gallery where gry_id = ?", "gry_id", recordList, recordList.size());
+	}
 
 }

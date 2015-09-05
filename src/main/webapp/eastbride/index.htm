@@ -82,7 +82,7 @@
                             <span class="sr-only">导航</span>
                             <i class="fa fa-bars"></i>
                         </button>
-                        <a class="navbar-brand" href="index.html">东方新娘婚纱摄影</a>
+                        <a class="navbar-brand" href="/">东方新娘婚纱摄影</a>
                     </div>
                     <div class="navbar-collapse collapse">
 
@@ -99,7 +99,7 @@
             </div><!--navbar-default-->
         </nav><!--navigation section end here-->
 
-        <section id="gallery" class="page-section">
+        <section id="gallery" class="page-section first-section">
             <div class="container">
                 <div class="row page-heading">
                     <div class="col-md-8 col-sm-8">
@@ -120,7 +120,65 @@
             </div>
         </section>
 
-        <section id="about" class="page-section first-section">
+		<section id="price" class="page-section">
+            <div class="container">
+                <div class="row page-heading">
+                    <div class="col-md-8 col-sm-8">
+                        <h3 class="page-title">主打套餐</h3>
+                        <p class="page-subtitle">Price</p>
+                    </div>
+                    <div class="col-md-4 col-sm-4 hidden-xs text-right">
+                        <p class="page-icon"><i class="fa fa-camera"></i></p>
+                    </div>
+                </div>
+                <div class="row">
+	                <ul>
+	                	<li class="price-item">
+	                		<div><img src="" class="item-img" width="200" height="200"></img></div>
+	                		<div class="item-desc">
+	                			<span>欧式浪漫</span>
+	                		</div>
+	                		<div>
+	                			<span class="item-price">￥3998</span>
+	                			<span class="item-button" layer-url="http://www.baidu.com" layer-desc="欧式浪漫">查看套餐</span>
+	                		</div>
+	                	</li>
+	                	<li class="price-item">
+	                		<div><img src="" class="item-img" width="200" height="200"></img></div>
+	                		<div class="item-desc">
+	                			<span>传统爱情</span>
+	                		</div>
+	                		<div class="item-foot">
+	                			<span class="item-price">￥3998</span>
+	                			<span class="item-button" layer-url="http://www.baidu.com" layer-desc="传统爱情">查看套餐</span>
+	                		</div>
+	                	</li>
+	                	<li class="price-item">
+	                		<div><img src="" class="item-img" width="200" height="200"></img></div>
+	                		<div class="item-desc">
+	                			<span>传统爱情</span>
+	                		</div>
+	                		<div class="item-foot">
+	                			<span class="item-price">￥3998</span>
+	                			<span class="item-button" layer-url="http://www.baidu.com" layer-desc="传统爱情">查看套餐</span>
+	                		</div>
+	                	</li>
+	                	<li class="price-item">
+	                		<div><img src="" class="item-img" width="200" height="200"></img></div>
+	                		<div class="item-desc">
+	                			<span>传统爱情</span>
+	                		</div>
+	                		<div class="item-foot">
+	                			<span class="item-price">￥3998</span>
+	                			<span class="item-button" layer-url="http://www.baidu.com" layer-desc="传统爱情">查看套餐</span>
+	                		</div>
+	                	</li>
+	                </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section id="about" class="page-section">
             <div class="container">
                 <div class="row page-heading">
                     <div class="col-md-8 col-sm-8">
@@ -243,6 +301,7 @@
         <script src="${baseUrl}/static/modules/eastbride/js/bootstrap.min.js"></script>
         <script src="${baseUrl}/static/modules/eastbride/js/min/plugins.min.js"></script>
         <script src="${baseUrl}/static/prettyPhoto/js/jquery.prettyPhoto.js"></script>
+        <script src="${baseUrl}/static/layer/layer.js"></script>
         <script src="${baseUrl}/static/modules/eastbride/js/min/main.min.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function(){
@@ -250,6 +309,19 @@
 					show_title: true,
 					overlay_gallery: false,
 					social_tools:''
+				});
+				
+				$('.item-button').click(function(){
+					var title = $(this).attr('layer-desc');
+					var url = $(this).attr('layer-url');
+					layer.open({
+					    type: 2,
+					    title: title,
+					    shadeClose: true,
+					    shade: 0.8,
+					    area: ['380px', '90%'],
+					    content: url
+					}); 
 				});
 			});
 		</script>

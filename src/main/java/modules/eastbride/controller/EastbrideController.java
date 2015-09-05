@@ -68,5 +68,24 @@ public class EastbrideController extends Controller {
 		Page<Record> gallery = EastbrideModel.dao.getGalleryPage(pageNumber, pageSize);
 		renderJson(new DataGrid(String.valueOf(gallery.getTotalRow()), gallery.getList()));
 	}
+	
+	@RequiresAuthentication
+	@ActionKey("eastbride/gallery/save")
+	public void gallerySave() {
+		JSONArray insertedJson = JSON.parseArray(getPara("inserted"));
+		JSONArray updatedJson = JSON.parseArray(getPara("updated"));
+		JSONArray deletedJson = JSON.parseArray(getPara("deleted"));
+		if (insertedJson.size() > 0) {
+			EastbrideModel.dao.insertGallery(insertedJson);
+		}
+		if (updatedJson.size() > 0) {
+			EastbrideModel.dao.updateGallery(updatedJson);
+		}
+		if (deletedJson.size() > 0) {
+			EastbrideModel.dao.deleteGallery(deletedJson);
+		}
+		renderJson(new Message("200", "success", "保存成功！"));
+	}
+
 
 }

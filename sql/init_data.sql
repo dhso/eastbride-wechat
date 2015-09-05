@@ -26,8 +26,8 @@ CREATE TABLE IF NOT EXISTS `eastbride_carousel` (
 DELETE FROM `eastbride_carousel`;
 /*!40000 ALTER TABLE `eastbride_carousel` DISABLE KEYS */;
 INSERT INTO `eastbride_carousel` (`crs_id`, `crs_h2`, `crs_p`, `crs_img`, `crs_href`, `crs_button`) VALUES
-	(1, '美轮美奂', '用心去拍，留下最美的瞬间！', 'static/modules/home/img/slide-3.jpg', '', '关注'),
-	(2, '唯你独尊', '客户至上，给你最好的服务！', 'static/modules/home/img/slide-4.jpg', NULL, '订阅');
+	(1, '美轮美奂', '用心去拍，留下最美的瞬间！', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/1.jpg', '', '关注'),
+	(2, '想你所想', '想你所想，爱你所爱！', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/10.jpg', NULL, '订阅');
 /*!40000 ALTER TABLE `eastbride_carousel` ENABLE KEYS */;
 
 
@@ -40,14 +40,38 @@ CREATE TABLE IF NOT EXISTS `eastbride_gallery` (
   `gry_title` varchar(255) DEFAULT '0',
   `gry_alt` varchar(255) DEFAULT '0',
   PRIMARY KEY (`gry_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 
--- 正在导出表  eastbride.eastbride_gallery 的数据：~0 rows (大约)
+-- 正在导出表  eastbride.eastbride_gallery 的数据：~26 rows (大约)
 DELETE FROM `eastbride_gallery`;
 /*!40000 ALTER TABLE `eastbride_gallery` DISABLE KEYS */;
 INSERT INTO `eastbride_gallery` (`gry_id`, `fullsize_url`, `smallsize_url`, `gry_title`, `gry_alt`) VALUES
 	(1, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/1.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/1.jpg?mageView2/1/w/100/h/100/q/75', '马场奇缘', '马场奇缘'),
-	(2, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/10.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/10.jpg?mageView2/1/w/100/h/100/q/75', '花仙骨', '花仙骨');
+	(2, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/10.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/10.jpg?mageView2/1/w/100/h/100/q/75', '花千骨', '花千骨'),
+	(3, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/10_调整大小.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/10_调整大小.jpg?mageView2/1/w/100/h/100/q/75', '', ''),
+	(4, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/11_调整大小.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/11_调整大小.jpg?mageView2/1/w/100/h/100/q/75', NULL, NULL),
+	(5, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/12.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/12.jpg?mageView2/1/w/100/h/100/q/75', '牵你的手', '牵你的手'),
+	(6, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/12_调整大小.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/12_调整大小.jpg?mageView2/1/w/100/h/100/q/75', '童话小镇', NULL),
+	(7, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/13.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/13.jpg?mageView2/1/w/100/h/100/q/75', NULL, NULL),
+	(8, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/13_调整大小.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/13_调整大小.jpg?mageView2/1/w/100/h/100/q/75', NULL, NULL),
+	(9, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/14.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/14.jpg?mageView2/1/w/100/h/100/q/75', NULL, NULL),
+	(10, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/14_调整大小.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/14_调整大小.jpg?mageView2/1/w/100/h/100/q/75', NULL, NULL),
+	(11, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/15.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/15.jpg?mageView2/1/w/100/h/100/q/75', NULL, NULL),
+	(12, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/15_调整大小.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/15_调整大小.jpg?mageView2/1/w/100/h/100/q/75', NULL, NULL),
+	(13, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/16.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/16.jpg?mageView2/1/w/100/h/100/q/75', NULL, NULL),
+	(14, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/16_调整大小.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/16_调整大小.jpg?mageView2/1/w/100/h/100/q/75', NULL, NULL),
+	(15, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/17.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/17.jpg?mageView2/1/w/100/h/100/q/75', NULL, NULL),
+	(16, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/17_调整大小.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/17_调整大小.jpg?mageView2/1/w/100/h/100/q/75', NULL, NULL),
+	(17, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/18.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/18.jpg?mageView2/1/w/100/h/100/q/75', NULL, NULL),
+	(18, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/18调整大小.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/18调整大小.jpg?mageView2/1/w/100/h/100/q/75', NULL, NULL),
+	(19, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/19.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/19.jpg?mageView2/1/w/100/h/100/q/75', NULL, NULL),
+	(20, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/19调整大小.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/19调整大小.jpg?mageView2/1/w/100/h/100/q/75', NULL, NULL),
+	(21, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/1_调整大小.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/1_调整大小.jpg?mageView2/1/w/100/h/100/q/75', NULL, NULL),
+	(22, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/2.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/2.jpg?mageView2/1/w/100/h/100/q/75', NULL, NULL),
+	(23, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/20.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/20.jpg?mageView2/1/w/100/h/100/q/75', NULL, NULL),
+	(24, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/20调整大小.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/20调整大小.jpg?mageView2/1/w/100/h/100/q/75', NULL, NULL),
+	(25, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/21.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/21.jpg?mageView2/1/w/100/h/100/q/75', NULL, NULL),
+	(26, 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/21_调整大小.jpg', 'http://7xljx2.com1.z0.glb.clouddn.com/gallery/21_调整大小.jpg?mageView2/1/w/100/h/100/q/75', NULL, NULL);
 /*!40000 ALTER TABLE `eastbride_gallery` ENABLE KEYS */;
 
 
@@ -59,15 +83,16 @@ CREATE TABLE IF NOT EXISTS `shiro_permissions` (
   `permission_desc` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_permissions_permission` (`permission`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
--- 正在导出表  eastbride.shiro_permissions 的数据：~3 rows (大约)
+-- 正在导出表  eastbride.shiro_permissions 的数据：~4 rows (大约)
 DELETE FROM `shiro_permissions`;
 /*!40000 ALTER TABLE `shiro_permissions` DISABLE KEYS */;
 INSERT INTO `shiro_permissions` (`id`, `permission`, `permission_desc`) VALUES
 	(1, 'crm:system:auth', '权限设置'),
 	(2, 'cms:system:setting', '系统设置'),
-	(3, 'wechat', '微信');
+	(3, 'wechat', '微信'),
+	(4, 'eastbride', '网站');
 /*!40000 ALTER TABLE `shiro_permissions` ENABLE KEYS */;
 
 
@@ -79,15 +104,16 @@ CREATE TABLE IF NOT EXISTS `shiro_roles` (
   `role_desc` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_roles_role` (`role`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
--- 正在导出表  eastbride.shiro_roles 的数据：~3 rows (大约)
+-- 正在导出表  eastbride.shiro_roles 的数据：~4 rows (大约)
 DELETE FROM `shiro_roles`;
 /*!40000 ALTER TABLE `shiro_roles` DISABLE KEYS */;
 INSERT INTO `shiro_roles` (`id`, `role`, `role_desc`) VALUES
 	(1, 'admin', '超级管理员'),
 	(2, 'wechat', '微信管理员'),
-	(3, 'system', '系统管理员');
+	(3, 'system', '系统管理员'),
+	(4, 'eastbride', '网站管理员');
 /*!40000 ALTER TABLE `shiro_roles` ENABLE KEYS */;
 
 
@@ -99,15 +125,17 @@ CREATE TABLE IF NOT EXISTS `shiro_roles_permissions` (
   PRIMARY KEY (`role_id`,`permission_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 正在导出表  eastbride.shiro_roles_permissions 的数据：~5 rows (大约)
+-- 正在导出表  eastbride.shiro_roles_permissions 的数据：~7 rows (大约)
 DELETE FROM `shiro_roles_permissions`;
 /*!40000 ALTER TABLE `shiro_roles_permissions` DISABLE KEYS */;
 INSERT INTO `shiro_roles_permissions` (`role_id`, `permission_id`) VALUES
 	(1, 1),
 	(1, 2),
 	(1, 3),
+	(1, 4),
 	(2, 3),
-	(3, 1);
+	(3, 1),
+	(4, 4);
 /*!40000 ALTER TABLE `shiro_roles_permissions` ENABLE KEYS */;
 
 
@@ -123,9 +151,9 @@ CREATE TABLE IF NOT EXISTS `shiro_urls` (
   `url_order` int(11) NOT NULL,
   `is_iframe` int(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
--- 正在导出表  eastbride.shiro_urls 的数据：~7 rows (大约)
+-- 正在导出表  eastbride.shiro_urls 的数据：~9 rows (大约)
 DELETE FROM `shiro_urls`;
 /*!40000 ALTER TABLE `shiro_urls` DISABLE KEYS */;
 INSERT INTO `shiro_urls` (`id`, `permission_id`, `url_type_id`, `url`, `text`, `icon`, `url_order`, `is_iframe`) VALUES
@@ -135,7 +163,9 @@ INSERT INTO `shiro_urls` (`id`, `permission_id`, `url_type_id`, `url`, `text`, `
 	(4, 1, 1, '/system/user', '用户管理', 'fa fa-cog', 1005, 0),
 	(5, 1, 1, '/system/role', '角色管理', 'fa fa-cog', 1004, 0),
 	(6, 2, 2, '/druid/index.htm', 'durid监控', 'fa fa-cog', 2001, 1),
-	(7, 3, 3, '/weixin/customer', '微信', 'fa fa-cog', 3001, 0);
+	(7, 3, 3, '/weixin/customer', '微信', 'fa fa-cog', 3001, 0),
+	(8, 4, 4, '/eastbride/carousel/manage', '轮播广告', 'fa fa-cog', 4001, 0),
+	(9, 4, 4, '/eastbride/gallery/manage', '客片展示', 'fa fa-cog', 4002, 0);
 /*!40000 ALTER TABLE `shiro_urls` ENABLE KEYS */;
 
 
@@ -146,15 +176,16 @@ CREATE TABLE IF NOT EXISTS `shiro_urls_type` (
   `url_type_name` varchar(50) NOT NULL,
   `url_type_icon` varchar(50) NOT NULL DEFAULT '0',
   PRIMARY KEY (`url_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
--- 正在导出表  eastbride.shiro_urls_type 的数据：~3 rows (大约)
+-- 正在导出表  eastbride.shiro_urls_type 的数据：~4 rows (大约)
 DELETE FROM `shiro_urls_type`;
 /*!40000 ALTER TABLE `shiro_urls_type` DISABLE KEYS */;
 INSERT INTO `shiro_urls_type` (`url_type_id`, `url_type_name`, `url_type_icon`) VALUES
 	(1, '权限配置', 'fa fa-cog'),
 	(2, '系统配置', 'fa fa-cog'),
-	(3, '微信', 'fa fa-cog');
+	(3, '微信', 'fa fa-cog'),
+	(4, '网站', 'fa fa-cog');
 /*!40000 ALTER TABLE `shiro_urls_type` ENABLE KEYS */;
 
 
@@ -168,15 +199,16 @@ CREATE TABLE IF NOT EXISTS `shiro_users` (
   `locked` int(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_users_username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
--- 正在导出表  eastbride.shiro_users 的数据：~3 rows (大约)
+-- 正在导出表  eastbride.shiro_users 的数据：~4 rows (大约)
 DELETE FROM `shiro_users`;
 /*!40000 ALTER TABLE `shiro_users` DISABLE KEYS */;
 INSERT INTO `shiro_users` (`id`, `username`, `password`, `salt`, `locked`) VALUES
 	(1, 'admin', '8e7a4a6bad4f685bd9da4f78b5f76f9f', 'shiro', 0),
 	(2, 'system', 'b5435b43cca8783d13515ecaa3c28a6c', 'shiro', 0),
-	(3, 'wechat', '8e7a4a6bad4f685bd9da4f78b5f76f9f', 'shiro', 0);
+	(3, 'wechat', '8e7a4a6bad4f685bd9da4f78b5f76f9f', 'shiro', 0),
+	(4, 'eastbride', '4a4485209a9763269ac8c2381b4dbf9f', 'shiro', 0);
 /*!40000 ALTER TABLE `shiro_users` ENABLE KEYS */;
 
 
@@ -188,13 +220,14 @@ CREATE TABLE IF NOT EXISTS `shiro_users_roles` (
   PRIMARY KEY (`user_id`,`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 正在导出表  eastbride.shiro_users_roles 的数据：~3 rows (大约)
+-- 正在导出表  eastbride.shiro_users_roles 的数据：~4 rows (大约)
 DELETE FROM `shiro_users_roles`;
 /*!40000 ALTER TABLE `shiro_users_roles` DISABLE KEYS */;
 INSERT INTO `shiro_users_roles` (`user_id`, `role_id`) VALUES
 	(1, 1),
 	(2, 3),
-	(3, 2);
+	(3, 2),
+	(4, 4);
 /*!40000 ALTER TABLE `shiro_users_roles` ENABLE KEYS */;
 
 

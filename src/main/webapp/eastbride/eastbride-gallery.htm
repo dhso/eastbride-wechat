@@ -1,14 +1,16 @@
-<table id="_sys_url_type_table"></table>
+<table id="_eastbride_gallery_table"></table>
 <script type="text/javascript" src="${baseUrl}/static/easyui/ext/datagrid-cellediting.js"></script>
 <script>
 	(function(divId){
 		$(divId).datagrid({
-		    url:baseUrl+'/system/url_type/get',
+		    url:baseUrl+'/eastbride/gallery/get',
 		    columns:[[
 		        {field:'checkbox',checkbox:true},
-		        {field:'url_type_id',title:'ID',width:35},
-		        {field:'url_type_name',title:'类型名称',width:250,editor:'text'},
-		        {field:'url_type_icon',title:'类型图标',width:150,editor:'text'}
+		        {field:'gry_id',title:'ID',width:35},
+		        {field:'fullsize_url',title:'大图片地址',width:350,editor:'text'},
+		        {field:'smallsize_url',title:'小图片地址',width:350,editor:'text'},
+		        {field:'gry_title',title:'图片标题',width:150,editor:'text'},
+		        {field:'gry_alt',title:'顶部标题',width:150,editor:'text'}
 		    ]],
 		    queryParams:{
 		    	pagination:1
@@ -59,7 +61,7 @@
 			var insertRows = $(divId).datagrid('getChanges', 'inserted');
 			var updateRows = $(divId).datagrid('getChanges', 'updated');
 			var deleteRows = $(divId).datagrid('getChanges', 'deleted');
-			$.post(baseUrl+"/system/url_type/save", {
+			$.post(baseUrl+"/eastbride/gallery/save", {
 				inserted : JSON.stringify(insertRows),
 				updated : JSON.stringify(updateRows),
 				deleted : JSON.stringify(deleteRows)
@@ -83,5 +85,5 @@
 		function refreshTable() {
 			$(divId).datagrid('reload');
 		}
-	})('#_sys_url_type_table');
+	})('#_eastbride_gallery_table');
 </script>
