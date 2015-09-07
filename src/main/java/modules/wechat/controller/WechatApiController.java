@@ -1,6 +1,6 @@
 package modules.wechat.controller;
 
-import modules.wechat.model.WxDevConfigModel;
+import modules.wechat.model.WechatConfigModel;
 import frame.sdk.wechat.api.ApiConfig;
 import frame.sdk.wechat.api.ApiResult;
 import frame.sdk.wechat.api.CallbackIpApi;
@@ -18,16 +18,12 @@ public class WechatApiController extends ApiController {
 	 * 如果要支持多公众账号，只需要在此返回各个公众号对应的 ApiConfig 对象即可 可以通过在请求 url 中挂参数来动态从数据库中获取 ApiConfig 属性值
 	 */
 	public ApiConfig getApiConfig() {
-		String appId = getPara();
-		WxDevConfigModel wxConfig = WxDevConfigModel.dao.getConfig(appId);
-		ApiConfig ac = null;
-		if (null != wxConfig) {
-			// 配置微信 API 相关常量
-			// 1：true进行加密且必须配置 encodingAesKey
-			// 2：false采用明文模式，同时也支持混合模式
-			ac = new ApiConfig(wxConfig.getStr("token"), wxConfig.getStr("appId"), wxConfig.getStr("appSecret"), wxConfig.getBoolean("messageEncrypt"), wxConfig.getStr("encodingAesKey"));
-		}
-		return ac;
+		String appId = WechatConfigModel.dao.getStrValue("appId");
+		String token = WechatConfigModel.dao.getStrValue("token");
+		String appSecret = WechatConfigModel.dao.getStrValue("appSecret");
+		Boolean messageEncrypt = WechatConfigModel.dao.getBooleanValue("messageEncrypt");
+		String encodingAesKey = WechatConfigModel.dao.getStr("encodingAesKey");
+		return new ApiConfig(token, appId, appSecret, messageEncrypt, encodingAesKey);
 	}
 
 	/**

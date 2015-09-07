@@ -1,17 +1,12 @@
 package modules.wechat.controller;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 
-import modules.system.model.SysConfigModel;
 import modules.wechat.model.CustomerModel;
-import modules.wechat.model.ShopWifi;
-import modules.wechat.model.WxDevConfigModel;
+import modules.wechat.model.ShopWifiModel;
+import modules.wechat.model.WechatConfigModel;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.jfinal.i18n.I18n;
-import com.jfinal.kit.HttpKit;
 import com.jfinal.kit.PropKit;
 
 import frame.kit.StringKit;
@@ -36,7 +31,6 @@ import frame.sdk.wechat.msg.in.event.InQrCodeEvent;
 import frame.sdk.wechat.msg.in.event.InTemplateMsgEvent;
 import frame.sdk.wechat.msg.in.speech_recognition.InSpeechRecognitionResults;
 import frame.sdk.wechat.msg.out.OutCustomMsg;
-import frame.sdk.wechat.msg.out.OutMusicMsg;
 import frame.sdk.wechat.msg.out.OutNewsMsg;
 import frame.sdk.wechat.msg.out.OutTextMsg;
 
@@ -47,17 +41,16 @@ import frame.sdk.wechat.msg.out.OutTextMsg;
 public class WechatMsgController extends MsgController {
 	// 如果要支持多公众账号，只需要在此返回各个公众号对应的 ApiConfig 对象即可
 	// 可以通过在请求 url 中挂参数来动态从数据库中获取 ApiConfig 属性值
+	// 配置微信 API 相关常量
+	// 1：true进行加密且必须配置 encodingAesKey
+	// 2：false采用明文模式，同时也支持混合模式
 	public ApiConfig getApiConfig() {
-		String appId = getPara();
-		WxDevConfigModel wxConfig = WxDevConfigModel.dao.getConfig(appId);
-		ApiConfig ac = null;
-		if (null != wxConfig) {
-			// 配置微信 API 相关常量
-			// 1：true进行加密且必须配置 encodingAesKey
-			// 2：false采用明文模式，同时也支持混合模式
-			ac = new ApiConfig(wxConfig.getStr("token"), wxConfig.getStr("appId"), wxConfig.getStr("appSecret"), wxConfig.getBoolean("messageEncrypt"), wxConfig.getStr("encodingAesKey"));
-		}
-		return ac;
+		String appId = WechatConfigModel.dao.getStrValue("appId");
+		String token = WechatConfigModel.dao.getStrValue("token");
+		String appSecret = WechatConfigModel.dao.getStrValue("appSecret");
+		Boolean messageEncrypt = WechatConfigModel.dao.getBooleanValue("messageEncrypt");
+		String encodingAesKey = WechatConfigModel.dao.getStrValue("encodingAesKey");
+		return new ApiConfig(token, appId, appSecret, messageEncrypt, encodingAesKey);
 	}
 
 	// 处理文本消息
@@ -66,41 +59,11 @@ public class WechatMsgController extends MsgController {
 		String msgContent = inTextMsg.getContent().trim();
 		if (StringKit.hasObject(msgContent, "help", "HELP", "帮助")) {
 			OutTextMsg outMsg = new OutTextMsg(inTextMsg);
-			outMsg.setContent(SysConfigModel.dao.getCfgValue("wx.help"));
+			outMsg.setContent(WechatConfigModel.dao.getStrValue("help"));
 			render(outMsg);
-		} else if (StringKit.containStr(msgContent, "包子", "早点", "早饭")) {
+		} else if (StringKit.containStr(msgContent, "优惠", "套餐", "价格")) {
 			OutNewsMsg outMsg = new OutNewsMsg(inTextMsg);
-			outMsg.addNews("标题", "描述", "http://wcdn.u.qiniudn.com/pic/shopping.jpg", "http://url.com?openid=" + inTextMsg.getFromUserName());
-			render(outMsg);
-		} else if (StringKit.containStr(msgContent, "天气预报", "天气", "温度", "下雨")) {
-			try {
-				String uri = "http://apix.sinaapp.com/weather/?appkey=trialuser&city=" + URLEncoder.encode(StringKit.replaceStrs(msgContent, "", "天气预报", "天气", "温度", "下雨"), "UTF-8");
-				JSONArray weather = JSON.parseArray(HttpKit.get(uri));
-				OutNewsMsg outMsg = new OutNewsMsg(inTextMsg);
-				for (int i = 0; i < weather.size(); i++) {
-					if (i == 0) {
-						outMsg.addNews(weather.getJSONObject(i).getString("Title"), weather.getJSONObject(i).getString("Description"), "http://wcdn.u.qiniudn.com/img/weatherreport.jpg", "");
-					} else {
-						outMsg.addNews(weather.getJSONObject(i).getString("Title"), weather.getJSONObject(i).getString("Description"), weather.getJSONObject(i).getString("PicUrl"), "");
-					}
-				}
-				render(outMsg);
-			} catch (Exception e) {
-				OutTextMsg outMsg = new OutTextMsg(inTextMsg).setContent("找不到地区: " + StringKit.replaceStrs(msgContent, "", "天气", "温度", "下雨", "天气预报"));
-				render(outMsg);
-			}
-		} else if ("music".equalsIgnoreCase(msgContent)) {
-			OutMusicMsg outMsg = new OutMusicMsg(inTextMsg);
-			outMsg.setTitle("Listen To Your Heart");
-			outMsg.setDescription("建议在 WIFI 环境下流畅欣赏此音乐");
-			outMsg.setMusicUrl("http://www.jfinal.com/Listen_To_Your_Heart.mp3");
-			outMsg.setHqMusicUrl("http://www.jfinal.com/Listen_To_Your_Heart.mp3");
-			outMsg.setFuncFlag(true);
-			render(outMsg);
-		} else if ("美女".equalsIgnoreCase(msgContent)) {
-			OutNewsMsg outMsg = new OutNewsMsg(inTextMsg);
-			outMsg.addNews("秀色可餐", "JFinal Weixin 极速开发就是这么爽，有木有 ^_^", "http://mmbiz.qpic.cn/mmbiz/zz3Q6WSrzq2GJLC60ECD7rE7n1cvKWRNFvOyib4KGdic3N5APUWf4ia3LLPxJrtyIYRx93aPNkDtib3ADvdaBXmZJg/0",
-					"http://mp.weixin.qq.com/s?__biz=MjM5ODAwOTU3Mg==&mid=200987822&idx=1&sn=7eb2918275fb0fa7b520768854fb7b80#rd");
+			outMsg.addNews("标题", "测试信息", "http://wcdn.u.qiniudn.com/img/weatherreport.jpg", "");
 			render(outMsg);
 		} else {
 			OutTextMsg outMsg = new OutTextMsg(inTextMsg);
@@ -171,7 +134,7 @@ public class WechatMsgController extends MsgController {
 			// 关注事件
 			CustomerModel.dao.subscribe(inFollowEvent.getFromUserName(), "直接关注");
 			OutTextMsg outMsg = new OutTextMsg(inFollowEvent);
-			outMsg.setContent(SysConfigModel.dao.getCfgValue("wx.welcome"));
+			outMsg.setContent(WechatConfigModel.dao.getStrValue("welcome"));
 			render(outMsg);
 		}
 		if (InFollowEvent.EVENT_INFOLLOW_UNSUBSCRIBE.equals(inFollowEvent.getEvent())) {
@@ -187,7 +150,7 @@ public class WechatMsgController extends MsgController {
 		if (InQrCodeEvent.EVENT_INQRCODE_SUBSCRIBE.equals(inQrCodeEvent.getEvent())) {
 			CustomerModel.dao.subscribe(inQrCodeEvent.getFromUserName(), "扫码关注");
 			OutTextMsg outMsg = new OutTextMsg(inQrCodeEvent);
-			outMsg.setContent(SysConfigModel.dao.getCfgValue("wx.welcome"));
+			outMsg.setContent(WechatConfigModel.dao.getStrValue("welcome"));
 			render(outMsg);
 		}
 		if (InQrCodeEvent.EVENT_INQRCODE_SCAN.equals(inQrCodeEvent.getEvent())) {
@@ -221,13 +184,13 @@ public class WechatMsgController extends MsgController {
 				outMsg.addNews("标题", "描述", "http://wcdn.u.qiniudn.com/pic/shopping.jpg", "http://url.com?openid=" + inMenuEvent.getFromUserName());
 				render(outMsg);
 			} else if ("c_access_wifi".equalsIgnoreCase(msgEventKey)) {
-				ShopWifi customerWifi = ShopWifi.dao.applyForWifiCaptcha(customerOpenid);
+				ShopWifiModel customerWifi = ShopWifiModel.dao.applyForWifiCaptcha(customerOpenid);
 				OutTextMsg outMsg = new OutTextMsg(inMenuEvent);
 				outMsg.setContent(I18n.use().format("wifiCaptcha", customerWifi.getStr("captcha"), PropKit.get("wifi.captcha")));
 				render(outMsg);
 			} else if ("c_send_sms".equalsIgnoreCase(msgEventKey)) {
 				Result result = null;
-				ShopWifi customerWifi = ShopWifi.dao.applyForWifiCaptcha(customerOpenid);
+				ShopWifiModel customerWifi = ShopWifiModel.dao.applyForWifiCaptcha(customerOpenid);
 				result = FetionKit.sendSMS(15262731827L, I18n.use().format("wifiCaptcha", customerWifi.getStr("captcha"), PropKit.get("wifi.captcha")));
 				renderJson(result);
 			}

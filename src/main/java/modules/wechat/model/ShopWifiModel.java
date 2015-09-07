@@ -11,8 +11,8 @@ import frame.plugin.tablebind.TableBind;
 
 @SuppressWarnings("serial")
 @TableBind(tableName = "shop_wifi", pkName = "openId")
-public class ShopWifi extends Model<ShopWifi> {
-	public static final ShopWifi dao = new ShopWifi();
+public class ShopWifiModel extends Model<ShopWifiModel> {
+	public static final ShopWifiModel dao = new ShopWifiModel();
 
 	/**
 	 * 获取客户WIFI信息
@@ -20,8 +20,8 @@ public class ShopWifi extends Model<ShopWifi> {
 	 * @param openid
 	 * @return
 	 */
-	public ShopWifi getShopWifi(String openid) {
-		return ShopWifi.dao.findById(openid);
+	public ShopWifiModel getShopWifi(String openid) {
+		return ShopWifiModel.dao.findById(openid);
 	}
 
 	/**
@@ -31,13 +31,13 @@ public class ShopWifi extends Model<ShopWifi> {
 	 * @param create_id
 	 * @return
 	 */
-	public ShopWifi applyForWifiCaptcha(String openid) {
-		ShopWifi shopWifi = getShopWifi(openid);
+	public ShopWifiModel applyForWifiCaptcha(String openid) {
+		ShopWifiModel shopWifi = getShopWifi(openid);
 		String captcha = IdentityKit.randomCaptcha(6);
 		Date now = new Date();
 		if (null == shopWifi) {
 			// 没有申请过
-			new ShopWifi().set("open_id", openid).set("captcha", captcha).set("expired_dt", DateKit.changeDate(now, 12, PropKit.getInt("wifi.captcha"))).save();
+			new ShopWifiModel().set("open_id", openid).set("captcha", captcha).set("expired_dt", DateKit.changeDate(now, 12, PropKit.getInt("wifi.captcha"))).save();
 			shopWifi = getShopWifi(openid);
 		} else {
 			// 申请过
