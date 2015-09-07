@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- 主机:                           127.0.0.1
--- 服务器版本:                        5.5.44-0ubuntu0.14.04.1 - (Ubuntu)
--- 服务器操作系统:                      debian-linux-gnu
--- HeidiSQL 版本:                  9.2.0.4948
+-- 服务器版本:                        5.6.17 - MySQL Community Server (GPL)
+-- 服务器操作系统:                      Win64
+-- HeidiSQL 版本:                  9.1.0.4867
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -295,7 +295,7 @@ CREATE TABLE IF NOT EXISTS `shop_wifi` (
   PRIMARY KEY (`openId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 正在导出表  eastbride.shop_wifi 的数据：~1 rows (大约)
+-- 正在导出表  eastbride.shop_wifi 的数据：~0 rows (大约)
 DELETE FROM `shop_wifi`;
 /*!40000 ALTER TABLE `shop_wifi` DISABLE KEYS */;
 INSERT INTO `shop_wifi` (`openId`, `captcha`, `expired_dt`) VALUES
@@ -315,15 +315,6 @@ CREATE TABLE IF NOT EXISTS `sys_config` (
 -- 正在导出表  eastbride.sys_config 的数据：~8 rows (大约)
 DELETE FROM `sys_config`;
 /*!40000 ALTER TABLE `sys_config` DISABLE KEYS */;
-INSERT INTO `sys_config` (`cfg_key`, `cfg_value`, `cfg_type_id`) VALUES
-	('wx.appId', 'wxbbaed5839238c4eb', 3),
-	('wx.appSecret', '064682c9add7e6756f9f435c904825a9', 3),
-	('wx.encodingAesKey', 'RBSOCvhUnTljEvosRNwwek2NB6wIuqI2B4sVNpM3Ni6', 3),
-	('wx.messageEncrypt', '0', 3),
-	('wx.shop.name', '店名', 2),
-	('wx.shop.notification', '店铺公告', 2),
-	('wx.token', 'eastbride', 3),
-	('wx.welcome', '关注成功！', 1);
 /*!40000 ALTER TABLE `sys_config` ENABLE KEYS */;
 
 
@@ -338,11 +329,29 @@ CREATE TABLE IF NOT EXISTS `sys_config_type` (
 -- 正在导出表  eastbride.sys_config_type 的数据：~3 rows (大约)
 DELETE FROM `sys_config_type`;
 /*!40000 ALTER TABLE `sys_config_type` DISABLE KEYS */;
-INSERT INTO `sys_config_type` (`cfg_type_id`, `cfg_type_name`) VALUES
-	(1, '微信配置'),
-	(2, '商城配置'),
-	(3, '微信基础配置');
 /*!40000 ALTER TABLE `sys_config_type` ENABLE KEYS */;
+
+
+-- 导出  表 eastbride.wx_config 结构
+DROP TABLE IF EXISTS `wx_config`;
+CREATE TABLE IF NOT EXISTS `wx_config` (
+  `cfg_key` varchar(255) NOT NULL,
+  `cfg_value` varchar(255) NOT NULL,
+  PRIMARY KEY (`cfg_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信配置表';
+
+-- 正在导出表  eastbride.wx_config 的数据：~5 rows (大约)
+DELETE FROM `wx_config`;
+/*!40000 ALTER TABLE `wx_config` DISABLE KEYS */;
+INSERT INTO `wx_config` (`cfg_key`, `cfg_value`) VALUES
+	('appId', 'wxbbaed5839238c4eb'),
+	('appSecret', '064682c9add7e6756f9f435c904825a9'),
+	('encodingAesKey', 'RBSOCvhUnTljEvosRNwwek2NB6wIuqI2B4sVNpM3Ni6'),
+	('help', '帮助/n这是帮助功能。'),
+	('messageEncrypt', '0'),
+	('token', 'eastbride'),
+	('welcome', '关注成功！');
+/*!40000 ALTER TABLE `wx_config` ENABLE KEYS */;
 
 
 -- 导出  表 eastbride.wx_customer 结构
@@ -361,50 +370,12 @@ CREATE TABLE IF NOT EXISTS `wx_customer` (
   PRIMARY KEY (`openId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 正在导出表  eastbride.wx_customer 的数据：~1 rows (大约)
+-- 正在导出表  eastbride.wx_customer 的数据：~0 rows (大约)
 DELETE FROM `wx_customer`;
 /*!40000 ALTER TABLE `wx_customer` DISABLE KEYS */;
 INSERT INTO `wx_customer` (`openId`, `subscribe_flag`, `true_name`, `mobile`, `address`, `money`, `create_id`, `create_dt`, `update_id`, `update_dt`) VALUES
 	('410000100', '1', '', '', '', '', '直接关注', '2015-06-10 14:50:30', '直接关注', '2015-07-07 11:06:13');
 /*!40000 ALTER TABLE `wx_customer` ENABLE KEYS */;
-
-
--- 导出  表 eastbride.wx_dev_config 结构
-DROP TABLE IF EXISTS `wx_dev_config`;
-CREATE TABLE IF NOT EXISTS `wx_dev_config` (
-  `appId` varchar(50) NOT NULL,
-  `appSecret` varchar(50) NOT NULL,
-  `token` varchar(100) NOT NULL,
-  `messageEncrypt` tinyint(1) NOT NULL,
-  `encodingAesKey` varchar(255) NOT NULL,
-  PRIMARY KEY (`appId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信配置表';
-
--- 正在导出表  eastbride.wx_dev_config 的数据：~1 rows (大约)
-DELETE FROM `wx_dev_config`;
-/*!40000 ALTER TABLE `wx_dev_config` DISABLE KEYS */;
-INSERT INTO `wx_dev_config` (`appId`, `appSecret`, `token`, `messageEncrypt`, `encodingAesKey`) VALUES
-	('wxbbaed5839238c4eb', '064682c9add7e6756f9f435c904825a9', 'eastbride', 0, 'RBSOCvhUnTljEvosRNwwek2NB6wIuqI2B4sVNpM3Ni6');
-/*!40000 ALTER TABLE `wx_dev_config` ENABLE KEYS */;
-
-
--- 导出  表 eastbride.wx_props 结构
-DROP TABLE IF EXISTS `wx_props`;
-CREATE TABLE IF NOT EXISTS `wx_props` (
-  `appId` varchar(50) NOT NULL,
-  `appSecret` varchar(50) NOT NULL,
-  `token` varchar(100) NOT NULL,
-  `messageEncrypt` bit(1) NOT NULL,
-  `encodingAesKey` varchar(255) NOT NULL,
-  `userId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信配置表';
-
--- 正在导出表  eastbride.wx_props 的数据：~1 rows (大约)
-DELETE FROM `wx_props`;
-/*!40000 ALTER TABLE `wx_props` DISABLE KEYS */;
-INSERT INTO `wx_props` (`appId`, `appSecret`, `token`, `messageEncrypt`, `encodingAesKey`, `userId`) VALUES
-	('wxbbaed5839238c4eb', '064682c9add7e6756f9f435c904825a9', 'eastbride', b'0', 'RBSOCvhUnTljEvosRNwwek2NB6wIuqI2B4sVNpM3Ni6', 1);
-/*!40000 ALTER TABLE `wx_props` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
