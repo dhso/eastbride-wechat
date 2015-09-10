@@ -35,3 +35,6 @@ fetion.password = wj19881130
 
 #WIFI验证码有效期（分钟）
 wifi.captcha = 30
+
+#图灵
+tuling.appkey = e7957090907773817e35b9379f155b26

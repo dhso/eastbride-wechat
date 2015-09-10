@@ -1,18 +1,22 @@
 package modules.wechat.controller;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 import modules.wechat.model.CustomerModel;
 import modules.wechat.model.ShopWifiModel;
 import modules.wechat.model.WechatConfigModel;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.jfinal.i18n.I18n;
 import com.jfinal.kit.PropKit;
 
 import frame.kit.StringKit;
 import frame.sdk.fetion.Result;
 import frame.sdk.fetion.kit.FetionKit;
-import frame.sdk.simsimi.SimsimiSdk;
+import frame.sdk.tuling.TuLingSdk;
 import frame.sdk.wechat.api.ApiConfig;
 import frame.sdk.wechat.jfinal.MsgController;
 import frame.sdk.wechat.msg.in.InImageMsg;
@@ -66,13 +70,70 @@ public class WechatMsgController extends MsgController {
 			outMsg.addNews("标题", "测试信息", "http://wcdn.u.qiniudn.com/img/weatherreport.jpg", "");
 			render(outMsg);
 		} else {
-			OutTextMsg outMsg = new OutTextMsg(inTextMsg);
 			try {
-				outMsg.setContent(SimsimiSdk.askSimsimi(inTextMsg.getContent()));
+				String result = TuLingSdk.askTuling(inTextMsg.getContent(),inTextMsg.getFromUserName());
+				if(StringKit.isNotBlank(result)){
+					JSONObject jsonResult = JSON.parseObject(result);
+					Integer code = jsonResult.getInteger("code");
+					switch (code) {
+					case 100000:
+						OutTextMsg textMsg = new OutTextMsg(inTextMsg);
+						textMsg.setContent(jsonResult.getString("text"));
+						render(textMsg);
+						break;
+					case 200000:
+						OutNewsMsg linkMsg = new OutNewsMsg(inTextMsg);
+						linkMsg.addNews(jsonResult.getString("text"), "点击查看", "http://78re1z.com1.z0.glb.clouddn.com/img/search.jpg", jsonResult.getString("url"));
+						render(linkMsg);
+						break;
+					case 302000:
+						OutNewsMsg newsMsg = new OutNewsMsg(inTextMsg);
+						JSONArray newsArrayResult= jsonResult.getJSONArray("list");
+						Iterator<Object> newsIterator= newsArrayResult.iterator();
+						Integer newsCount = 0;
+						while (newsIterator.hasNext() && newsCount < 10) {
+							JSONObject object = (JSONObject) newsIterator.next();
+							newsMsg.addNews(object.getString("article"), object.getString("source"), object.getString("icon"), object.getString("detailurl"));
+							newsCount++;
+						}
+						render(newsMsg);
+						break;
+					case 305000:
+						OutNewsMsg trainMsg = new OutNewsMsg(inTextMsg);
+						JSONArray trainArrayResult= jsonResult.getJSONArray("list");
+						Iterator<Object> trainIterator= trainArrayResult.iterator();
+						Integer trainCount = 0;
+						while (trainIterator.hasNext() && trainCount < 10) {
+							JSONObject object = (JSONObject) trainIterator.next();
+							trainMsg.addNews(object.getString("trainnum"), object.getString("start").concat("(").concat(object.getString("starttime")).concat(")").concat(" - ").concat(object.getString("terminal")).concat("(").concat(object.getString("endtime")).concat(")"), object.getString("icon"), object.getString("detailurl"));
+							trainCount++;
+						}
+						render(trainMsg);
+						break;
+					case 308000:
+						OutNewsMsg cookMsg = new OutNewsMsg(inTextMsg);
+						JSONArray cookArrayResult= jsonResult.getJSONArray("list");
+						Iterator<Object> cookIterator= cookArrayResult.iterator();
+						Integer cookCount = 0;
+						while (cookIterator.hasNext() && cookCount < 10) {
+							JSONObject object = (JSONObject) cookIterator.next();
+							cookMsg.addNews(object.getString("name"), object.getString("info"), object.getString("icon"), object.getString("detailurl"));
+							cookCount++;
+						}
+						render(cookMsg);
+						break;
+					default:
+						OutTextMsg defaultTextMsg = new OutTextMsg(inTextMsg);
+						defaultTextMsg.setContent("听不懂您说什么哟！");
+						render(defaultTextMsg);
+						break;
+					}
+				}
 			} catch (IOException e) {
-				outMsg.setContent("小黄鸡被大象打嘴巴了，不能说话了，555~~~");
+				OutTextMsg defaultTextMsg = new OutTextMsg(inTextMsg);
+				defaultTextMsg.setContent("机器人没电咯，暂时不能回答您的问题！");
+				render(defaultTextMsg);
 			}
-			render(outMsg);
 		}
 
 	}
