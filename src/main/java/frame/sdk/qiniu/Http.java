@@ -15,6 +15,7 @@ import org.apache.http.impl.conn.PoolingClientConnectionManager;
  * you can set an appropriate version according to your application.
  * 
  */
+@SuppressWarnings("deprecation")
 public class Http {
 
 	private static HttpClient client;

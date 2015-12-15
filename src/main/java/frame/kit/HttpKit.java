@@ -16,6 +16,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -31,6 +32,12 @@ import javax.servlet.http.HttpServletRequest;
 import com.jfinal.kit.StrKit;
 
 public class HttpKit extends org.apache.commons.lang3.StringUtils {
+	@SuppressWarnings("serial")
+	public static Map<String, String> HTTP_HEADER_JSON = new HashMap<String, String>() {
+		{
+			put("content-type", "application/json;charset=utf-8");
+		}
+	};
 
 	/**
 	 * 获得用户远程地址
@@ -77,7 +84,7 @@ public class HttpKit extends org.apache.commons.lang3.StringUtils {
 	private static SSLSocketFactory initSSLSocketFactory() {
 		try {
 			TrustManager[] tm = { new HttpKit().new TrustAnyTrustManager() };
-			SSLContext sslContext = SSLContext.getInstance("SSL", "SunJSSE");
+			SSLContext sslContext = SSLContext.getInstance("TLS", "SunJSSE");
 			sslContext.init(null, tm, new java.security.SecureRandom());
 			return sslContext.getSocketFactory();
 		} catch (Exception e) {
@@ -143,8 +150,8 @@ public class HttpKit extends org.apache.commons.lang3.StringUtils {
 	}
 
 	/**
-	 * 发送 POST 请求 考虑添加一个参数 Map<String, String> queryParas：
-	 * getHttpConnection(buildUrl(url, queryParas), POST, headers);
+	 * 发送 POST 请求 考虑添加一个参数 Map<String, String> queryParas： getHttpConnection(buildUrl(url,
+	 * queryParas), POST, headers);
 	 */
 	public static String post(String url, Map<String, String> queryParas, String data, Map<String, String> headers) {
 		HttpURLConnection conn = null;
@@ -288,5 +295,39 @@ public class HttpKit extends org.apache.commons.lang3.StringUtils {
 		protected PasswordAuthentication getPasswordAuthentication() {
 			return new PasswordAuthentication(user, password.toCharArray());
 		}
+	}
+
+	/**
+	 * 获取request的url
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public static String getUrl(HttpServletRequest request) {
+		String url = "";
+		// 请求协议 http 或 https
+		url += request.getScheme() + "://";
+		// 请求服务器
+		url += request.getHeader("host");
+		// 工程名
+		url += request.getRequestURI();
+		// 判断请求参数是否为空
+		if (request.getQueryString() != null)
+			// 参数
+			url += "?" + request.getQueryString();
+		return url;
+	}
+
+	/**
+	 * 判断是否是手机
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public static Boolean isMobile(HttpServletRequest request) {
+		if (StringKit.containStr(request.getHeader("user-agent"), "Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod")) {
+			return true;
+		}
+		return false;
 	}
 }

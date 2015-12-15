@@ -34,19 +34,21 @@ public class PrincipalTag extends SecureTag {
     /**
      * The type of principal to be retrieved, or null if the default principal should be used.
      */
-    String getType(Map params) {
+    @SuppressWarnings("rawtypes")
+	String getType(Map params) {
         return getParam(params, "type");
     }
 
     /**
      * The property name to retrieve of the principal, or null if the <tt>toString()</tt> value should be used.
      */
-    String getProperty(Map params) {
+    @SuppressWarnings("rawtypes")
+	String getProperty(Map params) {
         return getParam(params, "property");
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
+    @SuppressWarnings("rawtypes")
+	@Override
     public void render(Environment env, Map params, TemplateDirectiveBody body) throws IOException, TemplateException {
         String result = null;
 
@@ -82,7 +84,7 @@ public class PrincipalTag extends SecureTag {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     Object getPrincipalFromClassName(Map params) {
         String type = getType(params);
 

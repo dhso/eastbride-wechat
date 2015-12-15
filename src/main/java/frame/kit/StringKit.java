@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -177,13 +178,29 @@ public class StringKit extends StringUtils {
 	 * @return
 	 * @throws ParseException
 	 */
-	public static Date toDate(Object val, String DateType) throws ParseException {
+	public static Date toDate(Object val, String DateType) {
 		Date date = null;
 		if (null != val && StringKit.isNotEmpty(val.toString())) {
 			SimpleDateFormat sdf = new SimpleDateFormat(DateType);
-			date = sdf.parse(val.toString());
+			try {
+				date = sdf.parse(val.toString());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		}
 		return date;
+	}
+
+	/**
+	 * Date转成String
+	 * 
+	 * @param date
+	 * @param DateType
+	 * @return
+	 */
+	public static String dateToStr(Date date, String DateType) {
+		SimpleDateFormat dateFm = new SimpleDateFormat(DateType);
+		return dateFm.format(date);
 	}
 
 	/**
@@ -464,5 +481,38 @@ public class StringKit extends StringUtils {
 			throw new RuntimeException(e);
 		}
 		return realPath;
+	}
+
+	/**
+	 * sha1加密
+	 * 
+	 * @param sb
+	 * @param salt
+	 * @return
+	 */
+	public static String makeSignature(String salt, String sb) {
+		byte[] signatureByte = null;
+		try {
+			signatureByte = DigestsKit.sha1(sb.getBytes("utf-8"), salt.getBytes());
+		} catch (UnsupportedEncodingException e) {
+			return "";
+		}
+		return EncodeKit.encodeHex(signatureByte);
+	}
+
+	/**
+	 * sha1加密请求参数
+	 * 
+	 * @param request
+	 * @param salt
+	 * @param paras
+	 * @return
+	 */
+	public static String makeParaSignature(JSONObject jsonData, String salt, String... paras) {
+		StringBuilder sb = new StringBuilder();
+		for (String para : paras) {
+			sb.append(null != jsonData.getString(para) ? jsonData.getString(para) : "");
+		}
+		return makeSignature(salt, sb.toString());
 	}
 }

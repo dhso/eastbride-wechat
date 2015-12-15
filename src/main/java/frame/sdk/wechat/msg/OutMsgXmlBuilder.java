@@ -54,6 +54,7 @@ public class OutMsgXmlBuilder {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	private static Configuration initFreeMarkerConfiguration() {
 		Configuration config = new Configuration();
 		StringTemplateLoader stringTemplateLoader = new StringTemplateLoader();

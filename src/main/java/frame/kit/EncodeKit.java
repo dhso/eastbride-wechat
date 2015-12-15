@@ -12,10 +12,13 @@ import org.apache.commons.lang3.StringEscapeUtils;
 /**
  * 封装各种格式的编码解码工具类.
  * 
- * 1.Commons-Codec的 hex/base64 编码 2.自制的base62 编码 3.Commons-Lang的xml/html escape
- * 4.JDK提供的URLEncoder
+ * 1.Commons-Codec的 hex/base64 编码
  * 
- * @author jacwan
+ * 2.自制的base62 编码
+ * 
+ * 3.Commons-Lang的xml/html escape
+ * 
+ * 4.JDK提供的URLEncoder
  * 
  */
 public class EncodeKit {
@@ -27,23 +30,37 @@ public class EncodeKit {
 	 * Hex编码.
 	 */
 	public static String encodeHex(byte[] input) {
-		return Hex.encodeHexString(input);
+		return new String(Hex.encodeHex(input));
 	}
 
 	/**
 	 * Hex解码.
 	 * 
-	 * @throws DecoderException
 	 */
-	public static byte[] decodeHex(String input) throws DecoderException {
-		return Hex.decodeHex(input.toCharArray());
+	public static byte[] decodeHex(String input) {
+		try {
+			return Hex.decodeHex(input.toCharArray());
+		} catch (DecoderException e) {
+			throw ExceptionKit.unchecked(e);
+		}
 	}
 
 	/**
 	 * Base64编码.
 	 */
 	public static String encodeBase64(byte[] input) {
-		return Base64.encodeBase64String(input);
+		return new String(Base64.encodeBase64(input));
+	}
+
+	/**
+	 * Base64编码.
+	 */
+	public static String encodeBase64(String input) {
+		try {
+			return new String(Base64.encodeBase64(input.getBytes(DEFAULT_URL_ENCODING)));
+		} catch (UnsupportedEncodingException e) {
+			return "";
+		}
 	}
 
 	/**
@@ -58,6 +75,17 @@ public class EncodeKit {
 	 */
 	public static byte[] decodeBase64(String input) {
 		return Base64.decodeBase64(input);
+	}
+
+	/**
+	 * Base64解码.
+	 */
+	public static String decodeBase64String(String input) {
+		try {
+			return new String(Base64.decodeBase64(input.getBytes()), DEFAULT_URL_ENCODING);
+		} catch (UnsupportedEncodingException e) {
+			return "";
+		}
 	}
 
 	/**
@@ -88,9 +116,8 @@ public class EncodeKit {
 	/**
 	 * Xml 转码.
 	 */
-	@SuppressWarnings("deprecation")
 	public static String escapeXml(String xml) {
-		return StringEscapeUtils.escapeXml(xml);
+		return StringEscapeUtils.escapeXml10(xml);
 	}
 
 	/**
@@ -102,18 +129,23 @@ public class EncodeKit {
 
 	/**
 	 * URL 编码, Encode默认为UTF-8.
-	 * 
-	 * @throws UnsupportedEncodingException
 	 */
-	public static String urlEncode(String part) throws UnsupportedEncodingException {
-		return URLEncoder.encode(part, DEFAULT_URL_ENCODING);
+	public static String urlEncode(String part) {
+		try {
+			return URLEncoder.encode(part, DEFAULT_URL_ENCODING);
+		} catch (UnsupportedEncodingException e) {
+			throw ExceptionKit.unchecked(e);
+		}
 	}
 
 	/**
 	 * URL 解码, Encode默认为UTF-8.
-	 * @throws UnsupportedEncodingException 
 	 */
-	public static String urlDecode(String part) throws UnsupportedEncodingException {
-		return URLDecoder.decode(part, DEFAULT_URL_ENCODING);
+	public static String urlDecode(String part) {
+		try {
+			return URLDecoder.decode(part, DEFAULT_URL_ENCODING);
+		} catch (UnsupportedEncodingException e) {
+			throw ExceptionKit.unchecked(e);
+		}
 	}
 }

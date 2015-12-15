@@ -1,13 +1,9 @@
 package config;
 
-import modules.crm.controller.CrmController;
-import modules.eastbride.controller.EastbrideController;
-import modules.system.controller.SecurityController;
 import modules.system.controller.SystemController;
 import modules.wechat.controller.WechatApiController;
 import modules.wechat.controller.WechatController;
 import modules.wechat.controller.WechatMsgController;
-import modules.weshop.controller.ShopController;
 
 import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.util.JdbcConstants;
@@ -33,11 +29,11 @@ import com.jfinal.render.RedirectRender;
 import com.jfinal.render.Render;
 
 import frame.interceptor.ReqResInViewInterceptor;
+import frame.kit.StringKit;
 import frame.plugin.event.EventPlugin;
-import frame.plugin.shiro.core.ShiroInterceptor;
-import frame.plugin.shiro.core.ShiroPlugin;
-import frame.plugin.shiro.freemarker.ShiroTags;
-import frame.plugin.sqlinxml.SqlInXmlPlugin;
+import frame.plugin.freemarker.BlockDirective;
+import frame.plugin.freemarker.ExtendsDirective;
+import frame.plugin.freemarker.OverrideDirective;
 import frame.plugin.tablebind.AutoTableBindPlugin;
 import frame.plugin.tablebind.SimpleNameStyles;
 import frame.sdk.fetion.kit.FetionPlugin;
@@ -50,43 +46,33 @@ public class BaseConfig extends JFinalConfig {
 	public void configConstant(Constants me) {
 		// 加载配置/国际化
 		PropKit.use("config.txt");
-		me.setI18nDefaultBaseName("i18n");
-		me.setI18nDefaultLocale("zh_CN");
 		me.setDevMode(PropKit.getBoolean("devMode", false));
 		// 微信设置
 		ApiConfigKit.setDevMode(me.getDevMode());
 		// 设置错误模板
 		me.setErrorView(401, "/security/signin");
-		me.setErrorView(403, "/security/signin");
-		me.setErrorView(404, "/security/err404");
-		me.setErrorView(500, "/security/err500");
 		me.setErrorRenderFactory(new IErrorRenderFactory() {
 			@Override
 			public Render getRender(int errorCode, String view) {
-				return new RedirectRender(view, true);
+				if (StringKit.isBlank(view)) {
+					return new RedirectRender("/system/error/".concat(String.valueOf(errorCode)), false);
+				}
+				return new RedirectRender(view, false);
 			}
 		});
 	}
 
 	public void configRoute(Routes me) {
 		this.routes = me;
-		me.add("/security", SecurityController.class, "/security");// 安全
-		me.add("/", EastbrideController.class, "/eastbride");// eastbride网站
-		me.add("/system", SystemController.class, "/system");// 安全
-		me.add("/shop", ShopController.class, "/shop");// 商城
+		me.add("/system", SystemController.class, "/system");// 系统
 		me.add("/wechat", WechatController.class, "/weixin");// 微信
 		me.add("/wechatMsg", WechatMsgController.class);// 微信消息
 		me.add("/wechatApi", WechatApiController.class, "/wechatApi");// 微信接口
-		me.add("/crm", CrmController.class, "/crm");// CRM
 	}
 
 	public void configPlugin(Plugins me) {
 		// 添加fetion支持
 		me.add(new FetionPlugin(PropKit.getLong("fetion.mobile"), PropKit.get("fetion.password")));
-		// 添加shiro支持
-		me.add(new ShiroPlugin(routes));
-		// add sql xml plugin
-		me.add(new SqlInXmlPlugin());
 		// 添加缓存支持
 		me.add(new EhCachePlugin(BaseConfig.class.getClassLoader().getResource("ehcache-model.xml")));
 		// 配置数据库连接池插件
@@ -114,10 +100,6 @@ public class BaseConfig extends JFinalConfig {
 	}
 
 	public void configInterceptor(Interceptors me) {
-		// shiro拦截器
-		me.add(new ShiroInterceptor());
-		// shiroFreemarker拦截器
-		// me.add(new ShiroFreemarkerTemplateInterceptor());
 		// 让 模版 可以使用session
 		me.add(new SessionInViewInterceptor());
 		// 让 模版 可以使用request/response
@@ -139,6 +121,8 @@ public class BaseConfig extends JFinalConfig {
 	public void afterJFinalStart() {
 		super.afterJFinalStart();
 		FreeMarkerRender.getConfiguration().setClassicCompatible(true);
-		FreeMarkerRender.getConfiguration().setSharedVariable("shiro", new ShiroTags());
+		FreeMarkerRender.getConfiguration().setSharedVariable("block", new BlockDirective());
+		FreeMarkerRender.getConfiguration().setSharedVariable("override", new OverrideDirective());
+		FreeMarkerRender.getConfiguration().setSharedVariable("extends", new ExtendsDirective());
 	}
 }
