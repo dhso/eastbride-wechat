@@ -3,7 +3,6 @@ package modules.system.controller;
 import modules.system.validator.SigninValidator;
 
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 
 import com.jfinal.aop.Before;

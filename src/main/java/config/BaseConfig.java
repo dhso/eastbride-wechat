@@ -1,5 +1,6 @@
 package config;
 
+import modules.craftsman.controller.CraftsmanController;
 import modules.system.controller.SystemController;
 import modules.wechat.controller.WechatApiController;
 import modules.wechat.controller.WechatController;
@@ -68,6 +69,7 @@ public class BaseConfig extends JFinalConfig {
 		me.add("/wechat", WechatController.class, "/weixin");// 微信
 		me.add("/wechatMsg", WechatMsgController.class);// 微信消息
 		me.add("/wechatApi", WechatApiController.class, "/wechatApi");// 微信接口
+		me.add("/craftsman", CraftsmanController.class, "/craftsman");// 手艺人
 	}
 
 	public void configPlugin(Plugins me) {
@@ -104,8 +106,6 @@ public class BaseConfig extends JFinalConfig {
 		me.add(new SessionInViewInterceptor());
 		// 让 模版 可以使用request/response
 		me.add(new ReqResInViewInterceptor());
-		// 让 模版 可以使用I18n
-		me.add(new I18nInterceptor());
 	}
 
 	public void configHandler(Handlers me) {

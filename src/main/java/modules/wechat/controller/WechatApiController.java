@@ -1,6 +1,7 @@
 package modules.wechat.controller;
 
-import modules.wechat.model.WechatConfigModel;
+import com.jfinal.kit.PropKit;
+
 import frame.sdk.wechat.api.ApiConfig;
 import frame.sdk.wechat.api.ApiResult;
 import frame.sdk.wechat.api.CallbackIpApi;
@@ -18,12 +19,7 @@ public class WechatApiController extends ApiController {
 	 * 如果要支持多公众账号，只需要在此返回各个公众号对应的 ApiConfig 对象即可 可以通过在请求 url 中挂参数来动态从数据库中获取 ApiConfig 属性值
 	 */
 	public ApiConfig getApiConfig() {
-		String appId = WechatConfigModel.dao.getStrValue("appId");
-		String token = WechatConfigModel.dao.getStrValue("token");
-		String appSecret = WechatConfigModel.dao.getStrValue("appSecret");
-		Boolean messageEncrypt = WechatConfigModel.dao.getBooleanValue("messageEncrypt");
-		String encodingAesKey = WechatConfigModel.dao.getStr("encodingAesKey");
-		return new ApiConfig(token, appId, appSecret, messageEncrypt, encodingAesKey);
+		return new ApiConfig(PropKit.get("token"), PropKit.get("appId"), PropKit.get("appSecret"), PropKit.getBoolean("messageEncrypt"), PropKit.get("encodingAesKey"));
 	}
 
 	/**
@@ -86,7 +82,8 @@ public class WechatApiController extends ApiController {
 		ApiResult apiResult = QrcodeApi.create(str);
 		renderText(apiResult.getJson());
 
-		// String str = "{\"action_name\": \"QR_LIMIT_STR_SCENE\", \"action_info\": {\"scene\": {\"scene_str\": \"123\"}}}";
+		// String str =
+		// "{\"action_name\": \"QR_LIMIT_STR_SCENE\", \"action_info\": {\"scene\": {\"scene_str\": \"123\"}}}";
 
 		// ApiResult apiResult = QrcodeApi.create(str);
 

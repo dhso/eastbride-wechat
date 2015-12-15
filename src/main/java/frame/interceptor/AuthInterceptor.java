@@ -3,7 +3,7 @@ package frame.interceptor;
 import java.util.ArrayList;
 import java.util.List;
 
-import modules.ikea.entity.IkeaUser;
+import modules.system.entity.User;
 
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
@@ -22,8 +22,8 @@ public class AuthInterceptor implements Interceptor {
 
 	public void intercept(Invocation inv) {
 		Controller controller = inv.getController();
-		IkeaUser ikeaUser = controller.getSessionAttr("_ikeaUser");
-		if (null != ikeaUser) {
+		User user = controller.getSessionAttr("_User");
+		if (null != user) {
 			inv.invoke();
 		} else {
 			controller.setSessionAttr("_nextUrl", HttpKit.getUrl(controller.getRequest()));

@@ -1,6 +1,6 @@
 package frame.interceptor;
 
-import modules.ikea.entity.IkeaUser;
+import modules.craftsman.entity.CodeMonkeyUserUser;
 
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
@@ -14,7 +14,7 @@ public class ReqResInViewInterceptor implements Interceptor {
 
 	public void intercept(Invocation inv) {
 		inv.invoke();
-		IkeaUser ikeaUser = inv.getController().getSessionAttr("_ikeaUser");
+		CodeMonkeyUserUser ikeaUser = inv.getController().getSessionAttr("_ikeaUser");
 		logger.info(" membershipnum:" + (null != ikeaUser ? ikeaUser.getMmbMembershipnum() : "") + "|~~|device:" + inv.getController().getSessionAttr("_template") + "|~~|source:" + inv.getController().getSessionAttr("_source") + "|~~|visit:" + HttpKit.getUrl(inv.getController().getRequest()));
 		// TokenManager.createToken(inv.getController(), "jockillerToken", 30 * 60);
 		inv.getController().setAttr("baiduTongjiId", PropKit.get("baidu.tongji.id", ""));

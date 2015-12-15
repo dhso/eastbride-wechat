@@ -3,19 +3,15 @@ package modules.wechat.controller;
 import java.io.IOException;
 import java.util.Iterator;
 
-import modules.wechat.model.CustomerModel;
-import modules.wechat.model.ShopWifiModel;
 import modules.wechat.model.WechatConfigModel;
+import modules.wechat.model.WechatCustomerModel;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.jfinal.i18n.I18n;
 import com.jfinal.kit.PropKit;
 
 import frame.kit.StringKit;
-import frame.sdk.fetion.Result;
-import frame.sdk.fetion.kit.FetionKit;
 import frame.sdk.tuling.TuLingSdk;
 import frame.sdk.wechat.api.ApiConfig;
 import frame.sdk.wechat.jfinal.MsgController;
@@ -49,12 +45,7 @@ public class WechatMsgController extends MsgController {
 	// 1：true进行加密且必须配置 encodingAesKey
 	// 2：false采用明文模式，同时也支持混合模式
 	public ApiConfig getApiConfig() {
-		String appId = WechatConfigModel.dao.getStrValue("appId");
-		String token = WechatConfigModel.dao.getStrValue("token");
-		String appSecret = WechatConfigModel.dao.getStrValue("appSecret");
-		Boolean messageEncrypt = WechatConfigModel.dao.getBooleanValue("messageEncrypt");
-		String encodingAesKey = WechatConfigModel.dao.getStrValue("encodingAesKey");
-		return new ApiConfig(token, appId, appSecret, messageEncrypt, encodingAesKey);
+		return new ApiConfig(PropKit.get("token"), PropKit.get("appId"), PropKit.get("appSecret"), PropKit.getBoolean("messageEncrypt"), PropKit.get("encodingAesKey"));
 	}
 
 	// 处理文本消息
@@ -63,7 +54,7 @@ public class WechatMsgController extends MsgController {
 		String msgContent = inTextMsg.getContent().trim();
 		if (StringKit.hasObject(msgContent, "help", "HELP", "帮助")) {
 			OutTextMsg outMsg = new OutTextMsg(inTextMsg);
-			outMsg.setContent(WechatConfigModel.dao.getStrValue("help"));
+			outMsg.setContent(WechatConfigModel.dao.getConfigVal("help"));
 			render(outMsg);
 		} else if (StringKit.containStr(msgContent, "优惠", "套餐", "价格")) {
 			OutNewsMsg outMsg = new OutNewsMsg(inTextMsg);
@@ -71,8 +62,8 @@ public class WechatMsgController extends MsgController {
 			render(outMsg);
 		} else {
 			try {
-				String result = TuLingSdk.askTuling(inTextMsg.getContent(),inTextMsg.getFromUserName());
-				if(StringKit.isNotBlank(result)){
+				String result = TuLingSdk.askTuling(inTextMsg.getContent(), inTextMsg.getFromUserName());
+				if (StringKit.isNotBlank(result)) {
 					JSONObject jsonResult = JSON.parseObject(result);
 					Integer code = jsonResult.getInteger("code");
 					switch (code) {
@@ -88,8 +79,8 @@ public class WechatMsgController extends MsgController {
 						break;
 					case 302000:
 						OutNewsMsg newsMsg = new OutNewsMsg(inTextMsg);
-						JSONArray newsArrayResult= jsonResult.getJSONArray("list");
-						Iterator<Object> newsIterator= newsArrayResult.iterator();
+						JSONArray newsArrayResult = jsonResult.getJSONArray("list");
+						Iterator<Object> newsIterator = newsArrayResult.iterator();
 						Integer newsCount = 0;
 						while (newsIterator.hasNext() && newsCount < 10) {
 							JSONObject object = (JSONObject) newsIterator.next();
@@ -100,20 +91,21 @@ public class WechatMsgController extends MsgController {
 						break;
 					case 305000:
 						OutNewsMsg trainMsg = new OutNewsMsg(inTextMsg);
-						JSONArray trainArrayResult= jsonResult.getJSONArray("list");
-						Iterator<Object> trainIterator= trainArrayResult.iterator();
+						JSONArray trainArrayResult = jsonResult.getJSONArray("list");
+						Iterator<Object> trainIterator = trainArrayResult.iterator();
 						Integer trainCount = 0;
 						while (trainIterator.hasNext() && trainCount < 10) {
 							JSONObject object = (JSONObject) trainIterator.next();
-							trainMsg.addNews(object.getString("trainnum"), object.getString("start").concat("(").concat(object.getString("starttime")).concat(")").concat(" - ").concat(object.getString("terminal")).concat("(").concat(object.getString("endtime")).concat(")"), object.getString("icon"), object.getString("detailurl"));
+							trainMsg.addNews(object.getString("trainnum"), object.getString("start").concat("(").concat(object.getString("starttime")).concat(")").concat(" - ").concat(object.getString("terminal")).concat("(").concat(object.getString("endtime")).concat(")"),
+									object.getString("icon"), object.getString("detailurl"));
 							trainCount++;
 						}
 						render(trainMsg);
 						break;
 					case 308000:
 						OutNewsMsg cookMsg = new OutNewsMsg(inTextMsg);
-						JSONArray cookArrayResult= jsonResult.getJSONArray("list");
-						Iterator<Object> cookIterator= cookArrayResult.iterator();
+						JSONArray cookArrayResult = jsonResult.getJSONArray("list");
+						Iterator<Object> cookIterator = cookArrayResult.iterator();
 						Integer cookCount = 0;
 						while (cookIterator.hasNext() && cookCount < 10) {
 							JSONObject object = (JSONObject) cookIterator.next();
@@ -193,14 +185,14 @@ public class WechatMsgController extends MsgController {
 	protected void processInFollowEvent(InFollowEvent inFollowEvent) {
 		if (InFollowEvent.EVENT_INFOLLOW_SUBSCRIBE.equals(inFollowEvent.getEvent())) {
 			// 关注事件
-			CustomerModel.dao.subscribe(inFollowEvent.getFromUserName(), "直接关注");
+			WechatCustomerModel.dao.subscribe(inFollowEvent.getFromUserName(), "直接关注");
 			OutTextMsg outMsg = new OutTextMsg(inFollowEvent);
-			outMsg.setContent(WechatConfigModel.dao.getStrValue("welcome"));
+			outMsg.setContent(WechatConfigModel.dao.getConfigVal("welcome"));
 			render(outMsg);
 		}
 		if (InFollowEvent.EVENT_INFOLLOW_UNSUBSCRIBE.equals(inFollowEvent.getEvent())) {
 			// 取消关注事件，将无法接收到传回的信息
-			CustomerModel.dao.unsubscribe(inFollowEvent.getFromUserName());
+			WechatCustomerModel.dao.unsubscribe(inFollowEvent.getFromUserName());
 		}
 
 	}
@@ -209,13 +201,13 @@ public class WechatMsgController extends MsgController {
 	@Override
 	protected void processInQrCodeEvent(InQrCodeEvent inQrCodeEvent) {
 		if (InQrCodeEvent.EVENT_INQRCODE_SUBSCRIBE.equals(inQrCodeEvent.getEvent())) {
-			CustomerModel.dao.subscribe(inQrCodeEvent.getFromUserName(), "扫码关注");
+			WechatCustomerModel.dao.subscribe(inQrCodeEvent.getFromUserName(), "扫码关注");
 			OutTextMsg outMsg = new OutTextMsg(inQrCodeEvent);
-			outMsg.setContent(WechatConfigModel.dao.getStrValue("welcome"));
+			outMsg.setContent(WechatConfigModel.dao.getConfigVal("welcome"));
 			render(outMsg);
 		}
 		if (InQrCodeEvent.EVENT_INQRCODE_SCAN.equals(inQrCodeEvent.getEvent())) {
-			CustomerModel.dao.unsubscribe(inQrCodeEvent.getFromUserName());
+			WechatCustomerModel.dao.unsubscribe(inQrCodeEvent.getFromUserName());
 		}
 
 	}
@@ -244,16 +236,6 @@ public class WechatMsgController extends MsgController {
 				OutNewsMsg outMsg = new OutNewsMsg(inMenuEvent);
 				outMsg.addNews("标题", "描述", "http://wcdn.u.qiniudn.com/pic/shopping.jpg", "http://url.com?openid=" + inMenuEvent.getFromUserName());
 				render(outMsg);
-			} else if ("c_access_wifi".equalsIgnoreCase(msgEventKey)) {
-				ShopWifiModel customerWifi = ShopWifiModel.dao.applyForWifiCaptcha(customerOpenid);
-				OutTextMsg outMsg = new OutTextMsg(inMenuEvent);
-				outMsg.setContent(I18n.use().format("wifiCaptcha", customerWifi.getStr("captcha"), PropKit.get("wifi.captcha")));
-				render(outMsg);
-			} else if ("c_send_sms".equalsIgnoreCase(msgEventKey)) {
-				Result result = null;
-				ShopWifiModel customerWifi = ShopWifiModel.dao.applyForWifiCaptcha(customerOpenid);
-				result = FetionKit.sendSMS(15262731827L, I18n.use().format("wifiCaptcha", customerWifi.getStr("captcha"), PropKit.get("wifi.captcha")));
-				renderJson(result);
 			}
 		}
 

@@ -5,11 +5,11 @@
  * @author hadong
  *
  */
-package modules.ikea.entity;
+package modules.craftsman.entity;
 
 import java.io.Serializable;
 
-public class IkeaUser implements Serializable {
+public class CodeMonkeyUserUser implements Serializable {
 	private static final long serialVersionUID = -8765640214072557201L;
 	private String mmbMembershipnum;
 	private String cstName;
@@ -22,11 +22,11 @@ public class IkeaUser implements Serializable {
 	private Integer cstId;
 	private String cntupdateFlag;
 
-	public IkeaUser() {
+	public CodeMonkeyUserUser() {
 
 	}
 
-	public IkeaUser(String mmbMembershipnum, String cstName, String cstMobile, String xcsIdcardnum, String preferStore, String rewardtype, Integer period, Integer mmbid, Integer cstId, String cntupdateFlag) {
+	public CodeMonkeyUserUser(String mmbMembershipnum, String cstName, String cstMobile, String xcsIdcardnum, String preferStore, String rewardtype, Integer period, Integer mmbid, Integer cstId, String cntupdateFlag) {
 		this.mmbMembershipnum = mmbMembershipnum;
 		this.cstName = cstName;
 		this.cstMobile = cstMobile;

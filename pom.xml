@@ -22,9 +22,9 @@
 				<log4j.rootLogger>DEBUG, stdout</log4j.rootLogger>
 				<ehcache.DiskStore>java.io.tmpdir</ehcache.DiskStore>
 				<jdbcDriver>com.mysql.jdbc.Driver</jdbcDriver>
-				<jdbcUrl>jdbc:mysql://127.0.0.1:3306/eastbride</jdbcUrl>
+				<jdbcUrl>jdbc:mysql://127.0.0.1:3306/0513syr</jdbcUrl>
 				<jdbcUser>root</jdbcUser>
-				<jdbcPassword>923389</jdbcPassword>
+				<jdbcPassword>root</jdbcPassword>
 				<devMode>true</devMode>
 			</properties>
 		</profile>

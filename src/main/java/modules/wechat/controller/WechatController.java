@@ -1,6 +1,6 @@
 package modules.wechat.controller;
 
-import modules.wechat.model.CustomerModel;
+import modules.wechat.model.WechatCustomerModel;
 
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 
@@ -22,7 +22,7 @@ public class WechatController extends Controller {
 	public void crmWxCustomerGet() {
 		Integer pageNumber = getParaToInt("page", 1);
 		Integer pageSize = getParaToInt("rows", 10);
-		Page<CustomerModel> customer = CustomerModel.dao.getAllCustomer(pageNumber, pageSize);
+		Page<WechatCustomerModel> customer = WechatCustomerModel.dao.getAllCustomer(pageNumber, pageSize);
 		renderJson(new DataGrid(String.valueOf(customer.getTotalRow()), customer.getList()));
 	}
 	

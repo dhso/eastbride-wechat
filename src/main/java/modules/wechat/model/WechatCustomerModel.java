@@ -8,9 +8,9 @@ import com.jfinal.plugin.activerecord.Page;
 import frame.plugin.tablebind.TableBind;
 
 @SuppressWarnings("serial")
-@TableBind(tableName = "wx_customer", pkName = "openId")
-public class CustomerModel extends Model<CustomerModel> {
-	public static final CustomerModel dao = new CustomerModel();
+@TableBind(tableName = "wechat_customer", pkName = "openid")
+public class WechatCustomerModel extends Model<WechatCustomerModel> {
+	public static final WechatCustomerModel dao = new WechatCustomerModel();
 
 	/**
 	 * 分页获取所有客户
@@ -19,8 +19,8 @@ public class CustomerModel extends Model<CustomerModel> {
 	 * @param pageSize
 	 * @return
 	 */
-	public Page<CustomerModel> getAllCustomer(int pageNumber, int pageSize) {
-		return CustomerModel.dao.paginate(pageNumber, pageSize, "select *", "from wx_customer");
+	public Page<WechatCustomerModel> getAllCustomer(int pageNumber, int pageSize) {
+		return WechatCustomerModel.dao.paginate(pageNumber, pageSize, "select *", "from wx_customer");
 	}
 
 	/**
@@ -29,8 +29,8 @@ public class CustomerModel extends Model<CustomerModel> {
 	 * @param openid
 	 * @return
 	 */
-	public CustomerModel getCustomer(String openid) {
-		return CustomerModel.dao.findById(openid);
+	public WechatCustomerModel getCustomer(String openid) {
+		return WechatCustomerModel.dao.findById(openid);
 	}
 
 	/**
@@ -40,11 +40,11 @@ public class CustomerModel extends Model<CustomerModel> {
 	 * @param create_id
 	 * @return
 	 */
-	public CustomerModel subscribe(String openid, String create_id) {
-		CustomerModel customer = getCustomer(openid);
+	public WechatCustomerModel subscribe(String openid, String create_id) {
+		WechatCustomerModel customer = getCustomer(openid);
 		if (null == customer) {
 			// 没有关注过
-			new CustomerModel().set("openId", openid).set("subscribe_flag", "1").set("create_id", create_id).set("create_dt", new Date()).save();
+			new WechatCustomerModel().set("openId", openid).set("subscribe_flag", "1").set("create_id", create_id).set("create_dt", new Date()).save();
 			customer = getCustomer(openid);
 		} else {
 			// 关注过
@@ -59,7 +59,7 @@ public class CustomerModel extends Model<CustomerModel> {
 	 * @param openid
 	 */
 	public void unsubscribe(String openid) {
-		CustomerModel.dao.findById(openid).set("subscribe_flag", "0").update();
+		WechatCustomerModel.dao.findById(openid).set("subscribe_flag", "0").update();
 	}
 
 }

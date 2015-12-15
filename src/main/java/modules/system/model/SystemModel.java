@@ -1,4 +1,4 @@
-package modules.wechat.model;
+package modules.system.model;
 
 import java.util.List;
 
@@ -11,9 +11,9 @@ import frame.kit.RecordKit;
 import frame.plugin.tablebind.TableBind;
 
 @SuppressWarnings("serial")
-@TableBind(tableName = "wechat_config", pkName = "cfg_key")
-public class WechatConfigModel extends Model<WechatConfigModel> {
-	public static final WechatConfigModel dao = new WechatConfigModel();
+@TableBind(tableName = "system_config", pkName = "cfg_key")
+public class SystemModel extends Model<SystemModel> {
+	public static final SystemModel dao = new SystemModel();
 
 	/**
 	 * 获取所有配置信息
@@ -21,7 +21,7 @@ public class WechatConfigModel extends Model<WechatConfigModel> {
 	 * @return
 	 */
 	public List<Record> getAllConfig() {
-		return Db.find("select * from wechat_config");
+		return Db.find("select * from system_config");
 	}
 
 	/**
@@ -32,7 +32,7 @@ public class WechatConfigModel extends Model<WechatConfigModel> {
 	 * @return
 	 */
 	public Page<Record> getAllConfigPage(Integer pageNumber, Integer pageSize) {
-		return Db.paginate(pageNumber, pageSize, "select *", "from wechat_config order by cfg_key asc");
+		return Db.paginate(pageNumber, pageSize, "select *", "from system_config order by cfg_key asc");
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class WechatConfigModel extends Model<WechatConfigModel> {
 	 */
 	public void insertConfig(List<?> list) {
 		List<Record> recordList = RecordKit.list2RecordList(list);
-		Db.batch("insert into wechat_config(cfg_key,cfg_val) values (?,?)", "cfg_key,cfg_val", recordList, recordList.size());
+		Db.batch("insert into system_config(cfg_key,cfg_val) values (?,?)", "cfg_key,cfg_val", recordList, recordList.size());
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class WechatConfigModel extends Model<WechatConfigModel> {
 	 */
 	public void updateConfig(List<?> list) {
 		List<Record> recordList = RecordKit.list2RecordList(list);
-		Db.batch("update wechat_config cfg_val= ? where cfg_key = ?", "cfg_val,cfg_key", recordList, recordList.size());
+		Db.batch("update system_config cfg_val= ? where cfg_key = ?", "cfg_val,cfg_key", recordList, recordList.size());
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class WechatConfigModel extends Model<WechatConfigModel> {
 	 */
 	public void deleteConfig(List<?> list) {
 		List<Record> recordList = RecordKit.list2RecordList(list);
-		Db.batch("delete from wechat_config where cfg_key = ?", "cfg_key", recordList, recordList.size());
+		Db.batch("delete from system_config where cfg_key = ?", "cfg_key", recordList, recordList.size());
 	}
 
 	/**
@@ -73,6 +73,6 @@ public class WechatConfigModel extends Model<WechatConfigModel> {
 	 * @return
 	 */
 	public String getConfigVal(String cfg_key) {
-		return Db.findFirst("select * from wechat_config where cfg_key = ?", cfg_key).getStr("cfg_val");
+		return Db.findFirst("select * from system_config where cfg_key = ?", cfg_key).getStr("cfg_val");
 	}
 }
