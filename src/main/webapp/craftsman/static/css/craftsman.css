@@ -5,7 +5,7 @@ html,body {
 
 body {
 	background: #eee;
-	font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+	font-family: 'Microsoft Yahei', Helvetica, Arial, sans-serif;
 	font-size: 20px;
 	color: #000;
 	margin: 0;
@@ -13,9 +13,26 @@ body {
 }
 
 .swiper-container {
-	height: 10em;
+	height: 30%;
 }
 
 .swiper-slide img {
 	width: 100%;
+}
+
+.content {
+	background: rgba(0, 0, 0, .1);
+}
+
+@media screen and (min-width: 480px) {
+}
+/*兼容平板*/
+@media screen and (min-width: 640px) {
+}
+/*台式机*/
+@media screen and (min-width: 960px) {
+	body {
+		margin: 0 auto;
+		width: 49rem;
+	}
 }
